@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scollard Solutions — Safe Travel & Threat Awareness Training</title>
+<meta name="description" content="Operational security, safe travel training, and threat awareness from a Special Forces Intelligence veteran. Know before you go.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg0:#06080b;
+  --bg1:#0a0e13;
+  --bg2:#0f1520;
+  --bg3:#141c28;
+  --border:#1a2535;
+  --borderhi:#243447;
+  --t0:#dde4ed;
+  --t1:#8898aa;
+  --t2:#3d5068;
+  --cyan:#00c8f0;
+  --cyandk:#007a96;
+  --orange:#e8622a;
+  --red:#e03434;
+  --yellow:#d4a820;
+  --green:#1ab866;
+  --olive:#7a9e3a;
+}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--bg0);
+  color:var(--t0);
+  font-family:'Barlow',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+  pointer-events:none;
+  z-index:9999;
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:100;
+  background:rgba(6,8,11,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  height:52px;
+  display:flex;
+  align-items:center;
+  padding:0 32px;
+  gap:20px;
+}
+
+.nav-logo{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:18px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--t0);
+  white-space:nowrap;
+}
+
+.nav-logo span{color:var(--cyan);}
+.nav-sep{width:1px;height:20px;background:var(--border);}
+
+.nav-status{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  color:var(--green);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.nav-status::before{
+  content:'';
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--green);
+  animation:blink 2s infinite;
+}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.nav-links{
+  margin-left:auto;
+  display:flex;
+  gap:2px;
+}
+
+.nav-link{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--t2);
+  padding:6px 12px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:all 0.15s;
+  text-decoration:none;
+}
+
+.nav-link:hover{color:var(--cyan);border-color:var(--border);}
+
+/* TICKER */
+.ticker-bar{
+  position:fixed;
+  top:52px;left:0;right:0;
+  z-index:99;
+  background:var(--bg1);
+  border-bottom:1px solid var(--border);
+  height:26px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+
+.ticker-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  color:var(--cyan);
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  padding:0 12px;
+  height:100%;
+  display:flex;
+  align-items:center;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
+.ticker-scroll{
+  display:flex;
+  animation:tickscroll 40s linear infinite;
+  white-space:nowrap;
+  gap:48px;
+  padding-left:24px;
+}
+
+.ticker-item{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  color:var(--t1);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+
+.ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);}
+.ticker-dot.g{background:var(--green);}
+
+@keyframes tickscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  padding-top:78px;
+  display:flex;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-grid-bg{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size:60px 60px;
+  opacity:0.3;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+.hero-glow{
+  position:absolute;
+  top:20%;left:50%;
+  transform:translateX(-50%);
+  width:600px;height:400px;
+  background:radial-gradient(ellipse, rgba(0,200,240,0.06) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.hero-inner{
+  position:relative;
+  z-index:2;
+  max-width:1200px;
+  margin:0 auto;
+  padding:60px 32px;
+  display:grid;
+  grid-template-columns:1fr 380px;
+  gap:60px;
+  align-items:center;
+  width:100%;
+}
+
+.hero-eyebrow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.eyebrow-tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  padding:3px 8px;
+  border:1px solid rgba(0,200,240,0.3);
+  color:var(--cyan);
+  background:rgba(0,200,240,0.06);
+}
+
+.eyebrow-line{height:1px;width:40px;background:var(--borderhi);}
+
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:clamp(48px, 7vw, 88px);
+  line-height:0.92;
+  letter-spacing:0.01em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+
+.hero-title .accent{color:var(--cyan);}
+.hero-title .dim{color:var(--t2);font-weight:300;}
+
+.hero-sub{
+  font-size:15px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.7;
+  max-width:520px;
+  margin-bottom:36px;
+}
+
+.hero-actions{display:flex;gap:12px;align-items:center;}
+
+.btn-primary{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:10px 24px;
+  background:var(--cyan);
+  color:var(--bg0);
+  border:none;
+  cursor:pointer;
+  transition:all 0.15s;
+  text-decoration:none;
+  display:inline-block;
+}
+
+.btn-primary:hover{background:#33d4f5;transform:translateY(-1px);}
+
+.btn-ghost{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:10px 24px;
+  background:transparent;
+  color:var(--t1);
+  border:1px solid var(--borderhi);
+  cursor:pointer;
+  transition:all 0.15s;
+  text-decoration:none;
+  display:inline-block;
+}
+
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+
+/* HERO CARD */
+.hero-card{
+  background:var(--bg1);
+  border:1px solid var(--border);
+  padding:0;
+  animation:fadeup 0.8s ease 0.3s both;
+}
+
+@keyframes fadeup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.card-header{
+  padding:10px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--bg2);
+}
+
+.card-title{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--t2);
+}
+
+.card-live{
+  margin-left:auto;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:8px;
+  color:var(--green);
+  letter-spacing:0.08em;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+
+.card-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite;}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-bottom:1px solid var(--border);
+}
+
+.stat-cell{
+  padding:14px;
+  border-right:1px solid var(--border);
+}
+
+.stat-cell:nth-child(2n){border-right:none;}
+.stat-cell:nth-child(n+3){border-top:1px solid var(--border);}
+
+.stat-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:28px;
+  line-height:1;
+  margin-bottom:4px;
+}
+
+.stat-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:8px;
+  color:var(--t2);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:8px;
+  font-weight:600;
+  padding:2px 6px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+
+.tag-crit{background:rgba(224,52,52,0.15);color:var(--red);border:1px solid rgba(224,52,52,0.3);}
+.tag-high{background:rgba(232,98,42,0.15);color:var(--orange);border:1px solid rgba(232,98,42,0.3);}
+.tag-med{background:rgba(212,168,32,0.12);color:var(--yellow);border:1px solid rgba(212,168,32,0.25);}
+.tag-green{background:rgba(26,184,102,0.12);color:var(--green);border:1px solid rgba(26,184,102,0.25);}
+.tag-cyan{background:rgba(0,200,240,0.1);color:var(--cyan);border:1px solid rgba(0,200,240,0.25);}
+.tag-olive{background:rgba(122,158,58,0.15);color:var(--olive);border:1px solid rgba(122,158,58,0.3);}
+
+.service-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border-bottom:1px solid var(--border);
+  transition:background 0.1s;
+}
+
+.service-row:last-child{border-bottom:none;}
+.service-row:hover{background:var(--bg2);}
+
+.service-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.service-name{font-size:11px;font-weight:500;color:var(--t0);flex:1;}
+.service-status{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--green);}
+
+/* SECTION BASE */
+section{
+  max-width:1200px;
+  margin:0 auto;
+  padding:80px 32px;
+}
+
+.section-header{
+  display:flex;
+  align-items:baseline;
+  gap:16px;
+  margin-bottom:48px;
+}
+
+.section-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--t2);
+  letter-spacing:0.08em;
+}
+
+.section-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:36px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--t0);
+}
+
+.section-line{flex:1;height:1px;background:var(--border);}
+
+/* SERVICES */
+#services{border-top:1px solid var(--border);}
+
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+
+.svc-card{
+  background:var(--bg1);
+  padding:28px;
+  transition:background 0.2s;
+  position:relative;
+  overflow:hidden;
+}
+
+.svc-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:var(--cyan);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform 0.3s;
+}
+
+.svc-card:hover{background:var(--bg2);}
+.svc-card:hover::before{transform:scaleX(1);}
+
+.svc-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.svc-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:28px;
+  font-weight:300;
+  color:var(--border);
+  line-height:1;
+}
+
+.svc-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  font-size:22px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--t0);
+  margin-bottom:10px;
+  line-height:1.1;
+}
+
+.svc-desc{
+  font-size:13px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.7;
+  margin-bottom:16px;
+}
+
+.svc-tags{display:flex;flex-wrap:wrap;gap:5px;}
+
+/* HARD TARGET SECTION */
+#hard-target{border-top:1px solid var(--border);}
+
+.ht-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  align-items:start;
+}
+
+.ht-text .big-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:52px;
+  line-height:0.9;
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+
+.ht-text .big-label span{color:var(--cyan);}
+.ht-text .big-label .dim{color:var(--t2);font-weight:300;}
+
+.ht-text p{
+  font-size:14px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.8;
+  margin-bottom:16px;
+}
+
+.module-list{
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  margin-top:24px;
+}
+
+.module-row{
+  background:var(--bg1);
+  padding:14px 18px;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  transition:background 0.15s;
+}
+
+.module-row:hover{background:var(--bg2);}
+
+.module-icon{
+  width:28px;height:28px;
+  flex-shrink:0;
+  border:1px solid var(--borderhi);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;
+  color:var(--cyan);
+  margin-top:1px;
+}
+
+.module-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  font-size:14px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--t0);
+  margin-bottom:3px;
+}
+
+.module-desc{font-size:11px;font-weight:300;color:var(--t1);line-height:1.6;}
+
+/* THREAT PANEL */
+.threat-panel{
+  background:var(--bg1);
+  border:1px solid var(--border);
+}
+
+.threat-header{
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.threat-title{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--t2);
+}
+
+.threat-body{padding:16px;}
+
+.threat-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:20px;
+  text-transform:uppercase;
+  color:var(--t0);
+  margin-bottom:8px;
+}
+
+.threat-desc{
+  font-size:11px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.7;
+  margin-bottom:14px;
+}
+
+.risk-bars{display:flex;flex-direction:column;gap:8px;}
+
+.bar-row{display:flex;align-items:center;gap:8px;}
+.bar-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t1);width:80px;flex-shrink:0;}
+.bar-track{flex:1;height:6px;background:var(--bg3);position:relative;}
+.bar-fill{height:100%;transition:width 1.5s ease;}
+.bar-val{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);width:28px;text-align:right;}
+
+.callout-box{
+  margin-top:14px;
+  padding:10px 12px;
+  background:rgba(0,200,240,0.05);
+  border:1px solid rgba(0,200,240,0.2);
+}
+
+.callout-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:8px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--cyan);
+  margin-bottom:6px;
+}
+
+.callout-item{font-size:10px;color:var(--t1);line-height:1.7;}
+.callout-item::before{content:'> ';color:var(--cyan);}
+
+/* ABOUT */
+#about{border-top:1px solid var(--border);}
+
+.about-inner{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:48px;
+}
+
+.about-text h3{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:28px;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  color:var(--t0);
+  margin-bottom:16px;
+}
+
+.about-text p{
+  font-size:14px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.9;
+  margin-bottom:14px;
+}
+
+.timeline{margin-top:32px;display:flex;flex-direction:column;}
+
+.tl-item{
+  display:flex;
+  gap:16px;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.tl-item:last-child{border-bottom:none;}
+
+.tl-year{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  color:var(--cyan);
+  width:60px;
+  flex-shrink:0;
+  padding-top:2px;
+}
+
+.tl-dot{
+  width:8px;height:8px;
+  border-radius:50%;
+  border:1px solid var(--cyan);
+  background:var(--bg0);
+  flex-shrink:0;
+  margin-top:4px;
+}
+
+.tl-title{font-weight:500;font-size:13px;color:var(--t0);margin-bottom:3px;}
+.tl-sub{font-size:11px;font-weight:300;color:var(--t2);}
+
+.creds-panel{
+  background:var(--bg1);
+  border:1px solid var(--border);
+}
+
+.creds-header{
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:10px 14px;
+}
+
+.creds-title{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--t2);
+}
+
+.cred-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border-bottom:1px solid var(--border);
+  transition:background 0.1s;
+}
+
+.cred-row:last-child{border-bottom:none;}
+.cred-row:hover{background:var(--bg2);}
+
+.cred-icon{
+  width:28px;height:28px;
+  background:var(--bg2);
+  border:1px solid var(--borderhi);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;
+  flex-shrink:0;
+}
+
+.cred-name{font-size:11px;font-weight:500;color:var(--t0);flex:1;}
+.cred-status{font-family:'IBM Plex Mono',monospace;font-size:8px;}
+
+/* CONTACT */
+#contact{border-top:1px solid var(--border);}
+
+.contact-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+}
+
+.contact-info h3{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:36px;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  margin-bottom:16px;
+}
+
+.contact-info p{
+  font-size:14px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.8;
+  margin-bottom:24px;
+}
+
+.contact-detail{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
+  color:var(--t1);
+}
+
+.contact-detail:last-child{border-bottom:none;}
+.contact-detail .icon{color:var(--cyan);width:16px;text-align:center;}
+
+.contact-form{
+  background:var(--bg1);
+  border:1px solid var(--border);
+  padding:28px;
+}
+
+.form-group{margin-bottom:16px;}
+
+.form-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--t2);
+  display:block;
+  margin-bottom:6px;
+}
+
+.form-input{
+  width:100%;
+  background:var(--bg0);
+  border:1px solid var(--borderhi);
+  color:var(--t0);
+  padding:10px 12px;
+  font-family:'Barlow',sans-serif;
+  font-size:13px;
+  font-weight:300;
+  outline:none;
+  transition:border-color 0.15s;
+}
+
+.form-input:focus{border-color:var(--cyan);}
+textarea.form-input{resize:vertical;min-height:100px;}
+
+.form-select{
+  width:100%;
+  background:var(--bg0);
+  border:1px solid var(--borderhi);
+  color:var(--t1);
+  padding:10px 12px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  outline:none;
+  cursor:pointer;
+}
+
+.form-select:focus{border-color:var(--cyan);}
+
+/* FOOTER */
+footer{
+  background:var(--bg1);
+  border-top:1px solid var(--border);
+  padding:24px 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.footer-logo{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--t2);
+}
+
+.footer-logo span{color:var(--cyan);}
+
+.footer-copy{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  color:var(--t2);
+  letter-spacing:0.06em;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:40px;}
+  .hero-card{max-width:400px;}
+  .services-grid{grid-template-columns:1fr;}
+  .ht-inner{grid-template-columns:1fr;}
+  .about-inner{grid-template-columns:1fr;}
+  .contact-inner{grid-template-columns:1fr;}
+  nav{padding:0 16px;}
+  section{padding:60px 16px;}
+}
+
+@media(max-width:600px){
+  .nav-links{display:none;}
+}
+
+.fade-in{
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Scollard<span>.</span>Solutions</div>
+  <div class="nav-sep"></div>
+  <div class="nav-status">Systems Operational</div>
+  <div class="nav-links">
+    <a href="#services" class="nav-link">Services</a>
+    <a href="#hard-target" class="nav-link">Hard Target</a>
+    <a href="#about" class="nav-link">About</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-label">&#9632; INTEL FEED</div>
+  <div class="ticker-scroll">
+    <div class="ticker-item"><span class="ticker-dot g"></span>Safe Traveler Training &mdash; Now Available</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Hard Target Course &mdash; Launching 2026</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>Threat Assessments &mdash; Individual &amp; Organizational</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>OPSEC Consulting &mdash; Active Engagements Available</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>Special Forces Intel Background &mdash; Civilian Application</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>Safe Traveler Training &mdash; Now Available</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Hard Target Course &mdash; Launching 2026</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>Threat Assessments &mdash; Individual &amp; Organizational</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>OPSEC Consulting &mdash; Active Engagements Available</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>Special Forces Intel Background &mdash; Civilian Application</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-left fade-in">
+      <div class="hero-eyebrow">
+        <div class="eyebrow-tag">SF Intelligence &mdash; SOF Veteran</div>
+        <div class="eyebrow-line"></div>
+      </div>
+      <h1 class="hero-title">
+        Scollard<br>
+        <span class="accent">Solutions</span><br>
+        <span class="dim">LLC</span>
+      </h1>
+      <p class="hero-sub">
+        Operational security and safe travel training built on real-world Special Forces intelligence experience. Most people don't think about their vulnerabilities until it's too late. We fix that.
+      </p>
+      <div class="hero-actions">
+        <a href="#services" class="btn-primary">View Training</a>
+        <a href="#contact" class="btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+
+    <div class="hero-card fade-in">
+      <div class="card-header">
+        <span class="tag tag-green">ACTIVE</span>
+        <div class="card-title">Capability Overview</div>
+        <div class="card-live">Live</div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--cyan)">18F</div>
+          <div class="stat-label">SF Intel MOS</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--orange)">SFC</div>
+          <div class="stat-label">Rank</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--green)">20+</div>
+          <div class="stat-label">Yrs Combined Svc</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val" style="color:var(--yellow)">2027</div>
+          <div class="stat-label">Transition Year</div>
+        </div>
+      </div>
+      <div class="service-row">
+        <div class="service-icon">&#9654;</div>
+        <div class="service-name">Safe Traveler Training</div>
+        <div class="service-status">&#9632; ACTIVE</div>
+      </div>
+      <div class="service-row">
+        <div class="service-icon">&#9654;</div>
+        <div class="service-name">Hard Target Course</div>
+        <div class="service-status" style="color:var(--yellow)">&#9632; LAUNCHING</div>
+      </div>
+      <div class="service-row">
+        <div class="service-icon">&#9654;</div>
+        <div class="service-name">Threat Assessments</div>
+        <div class="service-status">&#9632; ACTIVE</div>
+      </div>
+      <div class="service-row">
+        <div class="service-icon">&#9654;</div>
+        <div class="service-name">OPSEC Consulting</div>
+        <div class="service-status">&#9632; ACTIVE</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header fade-in">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Training &amp; Services</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card fade-in">
+      <div class="svc-header">
+        <div class="svc-num">01</div>
+        <span class="tag tag-green">AVAILABLE NOW</span>
+      </div>
+      <div class="svc-title">Safe Traveler Training</div>
+      <div class="svc-desc">Practical OPSEC and situational awareness training for individuals, families, and business travelers. Learn how to move through the world without advertising your vulnerabilities. Built on real-world intelligence tradecraft, taught in plain language.</div>
+      <div class="svc-tags">
+        <span class="tag tag-cyan">OPSEC</span>
+        <span class="tag tag-cyan">Situational Awareness</span>
+        <span class="tag tag-cyan">Travel Security</span>
+        <span class="tag tag-cyan">Digital Hygiene</span>
+      </div>
+    </div>
+    <div class="svc-card fade-in">
+      <div class="svc-header">
+        <div class="svc-num">02</div>
+        <span class="tag tag-yellow">LAUNCHING 2026</span>
+      </div>
+      <div class="svc-title">Hard Target Course</div>
+      <div class="svc-desc">A comprehensive course built around becoming a harder target in everyday life. Threat recognition, behavioral patterns, route planning, and response frameworks. The mindset and skills that most people never develop because they don't know where to start.</div>
+      <div class="svc-tags">
+        <span class="tag tag-cyan">Threat Recognition</span>
+        <span class="tag tag-cyan">Behavioral Analysis</span>
+        <span class="tag tag-cyan">Response Frameworks</span>
+        <span class="tag tag-cyan">Mindset</span>
+      </div>
+    </div>
+    <div class="svc-card fade-in">
+      <div class="svc-header">
+        <div class="svc-num">03</div>
+        <span class="tag tag-high">CONSULTING</span>
+      </div>
+      <div class="svc-title">Threat Assessments</div>
+      <div class="svc-desc">Individual, family, and organizational threat assessments using the same analytical frameworks applied in Special Forces mission planning. Identify your real vulnerabilities before someone else does.</div>
+      <div class="svc-tags">
+        <span class="tag tag-cyan">Physical Security</span>
+        <span class="tag tag-cyan">OSINT Exposure</span>
+        <span class="tag tag-cyan">Risk Modeling</span>
+        <span class="tag tag-cyan">Mitigation Planning</span>
+      </div>
+    </div>
+    <div class="svc-card fade-in">
+      <div class="svc-header">
+        <div class="svc-num">04</div>
+        <span class="tag tag-olive">OPSEC</span>
+      </div>
+      <div class="svc-title">OPSEC Consulting</div>
+      <div class="svc-desc">Operational security audit and consulting for individuals and small organizations. Digital footprint analysis, social exposure review, and a practical plan to reduce your attack surface without disrupting your life.</div>
+      <div class="svc-tags">
+        <span class="tag tag-cyan">Digital Footprint</span>
+        <span class="tag tag-cyan">Social Exposure</span>
+        <span class="tag tag-cyan">Countermeasures</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HARD TARGET DEEP DIVE -->
+<section id="hard-target">
+  <div class="section-header fade-in">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Hard Target Course</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="ht-inner">
+    <div class="ht-text fade-in">
+      <div class="big-label">
+        HARD<br>
+        <span>TAR</span><br>
+        <span class="dim">GET</span>
+      </div>
+      <p>Most people are soft targets. Not because they're weak, but because they've never been taught to think any other way. This course changes that.</p>
+      <p>Built on the same threat frameworks used in Special Forces operational planning, the Hard Target Course teaches civilians how to think, move, and live in a way that makes them a significantly harder target for crime, surveillance, and exploitation.</p>
+      <div class="module-list">
+        <div class="module-row">
+          <div class="module-icon">&#9650;</div>
+          <div>
+            <div class="module-title">Threat Recognition</div>
+            <div class="module-desc">How to identify indicators of surveillance, pre-attack behavior, and environmental threats before they become problems.</div>
+          </div>
+        </div>
+        <div class="module-row">
+          <div class="module-icon">&#9670;</div>
+          <div>
+            <div class="module-title">Pattern of Life</div>
+            <div class="module-desc">Understanding how your routines create vulnerabilities, and how small changes dramatically reduce your predictability.</div>
+          </div>
+        </div>
+        <div class="module-row">
+          <div class="module-icon">&#9632;</div>
+          <div>
+            <div class="module-title">Digital &amp; Physical OPSEC</div>
+            <div class="module-desc">What you broadcast online and in person, and how to control that signal without going off-grid.</div>
+          </div>
+        </div>
+        <div class="module-row">
+          <div class="module-icon">&#9658;</div>
+          <div>
+            <div class="module-title">Response Frameworks</div>
+            <div class="module-desc">Simple decision frameworks for responding to threats, not from panic, but from preparation. Pre-built mental models for high-stress moments.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fade-in">
+      <div class="threat-panel">
+        <div class="threat-header">
+          <span class="tag tag-high">EXAMPLE SCENARIO</span>
+          <div class="threat-title" style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);font-weight:400;text-transform:uppercase;letter-spacing:.08em">Assessment</div>
+        </div>
+        <div class="threat-body">
+          <div class="threat-name">Typical Traveler Profile</div>
+          <div class="threat-desc">Individual traveler, no security training. Public social media, predictable schedule, no countersurveillance awareness.</div>
+          <div class="risk-bars">
+            <div class="bar-row">
+              <div class="bar-label">Digital Exposure</div>
+              <div class="bar-track"><div class="bar-fill" style="width:84%;background:var(--red)"></div></div>
+              <div class="bar-val">84</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Predictability</div>
+              <div class="bar-track"><div class="bar-fill" style="width:91%;background:var(--red)"></div></div>
+              <div class="bar-val">91</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Threat Awareness</div>
+              <div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--yellow)"></div></div>
+              <div class="bar-val">22</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Response Readiness</div>
+              <div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--red)"></div></div>
+              <div class="bar-val">18</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">OPSEC Posture</div>
+              <div class="bar-track"><div class="bar-fill" style="width:31%;background:var(--yellow)"></div></div>
+              <div class="bar-val">31</div>
+            </div>
+          </div>
+          <div class="callout-box">
+            <div class="callout-label">&#9632; What the Course Addresses</div>
+            <div class="callout-item">Reduce digital exposure without disrupting your life</div>
+            <div class="callout-item">Break predictable patterns attackers rely on</div>
+            <div class="callout-item">Build threat recognition into your daily awareness</div>
+            <div class="callout-item">Pre-load response decisions before you need them</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:1px;background:var(--bg1);border:1px solid var(--border);border-top:none;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);letter-spacing:.06em;text-transform:uppercase;">Launching 2026 &mdash; Interest List Open</div>
+        <a href="#contact" class="btn-primary" style="font-size:9px;padding:7px 16px;">Get Notified</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header fade-in">
+    <span class="section-num">03</span>
+    <h2 class="section-title">About</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-inner">
+    <div class="about-text fade-in">
+      <h3>Real Training. Real Background.</h3>
+      <p>Scollard Solutions was built on a simple premise: the skills developed over years in Special Forces don't stop being useful when you take off the uniform. They get applied differently.</p>
+      <p>Ryan Scollard is a Special Forces Intelligence Sergeant (18F) with experience in all-source intelligence analysis, intelligence preparation of the battlefield, and operational security across multiple theaters. That background now goes toward teaching civilians how to think about their own security.</p>
+      <p>This isn't fearmongering. It's practical training that makes you harder to target, smarter about your environment, and more capable of protecting the people around you.</p>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">NOW</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">Scollard Solutions LLC &mdash; Founder</div>
+            <div class="tl-sub">Safe travel training, threat assessments, Hard Target Course development</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">ACTIVE</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">US Army Special Forces &mdash; 18F</div>
+            <div class="tl-sub">SF Intelligence Sergeant, all-source analysis, operational planning</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">PRIOR</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">United States Marine Corps</div>
+            <div class="tl-sub">Prior service, foundation for operational mindset</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2027</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">Full-Time Transition</div>
+            <div class="tl-sub">Retiring 26 FEB 2027 &mdash; Scollard Solutions goes full throttle</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fade-in">
+      <div class="creds-panel">
+        <div class="creds-header">
+          <div class="creds-title">Background &amp; Credentials</div>
+        </div>
+        <div class="cred-row">
+          <div class="cred-icon">&#9670;</div>
+          <div class="cred-name">Special Forces &mdash; 18F Intel</div>
+          <div class="cred-status" style="color:var(--green)">VERIFIED</div>
+        </div>
+        <div class="cred-row">
+          <div class="cred-icon">&#9670;</div>
+          <div class="cred-name">All-Source Intelligence Analysis</div>
+          <div class="cred-status" style="color:var(--green)">VERIFIED</div>
+        </div>
+        <div class="cred-row">
+          <div class="cred-icon">&#9670;</div>
+          <div class="cred-name">Intelligence Prep of Battlefield</div>
+          <div class="cred-status" style="color:var(--green)">VERIFIED</div>
+        </div>
+        <div class="cred-row">
+          <div class="cred-icon">&#9670;</div>
+          <div class="cred-name">MBA &mdash; IT Management (WGU)</div>
+          <div class="cred-status" style="color:var(--green)">2026</div>
+        </div>
+        <div class="cred-row">
+          <div class="cred-icon">&#9670;</div>
+          <div class="cred-name">B.S. Cybersecurity (WGU)</div>
+          <div class="cred-status" style="color:var(--green)">2025</div>
+        </div>
+        <div class="cred-row">
+          <div class="cred-icon">&#9670;</div>
+          <div class="cred-name">Prior Service &mdash; USMC</div>
+          <div class="cred-status" style="color:var(--t2)">PRIOR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header fade-in">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Contact</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-info fade-in">
+      <h3>Start a Conversation</h3>
+      <p>Whether you're interested in Safe Traveler Training, want to get on the Hard Target Course waitlist, or have a specific security concern you want to talk through, reach out.</p>
+      <div class="contact-detail">
+        <span class="icon">&#9654;</span>
+        <span>ScollardSolutions@gmail.com</span>
+      </div>
+      <div class="contact-detail">
+        <span class="icon">&#9654;</span>
+        <span>ScollardSolutions.com</span>
+      </div>
+      <div class="contact-detail">
+        <span class="icon">&#9654;</span>
+        <span>Based in Maryland, USA</span>
+      </div>
+      <div style="margin-top:28px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;">Response Time</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t1);">
+          <span class="tag tag-green">24&ndash;48 HRS</span>
+          <span>Standard inquiries</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form fade-in">
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-input" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Interest</label>
+        <select class="form-select">
+          <option value="">— Select One —</option>
+          <option>Safe Traveler Training</option>
+          <option>Hard Target Course — Notify Me</option>
+          <option>Threat Assessment</option>
+          <option>OPSEC Consulting</option>
+          <option>General Inquiry</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-input" placeholder="What do you need?"></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%;padding:12px;">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Scollard<span>.</span>Solutions LLC</div>
+  <div class="footer-copy">&copy; 2026 Scollard Solutions LLC &mdash; All rights reserved</div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      setTimeout(() => entry.target.classList.add('visible'), 100);
+      observer.unobserve(entry.target);
+    }
+  });
+}, {threshold: 0.1});
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if(window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navLinks.forEach(l => {
+    l.style.color = l.getAttribute('href') === '#'+current ? 'var(--cyan)' : '';
+  });
+});
+</script>
+</body>
+</html>
