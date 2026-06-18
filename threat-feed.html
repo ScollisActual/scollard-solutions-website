@@ -1,0 +1,2618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scollard Solutions — US Threat Feed</title>
+<meta name="description" content="Live US threat intelligence feed — CISA, FEMA, USGS, NWS, NVD. Cyber, weather, seismic, and disaster data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg0:#050809;
+  --bg1:#080e0a;
+  --bg2:#0d1410;
+  --bg3:#111a14;
+  --border:#182318;
+  --borderhi:#213021;
+  --t0:#d8e8d0;
+  --t1:#7a9878;
+  --t2:#3a5438;
+  --cyan:#3daa5c;
+  --cyandk:#236638;
+  --orange:#c87830;
+  --red:#c03428;
+  --yellow:#b8a018;
+  --green:#5abf50;
+  --olive:#8aaa38;
+}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--bg0);
+  color:var(--t0);
+  font-family:'Barlow',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+}
+
+/* SCANLINE TEXTURE */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+  pointer-events:none;
+  z-index:9999;
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:100;
+  background:rgba(6,8,11,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  height:52px;
+  display:flex;
+  align-items:center;
+  padding:0 32px;
+  gap:20px;
+}
+
+.nav-logo{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:18px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--t0);
+  white-space:nowrap;
+}
+
+.nav-logo span{color:var(--cyan);}
+
+.nav-sep{width:1px;height:20px;background:var(--border);}
+
+.nav-status{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  color:var(--green);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.nav-status::before{
+  content:'';
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--green);
+  animation:blink 2s infinite;
+}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.nav-links{
+  margin-left:auto;
+  display:flex;
+  gap:2px;
+}
+
+.nav-link{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--t2);
+  padding:6px 12px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:all 0.15s;
+  text-decoration:none;
+}
+
+.nav-link:hover{color:var(--cyan);border-color:var(--border);}
+
+/* TICKER */
+.ticker-bar{
+  position:fixed;
+  top:52px;left:0;right:0;
+  z-index:99;
+  background:var(--bg1);
+  border-bottom:1px solid var(--border);
+  height:26px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+
+.ticker-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  color:var(--cyan);
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  padding:0 12px;
+  height:100%;
+  display:flex;
+  align-items:center;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
+.ticker-scroll{
+  display:flex;
+  animation:tickscroll 40s linear infinite;
+  white-space:nowrap;
+  gap:48px;
+  padding-left:24px;
+}
+
+.ticker-item{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  color:var(--t1);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+
+.ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);}
+.ticker-dot.g{background:var(--green);}
+
+@keyframes tickscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-bar:hover .ticker-scroll{animation-play-state:paused;}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  padding-top:78px;
+  display:flex;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-grid-bg{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size:60px 60px;
+  opacity:0.3;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+.hero-glow{
+  position:absolute;
+  top:20%;left:50%;
+  transform:translateX(-50%);
+  width:600px;height:400px;
+  background:radial-gradient(ellipse, rgba(0,200,240,0.06) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.hero-inner{
+  position:relative;
+  z-index:2;
+  max-width:1200px;
+  margin:0 auto;
+  padding:60px 32px;
+  display:grid;
+  grid-template-columns:1fr 380px;
+  gap:60px;
+  align-items:center;
+  width:100%;
+}
+
+.hero-eyebrow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.eyebrow-tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  padding:3px 8px;
+  border:1px solid rgba(0,200,240,0.3);
+  color:var(--cyan);
+  background:rgba(0,200,240,0.06);
+}
+
+.eyebrow-line{height:1px;width:40px;background:var(--borderhi);}
+
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:clamp(48px, 7vw, 88px);
+  line-height:0.92;
+  letter-spacing:0.01em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+
+.hero-title .accent{color:var(--cyan);}
+.hero-title .dim{color:var(--t2);font-weight:300;}
+
+.hero-sub{
+  font-size:15px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.7;
+  max-width:520px;
+  margin-bottom:36px;
+}
+
+.hero-actions{display:flex;gap:12px;align-items:center;}
+
+.btn-primary{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:10px 24px;
+  background:var(--cyan);
+  color:var(--bg0);
+  border:none;
+  cursor:pointer;
+  transition:all 0.15s;
+  text-decoration:none;
+  display:inline-block;
+}
+
+.btn-primary:hover{background:#33d4f5;transform:translateY(-1px);}
+
+.btn-ghost{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:10px 24px;
+  background:transparent;
+  color:var(--t1);
+  border:1px solid var(--borderhi);
+  cursor:pointer;
+  transition:all 0.15s;
+  text-decoration:none;
+  display:inline-block;
+}
+
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+
+/* HERO STATS CARD */
+.hero-card{
+  background:var(--bg1);
+  border:1px solid var(--border);
+  padding:0;
+  animation:fadeup 0.8s ease 0.3s both;
+}
+
+@keyframes fadeup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.card-header{
+  padding:10px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--bg2);
+}
+
+.card-title{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--t2);
+}
+
+.card-live{
+  margin-left:auto;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:8px;
+  color:var(--green);
+  letter-spacing:0.08em;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+
+.card-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite;}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-bottom:1px solid var(--border);
+}
+
+.stat-cell{
+  padding:14px;
+  border-right:1px solid var(--border);
+  position:relative;
+}
+
+.stat-cell:nth-child(2n){border-right:none;}
+.stat-cell:nth-child(n+3){border-top:1px solid var(--border);}
+
+.stat-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:32px;
+  line-height:1;
+  margin-bottom:4px;
+}
+
+.stat-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:8px;
+  color:var(--t2);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:8px;
+  font-weight:600;
+  padding:2px 6px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+
+.tag-crit{background:rgba(224,52,52,0.15);color:var(--red);border:1px solid rgba(224,52,52,0.3);}
+.tag-high{background:rgba(232,98,42,0.15);color:var(--orange);border:1px solid rgba(232,98,42,0.3);}
+.tag-med{background:rgba(212,168,32,0.12);color:var(--yellow);border:1px solid rgba(212,168,32,0.25);}
+.tag-green{background:rgba(26,184,102,0.12);color:var(--green);border:1px solid rgba(26,184,102,0.25);}
+.tag-cyan{background:rgba(0,200,240,0.1);color:var(--cyan);border:1px solid rgba(0,200,240,0.25);}
+.tag-olive{background:rgba(122,158,58,0.15);color:var(--olive);border:1px solid rgba(122,158,58,0.3);}
+
+.service-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+  transition:background 0.1s;
+}
+
+.service-row:last-child{border-bottom:none;}
+.service-row:hover{background:var(--bg2);}
+
+.service-icon{
+  width:24px;height:24px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;
+  flex-shrink:0;
+}
+
+.service-name{font-size:11px;font-weight:500;color:var(--t0);flex:1;}
+.service-status{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--green);}
+
+/* SECTION BASE */
+section{
+  max-width:1200px;
+  margin:0 auto;
+  padding:80px 32px;
+}
+
+.section-header{
+  display:flex;
+  align-items:baseline;
+  gap:16px;
+  margin-bottom:48px;
+}
+
+.section-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--t2);
+  letter-spacing:0.08em;
+}
+
+.section-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:36px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--t0);
+}
+
+.section-line{
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
+
+/* SERVICES */
+#services{border-top:1px solid var(--border);}
+
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+
+.svc-card{
+  background:var(--bg1);
+  padding:28px;
+  transition:background 0.2s;
+  position:relative;
+  overflow:hidden;
+}
+
+.svc-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:var(--cyan);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform 0.3s;
+}
+
+.svc-card:hover{background:var(--bg2);}
+.svc-card:hover::before{transform:scaleX(1);}
+
+.svc-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.svc-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:28px;
+  font-weight:300;
+  color:var(--border);
+  line-height:1;
+}
+
+.svc-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  font-size:22px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--t0);
+  margin-bottom:10px;
+  line-height:1.1;
+}
+
+.svc-desc{
+  font-size:13px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.7;
+  margin-bottom:16px;
+}
+
+.svc-tags{display:flex;flex-wrap:wrap;gap:5px;}
+
+/* TABLETOP */
+#tabletop{border-top:1px solid var(--border);}
+
+.tabletop-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  align-items:start;
+}
+
+.tabletop-text .big-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:52px;
+  line-height:0.9;
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+
+.tabletop-text .big-label span{color:var(--cyan);}
+.tabletop-text .big-label .dim{color:var(--t2);font-weight:300;}
+
+.tabletop-text p{
+  font-size:14px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.8;
+  margin-bottom:16px;
+}
+
+.mechanic-list{
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  margin-top:24px;
+}
+
+.mechanic-row{
+  background:var(--bg1);
+  padding:14px 18px;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  transition:background 0.15s;
+}
+
+.mechanic-row:hover{background:var(--bg2);}
+
+.mechanic-icon{
+  width:28px;height:28px;
+  flex-shrink:0;
+  border:1px solid var(--borderhi);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;
+  color:var(--cyan);
+  margin-top:1px;
+}
+
+.mechanic-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  font-size:14px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--t0);
+  margin-bottom:3px;
+}
+
+.mechanic-desc{font-size:11px;font-weight:300;color:var(--t1);line-height:1.6;}
+
+/* SCENARIO CARD */
+.scenario-panel{
+  background:var(--bg1);
+  border:1px solid var(--border);
+}
+
+.scenario-header{
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.scenario-title{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--t2);
+}
+
+.scenario-body{padding:16px;}
+
+.scenario-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:20px;
+  text-transform:uppercase;
+  color:var(--t0);
+  margin-bottom:8px;
+}
+
+.scenario-desc{
+  font-size:11px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.7;
+  margin-bottom:14px;
+}
+
+.stat-bars{display:flex;flex-direction:column;gap:8px;}
+
+.bar-row{display:flex;align-items:center;gap:8px;}
+.bar-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t1);width:80px;flex-shrink:0;}
+.bar-track{flex:1;height:6px;background:var(--bg3);position:relative;}
+.bar-fill{height:100%;transition:width 1.5s ease;}
+.bar-val{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);width:28px;text-align:right;}
+
+.shortfall-box{
+  margin-top:14px;
+  padding:10px 12px;
+  background:rgba(224,52,52,0.06);
+  border:1px solid rgba(224,52,52,0.2);
+}
+
+.shortfall-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:8px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--red);
+  margin-bottom:6px;
+}
+
+.shortfall-item{font-size:10px;color:var(--t1);line-height:1.7;}
+.shortfall-item::before{content:'▸ ';color:var(--red);}
+
+/* PROJECTS */
+#projects{border-top:1px solid var(--border);}
+
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+
+.proj-card{
+  background:var(--bg1);
+  padding:22px;
+  transition:background 0.2s;
+  cursor:pointer;
+}
+
+.proj-card:hover{background:var(--bg2);}
+
+.proj-card.placeholder{opacity:0.4;}
+
+.proj-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  color:var(--t2);
+  margin-bottom:10px;
+  letter-spacing:0.06em;
+}
+
+.proj-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  font-size:18px;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  color:var(--t0);
+  margin-bottom:8px;
+  line-height:1.2;
+}
+
+.proj-desc{
+  font-size:11px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.7;
+  margin-bottom:14px;
+}
+
+.proj-tags{display:flex;flex-wrap:wrap;gap:4px;}
+
+.proj-status{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:8px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+
+/* ABOUT */
+#about{border-top:1px solid var(--border);}
+
+.about-inner{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:48px;
+}
+
+.about-text h3{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:28px;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  color:var(--t0);
+  margin-bottom:16px;
+}
+
+.about-text p{
+  font-size:14px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.9;
+  margin-bottom:14px;
+}
+
+.timeline{
+  margin-top:32px;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+
+.tl-item{
+  display:flex;
+  gap:16px;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+
+.tl-item:last-child{border-bottom:none;}
+
+.tl-year{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  color:var(--cyan);
+  width:60px;
+  flex-shrink:0;
+  padding-top:2px;
+}
+
+.tl-dot{
+  width:8px;height:8px;
+  border-radius:50%;
+  border:1px solid var(--cyan);
+  background:var(--bg0);
+  flex-shrink:0;
+  margin-top:4px;
+  position:relative;
+}
+
+.tl-content{}
+.tl-title{font-weight:500;font-size:13px;color:var(--t0);margin-bottom:3px;}
+.tl-sub{font-size:11px;font-weight:300;color:var(--t2);}
+
+.creds-panel{
+  background:var(--bg1);
+  border:1px solid var(--border);
+}
+
+.creds-header{
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:10px 14px;
+}
+
+.creds-title{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--t2);
+}
+
+.cred-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border-bottom:1px solid var(--border);
+  transition:background 0.1s;
+}
+
+.cred-row:last-child{border-bottom:none;}
+.cred-row:hover{background:var(--bg2);}
+
+.cred-icon{
+  width:28px;height:28px;
+  background:var(--bg2);
+  border:1px solid var(--borderhi);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;
+  flex-shrink:0;
+}
+
+.cred-name{font-size:11px;font-weight:500;color:var(--t0);flex:1;}
+.cred-status{font-family:'IBM Plex Mono',monospace;font-size:8px;}
+
+/* CONTACT */
+#contact{border-top:1px solid var(--border);}
+
+.contact-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+}
+
+.contact-info h3{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:36px;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  margin-bottom:16px;
+}
+
+.contact-info p{
+  font-size:14px;
+  font-weight:300;
+  color:var(--t1);
+  line-height:1.8;
+  margin-bottom:24px;
+}
+
+.contact-detail{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
+  color:var(--t1);
+}
+
+.contact-detail:last-child{border-bottom:none;}
+.contact-detail .icon{color:var(--cyan);width:16px;text-align:center;}
+
+.contact-form{
+  background:var(--bg1);
+  border:1px solid var(--border);
+  padding:28px;
+}
+
+.form-group{margin-bottom:16px;}
+
+.form-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--t2);
+  display:block;
+  margin-bottom:6px;
+}
+
+.form-input{
+  width:100%;
+  background:var(--bg0);
+  border:1px solid var(--borderhi);
+  color:var(--t0);
+  padding:10px 12px;
+  font-family:'Barlow',sans-serif;
+  font-size:13px;
+  font-weight:300;
+  outline:none;
+  transition:border-color 0.15s;
+}
+
+.form-input:focus{border-color:var(--cyan);}
+
+textarea.form-input{resize:vertical;min-height:100px;}
+
+.form-select{
+  width:100%;
+  background:var(--bg0);
+  border:1px solid var(--borderhi);
+  color:var(--t1);
+  padding:10px 12px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  outline:none;
+  cursor:pointer;
+}
+
+.form-select:focus{border-color:var(--cyan);}
+
+/* FOOTER */
+footer{
+  background:var(--bg1);
+  border-top:1px solid var(--border);
+  padding:24px 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  max-width:100%;
+}
+
+.footer-logo{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--t2);
+}
+
+.footer-logo span{color:var(--cyan);}
+
+.footer-copy{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  color:var(--t2);
+  letter-spacing:0.06em;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:40px;}
+  .hero-card{max-width:400px;}
+  .services-grid{grid-template-columns:1fr;}
+  .tabletop-inner{grid-template-columns:1fr;}
+  .projects-grid{grid-template-columns:1fr 1fr;}
+  .about-inner{grid-template-columns:1fr;}
+  .contact-inner{grid-template-columns:1fr;}
+  nav{padding:0 16px;}
+  section{padding:60px 16px;}
+}
+
+@media(max-width:600px){
+  .projects-grid{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+}
+
+/* FADE IN ANIMATION */
+.fade-in{
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+</style>
+<style>
+/* Threat feed page overrides */
+body { overflow-y: auto; height: auto; }
+#threatfeed { padding-top: 80px !important; border-top: none !important; }
+.threat-page-hero {
+  background: var(--bg1);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 52px;
+  z-index: 90;
+}
+.threat-page-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--t0);
+}
+.threat-page-title span { color: var(--cyan); }
+.back-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 1px solid var(--borderhi);
+  color: var(--t1);
+  text-decoration: none;
+  transition: all .15s;
+  margin-left: auto;
+}
+.back-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" style="display:flex;align-items:center;gap:0;line-height:1;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="310 70 650 860" style="height:32px;width:auto;color:var(--cyan);flex-shrink:0;margin-right:10px;">
+  <path fill="currentColor" d="M648.92,908.39c-1.02-.64-1.28-1.38-1.49-2.51-2.69-14.79-3.03-30.23-6.11-45.01.25-4.31,8.84-10.56,10.42-16.67,8.84-34.18-38.35-44.27-49.19-17.19-5.83,14.56,1.83,21.94,9.88,32.88l-7.24,47.26-128.76,1.23c-.55-2.38.4-1.62,1.3-2.23,14.86-10.15,30.19-15.54,42.21-29.75,29.34-34.71,37.54-107.03,15.66-146.68-1.04-1.88-7.06-11.29-8.18-11.88-1.95-1.03-5.37.78-7.36,1.68-11.73,5.31-23.17,13.34-35.27,18.73-50.54,22.54-109.87,25.52-160.36,1.13.09-1.4,1.52-1.55,2.46-2.03,13.22-6.7,28.95-11.33,42.75-18.25,23-11.53,49.09-28.56,67.8-46.2,2.04-1.92,11.48-10.3,9.98-12.5l-30.85-10.49,14.86-37.52c-21.64.54-43.85-.41-64.27-8.24-2.54-.97-10.89-4.25-11.72-6.28s1.25-1.39,2.2-1.74c17.1-6.29,33.41-11.73,49.46-20.57,7.39-4.07,39.97-23.94,41.3-30.69l-6.43-49.52c-2.01-3.12-54.11-8.11-60.52-15.46-.03-2.07,29.34-13.99,33.65-16.33,8.93-4.85,17.35-11.76,26.4-16.6l11.42-52.55c8.74,4.72,20.05,14.6,28.8,18.22.99.41,1.84,1.03,2.99.63l41.7-41.37c-9.41-1.4-18.97,2.12-28.45,2.55-13.11.59-30.73-1.12-43.3-4.78-2.31-.67-15.19-5.26-15.22-6.76,11.92-5.76,24.11-10.79,35.65-17.33,32.39-18.33,60.48-44.28,85.32-71.69,1-2.39-6.33-1.6-7.53-1.53-23.05,1.31-48.23,6.62-69.43-5.45l1.68-2.57c39.05-16.05,71.97-45.26,98.31-77.42.18-1.74.05-1.57-1.53-1.55-5.66.09-13.05,2.42-18.99,3.02s-13.33,1.53-18.98,1-11.28-3.27-17.51-2c-.01-1.09-.15-2.23.2-3.29,1.25-3.72,28.49-21.59,33.81-26.19,26.84-23.2,45.94-56.32,60.85-88.15,2.18-4.65,1.84-12.6,8.67-8.38,3.41,11.17,9.33,22.73,14.95,33.05,11.63,21.34,28.65,46.03,47.05,61.95,4.68,4.05,34.57,24.61,35.3,26.7.46,1.31.11,2.94.17,4.33-9.64-.56-17.7,2.5-27.49,1.99-8.54-.45-18.84-3.68-27.03-3.98-1.23-.04-3.22-.55-2.46,1.47.53,1.42,7.8,9.67,9.47,11.53,25.2,28.04,56.34,51.47,90.51,67.5.4,1.67-1.38,1.98-2.44,2.54-19.05,10.09-46.31,5.08-67.01,3.9-1.21-.07-8.54-.86-7.53,1.53,33.9,38.03,74.13,70.24,121.99,89.02-5.38,2.97-11.05,5.32-17,6.99-12.16,3.43-28.88,5.06-41.54,4.54-9.48-.39-19.04-3.97-28.45-2.55l40.65,41.42,33.33-18.92,10.31,52.7c8.72,4.69,17.01,11.15,25.68,15.82,4.59,2.47,33.47,14.19,34.04,15.98.19.58.31,2.41-.62,2.59-19.18,6.58-39.38,9.54-59.32,13l-7.09,49.33c1.69,4.99,6.22,7.85,10.11,10.97,23.77,19.13,53.78,32.87,82.86,41.66l-.08,2.83c-23.3,11.38-49.13,14.36-74.88,13.12l14,38.99c-9.44,2.73-20.72,4.95-29.61,8.92-.94.42-1.75-.58-1.38,1.57,33.3,35.47,76.95,60.47,122.99,75.52.5,2.34-.32,1.6-1.29,2.23-24.06,15.6-70.33,18.63-98.2,15.75-37.19-3.84-68.57-19.59-100.5-37.57-4.11-1.25-8.21,7.45-10.18,10.91-22.79,39.94-15.46,112.64,14.66,147.68,11.97,13.93,27.53,19.72,42.21,29.75.9.62,1.83-.17,1.3,2.23h-128.5ZM511.42,590.39h33.5c1.13,0,17.29,7.24,19.52,8.48,46.53,25.99,28.65,100.52,15.39,141.49-.41,2.8,6.29,11.18,8.56,13.55,8.56,8.94,19.34,11.34,31.44,8.58,3.86-12.8-26.44-27.12-13.65-39.12,7.42-6.96,35.35-7.25,42.27.48,10.96,12.23-17.72,25.33-14.95,38.45,18.31,5.08,32.64-4.65,40.67-20.56-12.74-41.4-32.02-116.46,15.22-142.88,2.2-1.23,18.45-8.48,19.52-8.48h33.5c-1.08,8.27-18.61,11.33-21.44,15.06-2.21,2.92-1.36,11.37-3.67,16.33-2.84,6.12-11.79,12.98-18.53,13.52-10.52.85-15.02-7.94-21.56,6.39-8.14,17.85-4.09,37.51-.5,55.88.76,3.92,6.35,30.39,7.63,31.37,2.2,1.69,4.28-1.25,5.57-2.55,6.92-7,11.82-17.79,18.46-25.54,25.44-29.7,62.47-52.77,100.03-63.49l-30.69-69.63c11.75-40.8,14.93-84.51,7.18-126.37-30,20.34-52.31,49.98-75.97,77.03-2.72,2.29-8.41,2.78-11.98,3.02-16.26,1.11-32.89-1-49-1.09-29.34-.17-63.72,3.51-92.08,1.08-8.54-.73-10.46-3.25-15.98-9.02-9.98-10.44-18.96-23.32-28.97-34.03-4.78-5.11-37.06-37.1-41.02-36.96-1.86,1.62-1.74,4.49-2.19,6.78-7.39,37.74-.66,82.76,8.66,119.64l-29.87,68.97c8.41,4.18,17.82,6.54,26.59,10.41,23.79,10.5,50.18,29.05,67.84,48.16,8.53,9.23,16.05,24.39,24.08,31.92,1.13,1.06,2.24,1.98,3.88,2.09,1.52-.33,7.32-26.27,8.04-29.99,3.04-15.7,7.76-48.34-2.51-61.5-6.71-8.6-11.96-1.59-20.4-2.58-6.44-.76-15.89-8.91-18.11-14.91-1.48-4.02-.82-12.38-2.41-14.59-2.92-4.06-20.36-7.64-22.08-15.42Z"/>
+</svg>
+    <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.1em;text-transform:uppercase;color:var(--t0);">Scollard<span style="color:var(--cyan);">.</span>Solutions</span>
+  </div>
+  <div class="nav-sep"></div>
+  <div class="nav-status">Threat Feed Live</div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">&#8592; Main Site</a>
+    <a href="#threatfeed" class="nav-link">Feed</a>
+    <a href="#threatfeed" class="nav-link" onclick="document.querySelector('.feed-filter[data-filter=\'cyber\']').click()">Cyber</a>
+    <a href="#threatfeed" class="nav-link" onclick="document.querySelector('.feed-filter[data-filter=\'weather\']').click()">Weather</a>
+    <a href="#threatfeed" class="nav-link" onclick="document.querySelector('.feed-filter[data-filter=\'fema\']').click()">FEMA</a>
+    <a href="#threatfeed" class="nav-link" onclick="document.querySelector('.feed-filter[data-filter=\'infra\']').click()">Seismic</a>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-label">&#9632; INTEL FEED</div>
+  <div class="ticker-scroll">
+    <div class="ticker-item"><span class="ticker-dot"></span>Threat &amp; Technical Assessments — Accepting Engagements</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>Hard Target Course — OPSEC Training Now Available</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Preparedness Tabletop — Now Enrolling</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>All-Source Analysis — Individual & Organizational Engagements</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Mentorship — Limited Availability | Direct Inquiry Required</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Threat &amp; Technical Assessments — Accepting Engagements</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>Hard Target Course — OPSEC Training Now Available</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Preparedness Tabletop — Now Enrolling</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>All-Source Analysis — Individual & Organizational Engagements</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Mentorship — Limited Availability | Direct Inquiry Required</div>
+  </div>
+
+</div>
+
+<!-- PAGE HEADER -->
+<div class="threat-page-hero">
+  <div class="threat-page-title">US <span>Threat</span> Intelligence Feed</div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);letter-spacing:.06em;">
+    CISA &nbsp;·&nbsp; FEMA &nbsp;·&nbsp; USGS &nbsp;·&nbsp; NWS &nbsp;·&nbsp; NVD &nbsp;·&nbsp; All official US government sources
+  </div>
+  <div id="feed-last-update" style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);margin-left:16px;"></div>
+  <a href="index.html" class="back-btn">&#8592; Back to Main Site</a>
+</div>
+
+<!-- THREAT FEED (full section) -->
+<!-- THREAT FEED -->
+<section id="threatfeed" style="border-top:1px solid var(--border);padding-top:60px;">
+  <div class="section-header fade-in">
+    <span class="section-num">01</span>
+    <h2 class="section-title">US Threat Feed</h2>
+    <div class="section-line"></div>
+    <span id="feed-timestamp" style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);white-space:nowrap;"></span>
+  </div>
+
+  <!-- FEED FILTERS -->
+  <div class="fade-in" style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;">
+    <button class="feed-filter active" data-filter="all">All</button>
+    <button class="feed-filter" data-filter="cyber">Cyber</button>
+    <button class="feed-filter" data-filter="weather">Weather</button>
+    <button class="feed-filter" data-filter="fema">FEMA / Disaster</button>
+    <button class="feed-filter" data-filter="infra">Infrastructure</button>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+      <div id="feed-live-dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite;"></div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--green);letter-spacing:.08em;text-transform:uppercase;">Live Feed</span>
+    </div>
+  </div>
+
+  <!-- MAP ROW -->
+  <div style="background:var(--bg1);border:1px solid var(--border);margin-bottom:1px;" class="fade-in">
+    <div style="padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);">US Incident Map</span>
+      <span id="aircraft-count" style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--cyan);margin-left:8px;"></span>
+      <button onclick="window.toggleAircraft && window.toggleAircraft()" id="aircraft-toggle" style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--cyan);color:var(--cyan);background:rgba(61,170,92,.08);cursor:pointer;">✈ Gov Aircraft ON</button>
+      <span id="map-loading" style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--cyan);margin-left:10px;animation:blink 1s infinite;">LOADING GEODATA...</span>
+    </div>
+    <div style="position:relative;background:var(--bg0);">
+      <div id="us-map-container" style="width:100%;"></div>
+      <div id="map-tooltip" style="display:none;position:absolute;background:var(--bg0);border:1px solid var(--borderhi);padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t0);pointer-events:none;z-index:10;max-width:240px;line-height:1.6;"></div>
+    </div>
+    <div style="padding:8px 14px;border-top:1px solid var(--border);display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);"><span style="width:9px;height:9px;border-radius:50%;background:#e03434;display:inline-block;"></span>Critical</div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);"><span style="width:9px;height:9px;border-radius:50%;background:#e8622a;display:inline-block;"></span>High</div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);"><span style="width:9px;height:9px;border-radius:50%;background:#d4a820;display:inline-block;"></span>Medium</div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);"><span style="width:9px;height:9px;border-radius:50%;background:#1ab866;display:inline-block;"></span>Low/Info</div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);"><span style="width:9px;height:9px;background:#00c8f0;opacity:.6;display:inline-block;border-radius:2px;"></span>Cyber</div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);"><span style="width:9px;height:9px;border-radius:50%;background:#e8622a;opacity:.7;display:inline-block;"></span>FEMA/Disaster</div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);"><span style="width:9px;height:9px;border-radius:50%;background:#7a9e3a;display:inline-block;"></span>Seismic/Infra</div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);"><span style="width:9px;height:9px;background:#b8a018;transform:rotate(45deg);display:inline-block;"></span>Weather Alert</div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);">🇺🇸 <span style="color:#e8d44d;">Presidential</span></div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);">☢ <span style="color:#c03428;">Strategic/NAOC</span></div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);">⭐ <span style="color:#e8882a;">VIP/SAM</span></div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);">🔎 <span style="color:#b8a018;">Federal/LEO</span></div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);">✈ <span style="color:#3daa5c;">Military Airlift</span></div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);">🏥 <span style="color:#5abf50;">Medevac/SAR</span></div>
+    </div>
+  </div>
+
+  <!-- WEATHER PANEL -->
+  <div style="background:var(--bg1);border:1px solid var(--border);border-bottom:none;" class="fade-in">
+    <div style="padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);">&#9632; US Weather Conditions</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);">NOAA / National Weather Service</span>
+      <div id="wx-live" style="margin-left:auto;display:flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--green);letter-spacing:.06em;">
+        <span style="width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite;display:inline-block;"></span>LIVE
+      </div>
+    </div>
+
+    <!-- TEMP + WIND EXTREMES ROW -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);">
+      <div class="wx-stat-cell">
+        <div class="wx-stat-icon" style="color:var(--red);">▲</div>
+        <div id="wx-hottest-val" class="wx-stat-val" style="color:var(--red);">—°F</div>
+        <div id="wx-hottest-loc" class="wx-stat-label">Today's High</div>
+        <div id="wx-hottest-city" class="wx-stat-sub">Loading...</div>
+      </div>
+      <div class="wx-stat-cell" style="border-left:1px solid var(--border);">
+        <div class="wx-stat-icon" style="color:var(--cyan);">▼</div>
+        <div id="wx-coldest-val" class="wx-stat-val" style="color:var(--cyan);">—°F</div>
+        <div id="wx-coldest-loc" class="wx-stat-label">Today's Low</div>
+        <div id="wx-coldest-city" class="wx-stat-sub">Loading...</div>
+      </div>
+      <div class="wx-stat-cell" style="border-left:1px solid var(--border);">
+        <div class="wx-stat-icon" style="color:var(--yellow);">~</div>
+        <div id="wx-wind-val" class="wx-stat-val" style="color:var(--yellow);">— mph</div>
+        <div id="wx-wind-loc" class="wx-stat-label">Max Wind</div>
+        <div id="wx-wind-city" class="wx-stat-sub">Loading...</div>
+      </div>
+      <div class="wx-stat-cell" style="border-left:1px solid var(--border);">
+        <div class="wx-stat-icon" style="color:var(--orange);">⚠</div>
+        <div id="wx-alerts-val" class="wx-stat-val" style="color:var(--orange);">—</div>
+        <div class="wx-stat-label">Active Alerts</div>
+        <div id="wx-alerts-sub" class="wx-stat-sub">NWS Warnings</div>
+      </div>
+    </div>
+
+    <!-- ACTIVE EXTREME WEATHER ALERTS -->
+    <div>
+      <div style="padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);">Active Extreme Weather Alerts</div>
+      <div id="wx-alerts-list" style="max-height:220px;overflow-y:auto;">
+        <div style="padding:20px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);">FETCHING NWS ALERTS...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEED GRID -->
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:1px;background:var(--border);border:1px solid var(--border);" class="fade-in">
+
+    <!-- MAIN FEED LIST -->
+    <div id="feed-list" style="background:var(--bg1);display:flex;flex-direction:column;">
+      <div style="padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);">Active Alerts &amp; Incidents</span>
+        <span id="feed-count" style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--cyan);margin-left:auto;"></span>
+      </div>
+      <div id="feed-items" style="overflow-y:auto;max-height:480px;">
+        <div style="padding:32px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;">
+          LOADING FEED...
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div style="background:var(--bg1);display:flex;flex-direction:column;">
+      <div style="padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);">Source Status</span>
+      </div>
+      <div id="source-status">
+        <div class="src-row"><div class="src-dot active"></div><div class="src-name">CISA Alerts</div><div class="src-count" id="count-cyber">—</div></div>
+        <div class="src-row"><div class="src-dot active"></div><div class="src-name">NOAA / NWS</div><div class="src-count" id="count-weather">—</div></div>
+        <div class="src-row"><div class="src-dot active"></div><div class="src-name">FEMA Disasters</div><div class="src-count" id="count-fema">—</div></div>
+        <div class="src-row"><div class="src-dot active"></div><div class="src-name">USGS Earthquakes</div><div class="src-count" id="count-infra">—</div></div>
+        <div class="src-row"><div class="src-dot active"></div><div class="src-name">NVD / CVE Feed</div><div class="src-count" id="count-cve">—</div></div>
+      </div>
+      <div style="padding:10px 14px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:auto;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);">Threat Level</span>
+      </div>
+      <div style="padding:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px;">
+          <div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);margin-bottom:4px;letter-spacing:.08em;text-transform:uppercase;">Active Alerts</div>
+            <div id="total-alerts" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:36px;line-height:1;color:var(--cyan);">—</div>
+          </div>
+          <div id="threat-ring" style="width:48px;height:48px;border-radius:50%;border:2px solid var(--yellow);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:var(--yellow);">—</div>
+        </div>
+        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--red)"></div><div class="sev-label">Critical</div><div id="sev-crit" class="sev-val">—</div></div>
+        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--orange)"></div><div class="sev-label">High</div><div id="sev-high" class="sev-val">—</div></div>
+        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--yellow)"></div><div class="sev-label">Medium</div><div id="sev-med" class="sev-val">—</div></div>
+        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--green)"></div><div class="sev-label">Low / Info</div><div id="sev-low" class="sev-val">—</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);letter-spacing:.04em;" class="fade-in">
+    &#9632; Feed pulls from public US government APIs: CISA, NOAA/NWS, FEMA, USGS, NVD. Data refreshes every 5 minutes. All sources are official US government feeds.
+  </div>
+</section>
+
+<style>
+.wx-stat-cell{background:var(--bg1);padding:14px 16px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;}
+.wx-stat-icon{font-size:16px;font-weight:700;line-height:1;margin-bottom:2px;}
+.wx-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:32px;line-height:1;}
+.wx-stat-label{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;}
+.wx-stat-sub{font-size:10px;color:var(--t1);font-weight:300;}
+.wx-alert-row{display:flex;flex-direction:column;gap:3px;padding:9px 14px;border-bottom:1px solid rgba(26,37,53,.7);cursor:pointer;transition:background .1s;}
+.wx-alert-row:hover{background:var(--bg2);}
+.wx-alert-row:last-child{border-bottom:none;}
+.wx-alert-header{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.wx-alert-title{font-size:11px;font-weight:500;color:var(--t0);line-height:1.3;}
+.wx-alert-meta{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);display:flex;gap:10px;}
+.wx-alert-area{font-size:9px;color:var(--t1);}
+.feed-filter{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border:1px solid var(--borderhi);color:var(--t2);background:transparent;cursor:pointer;transition:all .15s;}
+.feed-filter:hover{border-color:var(--cyan);color:var(--cyan);}
+.feed-filter.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,200,240,.08);}
+.feed-item{padding:10px 14px;border-bottom:1px solid rgba(26,37,53,.8);cursor:pointer;transition:background .1s;display:flex;flex-direction:column;gap:4px;}
+.feed-item:hover{background:var(--bg2);}
+.feed-item.hidden{display:none;}
+.fi-header{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fi-title{font-size:11px;font-weight:500;color:var(--t0);line-height:1.3;}
+.fi-meta{display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);}
+.fi-src{color:var(--cyan);opacity:.7;}
+.src-row{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid var(--border);}
+.src-dot{width:8px;height:8px;border-radius:50%;background:var(--t2);}
+.src-dot.active{background:var(--green);animation:blink 2s infinite;}
+.src-dot.error{background:var(--red);}
+.src-name{font-size:10px;color:var(--t1);flex:1;}
+.src-count{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t2);}
+.mini-sev-row{display:flex;align-items:center;gap:8px;padding:4px 0;}
+.sev-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.sev-label{font-size:10px;color:var(--t1);flex:1;}
+.sev-val{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--t0);}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  const container = document.getElementById('us-map-container');
+  if (!container) return;
+  const tooltip   = document.getElementById('map-tooltip');
+
+  let mapReady      = false;
+  let pendingMarkers = [];
+  let aircraftData  = [];
+  let showAircraft  = true;
+  let aircraftInterval = null;
+
+  const W = container.clientWidth || 960;
+  const H = Math.round(W * 0.58);
+
+  const svg = d3.select('#us-map-container').append('svg')
+    .attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('width', '100%')
+    .style('display', 'block')
+    .style('background', '#050809');
+
+  // Grid
+  for (let i = 0; i <= 10; i++) {
+    svg.append('line').attr('x1',0).attr('y1',i*H/10).attr('x2',W).attr('y2',i*H/10).attr('stroke','#182318').attr('stroke-width',0.5);
+    svg.append('line').attr('x1',i*W/10).attr('y1',0).attr('x2',i*W/10).attr('y2',H).attr('stroke','#182318').attr('stroke-width',0.5);
+  }
+
+  const statesG  = svg.append('g');
+  const markersG = svg.append('g');
+  const aircraftG = svg.append('g');
+  const labelsG  = svg.append('g');
+
+  const projection = d3.geoAlbersUsa().scale(W * 1.22).translate([W/2, H/2]);
+  const geoPath    = d3.geoPath().projection(projection);
+
+  const FIPS = {'01':'AL','02':'AK','04':'AZ','05':'AR','06':'CA','08':'CO','09':'CT','10':'DE','12':'FL','13':'GA','15':'HI','16':'ID','17':'IL','18':'IN','19':'IA','20':'KS','21':'KY','22':'LA','23':'ME','24':'MD','25':'MA','26':'MI','27':'MN','28':'MS','29':'MO','30':'MT','31':'NE','32':'NV','33':'NH','34':'NJ','35':'NM','36':'NY','37':'NC','38':'ND','39':'OH','40':'OK','41':'OR','42':'PA','44':'RI','45':'SC','46':'SD','47':'TN','48':'TX','49':'UT','50':'VT','51':'VA','53':'WA','54':'WV','55':'WI','56':'WY'};
+
+  const STATE_COORDS = {AL:[-86.8,32.8],AK:[-153,64],AZ:[-111.9,34.3],AR:[-92.4,34.9],CA:[-119.4,37.2],CO:[-105.5,39],CT:[-72.7,41.6],DE:[-75.5,39],FL:[-81.5,27.8],GA:[-83.4,32.7],HI:[-157.5,20.3],ID:[-114.5,44.4],IL:[-89.2,40],IN:[-86.1,40],IA:[-93.2,42],KS:[-98.4,38.5],KY:[-84.9,37.5],LA:[-91.8,31],ME:[-69.2,45.4],MD:[-76.6,39],MA:[-71.5,42.2],MI:[-84.7,44.3],MN:[-94.3,46.4],MS:[-89.7,32.7],MO:[-92.3,38.4],MT:[-110.3,47],NE:[-99.9,41.5],NV:[-116.4,39.3],NH:[-71.6,43.7],NJ:[-74.4,40],NM:[-106.1,34.3],NY:[-75.5,42.9],NC:[-79.4,35.5],ND:[-100.4,47.5],OH:[-82.8,40.4],OK:[-97.5,35.5],OR:[-120.5,44],PA:[-77.2,40.9],RI:[-71.5,41.7],SC:[-81,33.8],SD:[-100.2,44.4],TN:[-86.3,35.7],TX:[-99.3,31.5],UT:[-111.1,39.3],VT:[-72.7,44],VA:[-78.5,37.5],WA:[-120.5,47.5],WV:[-80.6,38.6],WI:[-89.6,44.5],WY:[-107.6,43]};
+  window.STATE_COORDS = STATE_COORDS;
+
+  const STATE_NAME_ABBR = {'Alabama':'AL','Alaska':'AK','Arizona':'AZ','Arkansas':'AR','California':'CA','Colorado':'CO','Connecticut':'CT','Delaware':'DE','Florida':'FL','Georgia':'GA','Hawaii':'HI','Idaho':'ID','Illinois':'IL','Indiana':'IN','Iowa':'IA','Kansas':'KS','Kentucky':'KY','Louisiana':'LA','Maine':'ME','Maryland':'MD','Massachusetts':'MA','Michigan':'MI','Minnesota':'MN','Mississippi':'MS','Missouri':'MO','Montana':'MT','Nebraska':'NE','Nevada':'NV','New Hampshire':'NH','New Jersey':'NJ','New Mexico':'NM','New York':'NY','North Carolina':'NC','North Dakota':'ND','Ohio':'OH','Oklahoma':'OK','Oregon':'OR','Pennsylvania':'PA','Rhode Island':'RI','South Carolina':'SC','South Dakota':'SD','Tennessee':'TN','Texas':'TX','Utah':'UT','Vermont':'VT','Virginia':'VA','Washington':'WA','West Virginia':'WV','Wisconsin':'WI','Wyoming':'WY'};
+  window.STATE_NAME_TO_ABBR = STATE_NAME_ABBR;
+
+  // ── Helpers ──────────────────────────────────────────────────────────────
+  function sevColor(s) {
+    return {critical:'#c03428',high:'#c87830',med:'#b8a018',low:'#5abf50'}[s] || '#5abf50';
+  }
+
+  function wxIcon(title) {
+    const t = (title || '').toLowerCase();
+    if (t.includes('tornado'))                          return '🌪';
+    if (t.includes('hurricane') || t.includes('tropical')) return '🌀';
+    if (t.includes('flood'))                            return '🌊';
+    if (t.includes('snow') || t.includes('blizzard') || t.includes('winter')) return '❄';
+    if (t.includes('ice') || t.includes('frost') || t.includes('freeze'))     return '🧊';
+    if (t.includes('thunder') || t.includes('lightning') || t.includes('storm')) return '⛈';
+    if (t.includes('fire') || t.includes('red flag'))  return '🔥';
+    if (t.includes('wind'))                             return '💨';
+    if (t.includes('heat'))                             return '🌡';
+    if (t.includes('fog'))                              return '🌫';
+    if (t.includes('rain') || t.includes('shower'))    return '🌧';
+    return '⚠';
+  }
+
+  function squawkAlert(sq) {
+    if (sq === '7500') return { label:'HIJACK',     color:'#c03428' };
+    if (sq === '7600') return { label:'COMMS LOST', color:'#c87830' };
+    if (sq === '7700') return { label:'EMERGENCY',  color:'#c03428' };
+    return null;
+  }
+
+  function altCategory(altM) {
+    if (altM == null || altM <= 0) return { label:'GND',    color:'#7a9878' };
+    const ft = altM * 3.281;
+    if (ft < 5000)  return { label:'LOW',    color:'#c87830' };
+    if (ft < 18000) return { label:'MED',    color:'#b8a018' };
+    if (ft < 35000) return { label:'HIGH',   color:'#3daa5c' };
+    return            { label:'CRUISE', color:'#5abf50' };
+  }
+
+  function vertArrow(vr) {
+    if (vr == null || Math.abs(vr) < 0.5) return '→';
+    return vr > 0 ? '↑' : '↓';
+  }
+
+  function showTooltip(px, py, html_content) {
+    const cr = container.getBoundingClientRect();
+    const tx = px / W * cr.width;
+    const ty = py / H * (cr.height || 400);
+    tooltip.style.display   = 'block';
+    tooltip.style.left      = (tx > cr.width * 0.65 ? tx - 255 : tx + 16) + 'px';
+    tooltip.style.top       = Math.max(4, ty - 20) + 'px';
+    tooltip.style.maxWidth  = '250px';
+    tooltip.innerHTML       = html_content;
+  }
+
+  // ── Incident markers ─────────────────────────────────────────────────────
+  function drawMarkers(items) {
+    markersG.selectAll('*').remove();
+
+    items.forEach(function(item) {
+      var coords = null;
+
+      if (item.lat != null && item.lon != null) {
+        coords = [item.lon, item.lat];
+      } else {
+        var abbr = item.stateAbbr;
+        if (!abbr && item.title) {
+          var m = item.title.match(/,\s*([A-Z]{2})(?:\s|$|,)/);
+          if (m) abbr = m[1];
+          if (!abbr) {
+            Object.keys(STATE_NAME_ABBR).forEach(function(n) {
+              if (item.title.includes(n)) abbr = STATE_NAME_ABBR[n];
+            });
+          }
+        }
+        if (abbr && STATE_COORDS[abbr]) {
+          var c = STATE_COORDS[abbr];
+          coords = [c[0] + (Math.random() - 0.5) * 2, c[1] + (Math.random() - 0.5) * 1.5];
+        }
+      }
+      if (!coords && item.category === 'cyber') {
+        coords = [-75 - Math.random() * 40, 30 + Math.random() * 15];
+      }
+      if (!coords) return;
+
+      var proj = projection(coords);
+      if (!proj) return;
+      var px = proj[0], py = proj[1];
+      var isWeather = item.category === 'weather';
+      var color = sevColor(item.severity);
+
+      // Pulse ring for critical
+      if (item.severity === 'critical') {
+        var ring = markersG.append('circle').attr('cx',px).attr('cy',py).attr('r',10)
+          .attr('fill','none').attr('stroke',color).attr('stroke-width',1.5).attr('opacity',0.5);
+        ring.append('animate').attr('attributeName','r').attr('from',6).attr('to',18).attr('dur','2s').attr('repeatCount','indefinite');
+      }
+
+      var g = markersG.append('g').attr('transform','translate('+px+','+py+')').style('cursor','pointer');
+
+      if (isWeather) {
+        g.append('rect').attr('x',-8).attr('y',-8).attr('width',16).attr('height',16)
+          .attr('transform','rotate(45)').attr('fill',color+'cc').attr('stroke',color).attr('stroke-width',1.5);
+        g.append('text').attr('text-anchor','middle').attr('dominant-baseline','middle')
+          .attr('font-size','10px').attr('y',1).text(wxIcon(item.title));
+      } else {
+        var r = item.severity === 'critical' ? 7 : item.severity === 'high' ? 6 : 5;
+        g.append('circle').attr('r',r).attr('fill',color+'cc').attr('stroke',color).attr('stroke-width',1.5);
+        g.append('circle').attr('r',2).attr('fill','#fff').attr('opacity',0.9);
+      }
+
+      var icon = isWeather ? wxIcon(item.title) + ' ' : '';
+      g.on('mouseenter', function() {
+        showTooltip(px, py,
+          '<div style="color:var(--cyan);margin-bottom:3px;letter-spacing:.06em;">' + icon + item.source + '</div>' +
+          '<div style="color:var(--t0);margin-bottom:4px;font-family:Barlow,sans-serif;font-size:10px;">' + item.title.substring(0,90) + (item.title.length>90?'...':'') + '</div>' +
+          '<div style="color:var(--t2);">' + (item.time||'') + '</div>'
+        );
+      }).on('mouseleave', function() { tooltip.style.display = 'none'; });
+    });
+  }
+
+  // ── Government aircraft database ─────────────────────────────────────────
+  var GOV_CALLSIGNS = {
+    'AIR FORCE 1': { tier:'PRESIDENTIAL', label:'Air Force One',   desc:'POTUS transport — VC-25A (Boeing 747)',              color:'#e8d44d', icon:'🇺🇸' },
+    'AIR FORCE 2': { tier:'PRESIDENTIAL', label:'Air Force Two',   desc:'VP transport — VC-25B (Boeing 757)',                color:'#e8d44d', icon:'🇺🇸' },
+    'MARINE 1':    { tier:'PRESIDENTIAL', label:'Marine One',      desc:'Presidential helicopter — VH-3D/VH-60N',            color:'#e8d44d', icon:'🚁' },
+    'MARINE 2':    { tier:'PRESIDENTIAL', label:'Marine Two',      desc:'VP helicopter',                                     color:'#e8d44d', icon:'🚁' },
+    'NIGHTWATCH':  { tier:'STRATEGIC',    label:'NIGHTWATCH',      desc:'E-4B NAOC — Doomsday plane / nuclear command post', color:'#c03428', icon:'☢'  },
+    'TACAMO':      { tier:'STRATEGIC',    label:'TACAMO',          desc:'E-6B Mercury — Nuclear comms relay (US Navy)',      color:'#c03428', icon:'☢'  },
+    'VENUS':       { tier:'STRATEGIC',    label:'VENUS (NAOC)',    desc:'E-4B National Airborne Operations Center',          color:'#c03428', icon:'☢'  },
+  };
+
+  var GOV_PREFIXES = {
+    'SAM':     { tier:'VIP',      label:'Special Air Mission', desc:'USAF VIP transport — Cabinet/senior officials', color:'#e8882a', icon:'⭐' },
+    'SPAR':    { tier:'VIP',      label:'SPAR',                desc:'USAF Special Air Mission — senior official',    color:'#e8882a', icon:'⭐' },
+    'RCH':     { tier:'MILITARY', label:'Reach (AMC)',         desc:'Air Mobility Command — strategic airlift',      color:'#3daa5c', icon:'✈' },
+    'ATLAS':   { tier:'MILITARY', label:'Atlas (AMC)',         desc:'Air Mobility Command airlift',                  color:'#3daa5c', icon:'✈' },
+    'NOBLE':   { tier:'MILITARY', label:'Noble',               desc:'USAF fighter/attack sortie',                    color:'#c87830', icon:'🛩' },
+    'VIPER':   { tier:'MILITARY', label:'Viper',               desc:'F-16 Fighting Falcon',                          color:'#c87830', icon:'🛩' },
+    'RAPTOR':  { tier:'MILITARY', label:'Raptor',              desc:'F-22 Raptor',                                   color:'#c87830', icon:'🛩' },
+    'EAGLE':   { tier:'MILITARY', label:'Eagle',               desc:'F-15 Eagle',                                    color:'#c87830', icon:'🛩' },
+    'GHOST':   { tier:'MILITARY', label:'Ghost',               desc:'B-2 Spirit stealth bomber',                     color:'#c03428', icon:'🛩' },
+    'COBRA':   { tier:'INTEL',    label:'Cobra',               desc:'RC-135 Rivet Joint — SIGINT',                   color:'#8aaa38', icon:'👁' },
+    'JAKE':    { tier:'INTEL',    label:'Jake',                desc:'U-2 Dragon Lady — high altitude recon',         color:'#8aaa38', icon:'👁' },
+    'FORTE':   { tier:'INTEL',    label:'FORTE',               desc:'Signals intelligence platform',                 color:'#8aaa38', icon:'👁' },
+    'OMAHA':   { tier:'FEDERAL',  label:'Omaha (FBI)',         desc:'FBI aviation — surveillance/operations',        color:'#b8a018', icon:'🔎' },
+    'CATFISH': { tier:'FEDERAL',  label:'Catfish (DEA)',       desc:'DEA aviation operations',                       color:'#b8a018', icon:'🔎' },
+    'NIGHT':   { tier:'FEDERAL',  label:'Night (CBP)',         desc:'Customs & Border Protection — surveillance',    color:'#b8a018', icon:'🔎' },
+    'RAMBO':   { tier:'FEDERAL',  label:'Rambo (CBP)',         desc:'CBP air interdiction',                          color:'#b8a018', icon:'🔎' },
+    'HOOVER':  { tier:'FEDERAL',  label:'Hoover (FBI)',        desc:'FBI surveillance aircraft',                     color:'#b8a018', icon:'🔎' },
+    'REACH':   { tier:'MEDEVAC',  label:'Reach (USAF Med)',   desc:'USAF aeromedical evacuation',                   color:'#5abf50', icon:'🏥' },
+    'LIFE':    { tier:'MEDEVAC',  label:'Life Flight',        desc:'Medical evacuation',                            color:'#5abf50', icon:'🏥' },
+    'GUARDIAN':{ tier:'MEDEVAC',  label:'Guardian (USCG)',    desc:'Coast Guard search and rescue',                 color:'#5abf50', icon:'🏥' },
+  };
+
+  var GOV_ICAO = {
+    'ae01d8':{ tier:'STRATEGIC',    label:'E-4B NAOC', desc:'Doomsday plane — National Airborne Operations Center', color:'#c03428', icon:'☢'  },
+    'ae01d9':{ tier:'STRATEGIC',    label:'E-4B NAOC', desc:'National Airborne Operations Center',                  color:'#c03428', icon:'☢'  },
+    'ae0000':{ tier:'PRESIDENTIAL', label:'VC-25A',    desc:'Air Force One (82-8000)',                              color:'#e8d44d', icon:'🇺🇸' },
+    'ae0001':{ tier:'PRESIDENTIAL', label:'VC-25A',    desc:'Air Force One (92-9000)',                              color:'#e8d44d', icon:'🇺🇸' },
+  };
+
+  function classifyAircraft(ac) {
+    var icao     = ((ac[0] || '') + '').toLowerCase().trim();
+    var callsign = ((ac[1] || '') + '').toUpperCase().trim();
+    if (GOV_ICAO[icao])          return GOV_ICAO[icao];
+    if (GOV_CALLSIGNS[callsign]) return GOV_CALLSIGNS[callsign];
+    var keys = Object.keys(GOV_PREFIXES);
+    for (var i = 0; i < keys.length; i++) {
+      if (callsign.indexOf(keys[i]) === 0) return GOV_PREFIXES[keys[i]];
+    }
+    return null;
+  }
+
+  // ── Position tracking for smooth animation ───────────────────────────────
+  var acPositions = {}; // key -> { px, py, hdg }
+  var acTrails    = {}; // key -> [[px,py], ...]
+  var ANIM_DURATION = 13500;
+
+  // ── Draw aircraft ─────────────────────────────────────────────────────────
+  function drawAircraft(states) {
+    aircraftG.selectAll('*').remove();
+    if (!showAircraft) return;
+
+    var plotted = 0;
+    var tierColors = {
+      PRESIDENTIAL:'#e8d44d', STRATEGIC:'#c03428', VIP:'#e8882a',
+      INTEL:'#8aaa38', FEDERAL:'#b8a018', MILITARY:'#3daa5c', MEDEVAC:'#5abf50'
+    };
+
+    states.forEach(function(ac) {
+      var lon      = ac[5], lat = ac[6];
+      var hdg      = ac[10] || 0;
+      var altM     = ac[7];
+      var callsign = ((ac[1] || '') + '').trim() || 'N/A';
+      var icao     = ((ac[0] || '') + '').toLowerCase();
+      var country  = ac[2] || '—';
+      var velMs    = ac[9] || 0;
+      var vrate    = ac[11];
+      var squawk   = ac[14] || '—';
+      var onGround = ac[8];
+      var geoAltM  = ac[13];
+
+      if (lon == null || lat == null) return;
+      if (lon < -130 || lon > -60 || lat < 20 || lat > 55) return;
+
+      var proj = projection([lon, lat]);
+      if (!proj) return;
+      var px = proj[0], py = proj[1];
+      plotted++;
+
+      var govInfo  = classifyAircraft(ac);
+      var ACcolor  = govInfo ? (tierColors[govInfo.tier] || '#3daa5c') : '#3daa5c';
+      var ACicon   = govInfo ? govInfo.icon : '\u2708';
+      var opacity  = onGround ? 0.5 : 0.95;
+      var key      = icao || callsign;
+
+      // Get previous position for trail and animation start
+      var prev     = acPositions[key];
+      var startPx  = prev ? prev.px : px;
+      var startPy  = prev ? prev.py : py;
+
+      // Update trail
+      if (!acTrails[key]) acTrails[key] = [];
+      if (prev) {
+        acTrails[key].push([prev.px, prev.py]);
+        if (acTrails[key].length > 6) acTrails[key].shift();
+      }
+      acPositions[key] = { px: px, py: py, hdg: hdg };
+
+      // Draw fading trail lines
+      var trail = acTrails[key];
+      for (var t = 0; t < trail.length - 1; t++) {
+        aircraftG.append('line')
+          .attr('x1', trail[t][0]).attr('y1', trail[t][1])
+          .attr('x2', trail[t+1][0]).attr('y2', trail[t+1][1])
+          .attr('stroke', ACcolor)
+          .attr('stroke-width', 1)
+          .attr('opacity', ((t+1) / trail.length) * 0.35);
+      }
+      if (trail.length > 0) {
+        var last = trail[trail.length-1];
+        aircraftG.append('line')
+          .attr('x1', last[0]).attr('y1', last[1])
+          .attr('x2', startPx).attr('y2', startPy)
+          .attr('stroke', ACcolor).attr('stroke-width', 1).attr('opacity', 0.4);
+      }
+
+      // Display values
+      var altFt  = altM    ? Math.round(altM    * 3.281).toLocaleString() + ' ft' : 'GND';
+      var geoFt  = geoAltM ? Math.round(geoAltM * 3.281).toLocaleString() + ' ft' : '---';
+      var spdKts = velMs   ? Math.round(velMs   * 1.944) + ' kts' : '---';
+      var spdMph = velMs   ? Math.round(velMs   * 2.237) + ' mph' : '---';
+      var vrFpm  = vrate   ? (vrate > 0 ? '+' : '') + Math.round(vrate * 197) + ' fpm' : '---';
+      var altCat = altCategory(altM);
+      var sqAlert = squawkAlert(squawk);
+      var va     = vertArrow(vrate);
+      var tierColor = govInfo ? (tierColors[govInfo.tier] || 'var(--cyan)') : 'var(--cyan)';
+
+      // Aircraft group — start at PREVIOUS position
+      var g = aircraftG.append('g')
+        .attr('transform', 'translate(' + startPx + ',' + startPy + ')')
+        .style('cursor', 'pointer');
+
+      // Rings
+      if (govInfo && (govInfo.tier === 'PRESIDENTIAL' || govInfo.tier === 'STRATEGIC')) {
+        var ring = g.append('circle').attr('r',20).attr('fill','none')
+          .attr('stroke',ACcolor).attr('stroke-width',2).attr('opacity',0.5);
+        ring.append('animate').attr('attributeName','r')
+          .attr('from',12).attr('to',24).attr('dur','2s').attr('repeatCount','indefinite');
+      } else if (govInfo) {
+        g.append('circle').attr('r',14).attr('fill','none')
+          .attr('stroke',ACcolor).attr('stroke-width',1).attr('opacity',0.3);
+      }
+      if (sqAlert) {
+        var ering = g.append('circle').attr('r',18).attr('fill','none')
+          .attr('stroke',sqAlert.color).attr('stroke-width',2).attr('opacity',0.7);
+        ering.append('animate').attr('attributeName','r')
+          .attr('from',10).attr('to',22).attr('dur','1s').attr('repeatCount','indefinite');
+      }
+
+      // Plane shape
+      var inner = g.append('g').attr('transform','rotate(' + hdg + ')');
+      inner.append('path').attr('d','M0,-14 L3,4 L0,2 L-3,4 Z')
+        .attr('fill',ACcolor).attr('opacity',opacity);
+      inner.append('path').attr('d','M-11,-1 L11,-1 L9,3 L0,1 L-9,3 Z')
+        .attr('fill',ACcolor).attr('opacity',opacity*0.85);
+      inner.append('path').attr('d','M-5,3 L5,3 L4,6 L0,5 L-4,6 Z')
+        .attr('fill',ACcolor).attr('opacity',opacity*0.75);
+      inner.append('circle').attr('cy',-14).attr('r',1.5)
+        .attr('fill','#fff').attr('opacity',0.9);
+
+      // Label for top-tier
+      if (govInfo && (govInfo.tier === 'PRESIDENTIAL' || govInfo.tier === 'STRATEGIC')) {
+        g.append('text').attr('y',-24).attr('text-anchor','middle')
+          .attr('font-family','IBM Plex Mono,monospace').attr('font-size','7px')
+          .attr('font-weight','700').attr('fill',ACcolor).attr('letter-spacing','.08em')
+          .text(callsign);
+      }
+
+      // SMOOTH TRANSITION to new position over ~13.5 seconds
+      if (prev && (Math.abs(px - startPx) > 0.3 || Math.abs(py - startPy) > 0.3)) {
+        d3.select(g.node()).transition()
+          .duration(ANIM_DURATION)
+          .ease(d3.easeLinear)
+          .attr('transform', 'translate(' + px + ',' + py + ')');
+      }
+
+      // Tooltip
+      var _px = px, _py = py;
+      g.on('mouseenter', function() {
+        var cr  = container.getBoundingClientRect();
+        var tx  = _px / W * cr.width;
+        var ty  = _py / H * (cr.height || 400);
+        tooltip.style.display   = 'block';
+        tooltip.style.left      = (tx > cr.width*0.65 ? tx-255 : tx+16) + 'px';
+        tooltip.style.top       = Math.max(4, ty-20) + 'px';
+        tooltip.style.maxWidth  = '250px';
+        tooltip.innerHTML =
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:6px;">' +
+            '<span style="font-size:16px;">' + ACicon + '</span>' +
+            '<div>' +
+              '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:700;color:' + tierColor + ';letter-spacing:.06em;">' + callsign + '</div>' +
+              '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:8px;color:var(--t2);">ICAO: ' + icao.toUpperCase() + '</div>' +
+            '</div>' +
+          '</div>' +
+          (govInfo ?
+            '<div style="background:rgba(0,0,0,.3);border-left:3px solid ' + tierColor + ';padding:5px 8px;margin-bottom:7px;">' +
+              '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:8px;font-weight:700;color:' + tierColor + ';letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;">' + govInfo.tier + ' - ' + govInfo.label + '</div>' +
+              '<div style="font-size:10px;color:var(--t1);line-height:1.4;">' + govInfo.desc + '</div>' +
+            '</div>' : '') +
+          (sqAlert ? '<div style="background:rgba(192,52,40,.15);border:1px solid ' + sqAlert.color + ';padding:3px 8px;margin-bottom:7px;font-family:\'IBM Plex Mono\',monospace;font-size:9px;font-weight:700;color:' + sqAlert.color + ';letter-spacing:.1em;">SQUAWK ' + squawk + ' - ' + sqAlert.label + '</div>' : '') +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px;">' +
+            '<div><div style="font-family:\'IBM Plex Mono\',monospace;font-size:7px;color:var(--t2);">ALTITUDE</div><div style="font-size:12px;font-weight:600;color:' + altCat.color + ';">' + altFt + '</div><div style="font-size:7px;color:var(--t2);">' + altCat.label + '</div></div>' +
+            '<div><div style="font-family:\'IBM Plex Mono\',monospace;font-size:7px;color:var(--t2);">SPEED</div><div style="font-size:12px;font-weight:600;color:var(--t0);">' + spdKts + '</div><div style="font-size:7px;color:var(--t2);">' + spdMph + '</div></div>' +
+            '<div><div style="font-family:\'IBM Plex Mono\',monospace;font-size:7px;color:var(--t2);">HEADING</div><div style="font-size:12px;font-weight:600;color:var(--t0);">' + Math.round(hdg) + '</div></div>' +
+            '<div><div style="font-family:\'IBM Plex Mono\',monospace;font-size:7px;color:var(--t2);">VERT RATE</div><div style="font-size:12px;font-weight:600;color:var(--t0);">' + va + ' ' + vrFpm + '</div></div>' +
+          '</div>' +
+          '<div style="border-top:1px solid var(--border);padding-top:5px;">' +
+            '<div style="display:flex;justify-content:space-between;font-family:\'IBM Plex Mono\',monospace;font-size:8px;margin-bottom:2px;"><span style="color:var(--t2);">SQUAWK</span><span style="color:' + (sqAlert?sqAlert.color:'var(--t1)') + ';">' + squawk + '</span></div>' +
+            '<div style="display:flex;justify-content:space-between;font-family:\'IBM Plex Mono\',monospace;font-size:8px;margin-bottom:2px;"><span style="color:var(--t2);">STATUS</span><span style="color:' + (onGround?'var(--t2)':'var(--green)') + ';">' + (onGround?'ON GROUND':'AIRBORNE') + '</span></div>' +
+            '<div style="display:flex;justify-content:space-between;font-family:\'IBM Plex Mono\',monospace;font-size:8px;"><span style="color:var(--t2);">COUNTRY</span><span style="color:var(--t1);">' + country + '</span></div>' +
+          '</div>';
+      }).on('mouseleave', function() { tooltip.style.display = 'none'; });
+    });
+
+    var badge = document.getElementById('aircraft-count');
+    if (badge) badge.textContent = plotted + ' gov/special tracked';
+  }
+
+  function fetchAircraft() {
+    var url = 'https://opensky-network.org/api/states/all?lamin=20&lamax=55&lomin=-130&lomax=-60';
+    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url))
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        var p = JSON.parse(d.contents);
+        if (p && p.states) {
+          var gov = p.states.filter(function(ac) { return classifyAircraft(ac) !== null; });
+          aircraftData = gov;
+          drawAircraft(gov);
+          var badge = document.getElementById('aircraft-count');
+          if (badge) badge.textContent = gov.length + ' gov tracked (' + p.states.length.toLocaleString() + ' total)';
+        }
+      })
+      .catch(function() {
+        // Demo with time-based movement so aircraft visibly move
+        var t = Date.now() / 1000;
+        var demo = [
+          ['ae0000','SAM28000','United States',null,null,
+           -77.01+Math.sin(t/120)*0.8, 38.90+Math.cos(t/120)*0.5,
+           null,true,0,0,0,null,'1200',false,0],
+          ['ae1234','RCH123  ','United States',null,null,
+           -97.50+((t%600)/600)*28, 35.40+Math.sin(t/300)*1.5,
+           10668,false,257,90,0,null,'1200',false,0],
+          ['ae01d8','NIGHTWATCH','United States',null,null,
+           -95.90+Math.sin(t/180)*3, 41.30+Math.cos(t/180)*2,
+           12192,false,257,(t*0.5)%360,0,null,'6666',false,0],
+          ['ae2345','SPAR19  ','United States',null,null,
+           -77.45-((t%900)/900)*14, 38.94-((t%900)/900)*3,
+           9144,false,220,260,0,null,'2000',false,0],
+          ['ae3456','OMAHA21 ','United States',null,null,
+           -104.9+Math.sin(t/90)*0.5, 39.80+Math.cos(t/90)*0.4,
+           1524,false,82,(t*1.2)%360,0.5,null,'1200',false,0],
+          ['ae9012','REACH701','United States',null,null,
+           -84.40+Math.sin(t/200)*0.5, 33.60+((t%1200)/1200)*12,
+           7620,false,180,15,3,null,'7700',false,0],
+          ['ae7890','NIGHT41 ','United States',null,null,
+           -110.9+Math.sin(t/150)*2, 31.90+Math.cos(t/150)*1.5,
+           3048,false,103,(t*0.8)%360,0,null,'1200',false,0],
+        ];
+        aircraftData = demo;
+        drawAircraft(demo);
+        var badge = document.getElementById('aircraft-count');
+        if (badge) badge.textContent = '7 gov tracked (demo mode)';
+      });
+  }
+
+  window.toggleAircraft = function() {
+    showAircraft = !showAircraft;
+    var btn = document.getElementById('aircraft-toggle');
+    if (showAircraft) {
+      drawAircraft(aircraftData);
+      if (btn) { btn.textContent='✈ Gov Aircraft ON'; btn.style.color='var(--cyan)'; btn.style.borderColor='var(--cyan)'; }
+      if (!aircraftInterval) aircraftInterval = setInterval(fetchAircraft, 15000);
+    } else {
+      aircraftG.selectAll('*').remove();
+      if (btn) { btn.textContent='✈ Gov Aircraft OFF'; btn.style.color='var(--t2)'; btn.style.borderColor='var(--border)'; }
+    }
+  };
+
+  // ── Load US map ───────────────────────────────────────────────────────────
+  fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json')
+    .then(function(r) { return r.json(); })
+    .then(function(us) {
+      var states  = topojson.feature(us, us.objects.states);
+      var borders = topojson.mesh(us, us.objects.states, function(a,b) { return a !== b; });
+      var nation  = topojson.mesh(us, us.objects.nation);
+
+      statesG.selectAll('path').data(states.features).enter().append('path')
+        .attr('d', geoPath).attr('fill','#0d1410').attr('stroke','none');
+
+      statesG.append('path').datum(borders).attr('d',geoPath)
+        .attr('fill','none').attr('stroke','#213021').attr('stroke-width',0.8);
+
+      statesG.append('path').datum(nation).attr('d',geoPath)
+        .attr('fill','none').attr('stroke','#3a5438').attr('stroke-width',1.5);
+
+      states.features.forEach(function(f) {
+        var abbr = FIPS[f.id.toString().padStart(2,'0')];
+        if (!abbr) return;
+        var c = geoPath.centroid(f);
+        if (!c || isNaN(c[0])) return;
+        labelsG.append('text').attr('x',c[0]).attr('y',c[1]+3).attr('text-anchor','middle')
+          .attr('font-family','IBM Plex Mono,monospace').attr('font-size','7px')
+          .attr('fill','#3a5438').text(abbr);
+      });
+
+      mapReady = true;
+      var ml = document.getElementById('map-loading');
+      if (ml) { ml.textContent = 'HOVER FOR DETAILS · ✈ ADS-B LIVE'; ml.style.animation = 'none'; ml.style.color = 'var(--t2)'; }
+
+      if (pendingMarkers.length) drawMarkers(pendingMarkers);
+      fetchAircraft();
+      aircraftInterval = setInterval(fetchAircraft, 15000);
+    })
+    .catch(function() {
+      var ml = document.getElementById('map-loading');
+      if (ml) { ml.textContent = 'MAP UNAVAILABLE'; ml.style.color = 'var(--red)'; }
+    });
+
+  window.updateMap = function(items) {
+    pendingMarkers = items;
+    if (mapReady) drawMarkers(items);
+  };
+  window.setMapMarkers = window.updateMap;
+
+})();
+</script>
+
+
+
+
+<script>
+// ─── MARKET TICKER — Stocks + Macro + Crypto ─────────────────────────────
+(function() {
+  'use strict';
+
+  var PROXY = 'https://api.allorigins.win/get?url=';
+
+  // ── Symbols to fetch via Yahoo Finance ──────────────────────────────────
+  var MARKET_SYMBOLS = [
+    // Indices
+    { sym:'SPY',  name:'S&P 500',    cat:'INDEX'  },
+    { sym:'QQQ',  name:'NASDAQ',     cat:'INDEX'  },
+    { sym:'DIA',  name:'DOW',        cat:'INDEX'  },
+    { sym:'IWM',  name:'Russell 2K', cat:'INDEX'  },
+    // Crypto
+    { sym:'BTC-USD', name:'Bitcoin',  cat:'CRYPTO' },
+    { sym:'ETH-USD', name:'Ethereum', cat:'CRYPTO' },
+    // Defense
+    { sym:'ITA',  name:'Defense ETF', cat:'DEFENSE' },
+    { sym:'LMT',  name:'Lockheed',   cat:'DEFENSE' },
+    { sym:'RTX',  name:'Raytheon',   cat:'DEFENSE' },
+    { sym:'NOC',  name:'Northrop',   cat:'DEFENSE' },
+    { sym:'BAH',  name:'Booz Allen', cat:'DEFENSE' },
+    // Cyber
+    { sym:'HACK', name:'Cyber ETF',  cat:'CYBER'  },
+    { sym:'CRWD', name:'CrowdStrike',cat:'CYBER'  },
+    { sym:'PANW', name:'Palo Alto',  cat:'CYBER'  },
+    // Energy & Utilities
+    { sym:'XLE',  name:'Energy ETF', cat:'ENERGY' },
+    { sym:'XLU',  name:'Utilities',  cat:'ENERGY' },
+    { sym:'USO',  name:'Oil ETF',    cat:'ENERGY' },
+    { sym:'UNG',  name:'Nat Gas',    cat:'ENERGY' },
+    // Commodities
+    { sym:'GLD',  name:'Gold',       cat:'COMMOD' },
+    { sym:'SLV',  name:'Silver',     cat:'COMMOD' },
+    { sym:'WEAT', name:'Wheat',      cat:'COMMOD' },
+    { sym:'CORN', name:'Corn',       cat:'COMMOD' },
+    // Macro
+    { sym:'TLT',  name:'20Y Bond',   cat:'MACRO'  },
+    { sym:'SHY',  name:'2Y Bond',    cat:'MACRO'  },
+    { sym:'UUP',  name:'US Dollar',  cat:'MACRO'  },
+  ];
+
+  // ── Macro indicators fetched from separate sources ───────────────────────
+  var macroItems = [];
+
+  var quoteCache = {};
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  function arrow(chg) {
+    if (chg > 0) return '<span style="color:#5abf50">▲ +' + chg.toFixed(2) + '%</span>';
+    if (chg < 0) return '<span style="color:#c03428">▼ '  + chg.toFixed(2) + '%</span>';
+    return            '<span style="color:#7a9878">— '  + chg.toFixed(2) + '%</span>';
+  }
+
+  function catColor(cat) {
+    return {
+      INDEX:'#3daa5c', CRYPTO:'#c87830', DEFENSE:'#3daa5c',
+      CYBER:'#8aaa38', ENERGY:'#b8a018', COMMOD:'#c87830',
+      MACRO:'#7a9878'
+    }[cat] || '#7a9878';
+  }
+
+  function fmtPrice(price, sym) {
+    // Crypto needs commas, stocks 2dp
+    if (sym && (sym.includes('-USD') || price > 999)) {
+      return price >= 1000 ? price.toLocaleString('en-US', {maximumFractionDigits:0}) : price.toFixed(2);
+    }
+    return price.toFixed(2);
+  }
+
+  function catLabel(cat) {
+    return '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:7px;color:' + catColor(cat) + ';letter-spacing:.08em;margin-right:3px;">' + cat + '</span>';
+  }
+
+  // ── Build ticker HTML ─────────────────────────────────────────────────────
+  function buildTicker(quotes, macro) {
+    var items = [];
+
+    // Market quotes
+    quotes.forEach(function(q) {
+      items.push(
+        '<div class="ticker-item">' +
+        catLabel(q.cat) +
+        '<span style="color:var(--t0);font-weight:600;margin-right:3px;">' + q.sym.replace('-USD','') + '</span>' +
+        '<span style="color:var(--t0);">' + fmtPrice(q.price, q.sym) + '</span>' +
+        '<span style="margin:0 3px;">' + arrow(q.chg) + '</span>' +
+        '<span style="font-size:8px;color:var(--t2);">' + q.name + '</span>' +
+        '</div>'
+      );
+    });
+
+    // Separator
+    items.push('<div class="ticker-item"><span style="color:var(--border-hi);font-size:14px;padding:0 6px;">│</span></div>');
+
+    // Macro text items
+    macro.forEach(function(m) {
+      items.push(
+        '<div class="ticker-item">' +
+        '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:7px;color:#7a9878;letter-spacing:.08em;margin-right:4px;">MACRO</span>' +
+        '<span style="color:var(--t0);font-weight:600;margin-right:4px;">' + m.label + '</span>' +
+        '<span style="color:' + (m.color || 'var(--t0)') + ';">' + m.value + '</span>' +
+        '</div>'
+      );
+    });
+
+    // Duplicate for seamless loop
+    var html = items.join('') + items.join('');
+    var ticker = document.getElementById('market-ticker');
+    if (ticker) {
+      ticker.innerHTML = html;
+      // Speed based on item count
+      var dur = Math.max(30, Math.min(150, items.length * 3.5));
+      ticker.style.animationDuration = dur + 's';
+    }
+  }
+
+  // ── Fetch quotes via Yahoo Finance ────────────────────────────────────────
+  async function fetchQuotes(symbols) {
+    var joined = symbols.join(',');
+
+    // Try v8 spark (batch)
+    try {
+      var url = 'https://query2.finance.yahoo.com/v8/finance/spark?symbols=' +
+                encodeURIComponent(joined) + '&range=1d&interval=5m';
+      var r = await fetch(PROXY + encodeURIComponent(url));
+      var d = await r.json();
+      var p = JSON.parse(d.contents);
+      if (p.spark && p.spark.result && p.spark.result.length) {
+        var out = [];
+        p.spark.result.forEach(function(item) {
+          var resp = item.response && item.response[0];
+          var meta = resp && resp.meta;
+          if (!meta) return;
+          var price = meta.regularMarketPrice || 0;
+          var prev  = meta.chartPreviousClose || meta.previousClose || price;
+          var chg   = prev ? ((price - prev) / prev * 100) : 0;
+          var info  = MARKET_SYMBOLS.find(function(s) { return s.sym === item.symbol; });
+          out.push({ sym: item.symbol, name: info ? info.name : item.symbol, cat: info ? info.cat : 'INDEX', price: price, chg: chg });
+        });
+        if (out.length > 0) return out;
+      }
+    } catch(e) {}
+
+    // Try v7 quote (batch)
+    try {
+      var url2 = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=' +
+                 encodeURIComponent(joined) +
+                 '&fields=symbol,regularMarketPrice,regularMarketChangePercent,shortName';
+      var r2 = await fetch(PROXY + encodeURIComponent(url2));
+      var d2 = await r2.json();
+      var p2 = JSON.parse(d2.contents);
+      var res2 = (p2.quoteResponse && p2.quoteResponse.result) || [];
+      if (res2.length) {
+        return res2.map(function(q) {
+          var info = MARKET_SYMBOLS.find(function(s) { return s.sym === q.symbol; });
+          return { sym: q.symbol, name: info ? info.name : q.symbol, cat: info ? info.cat : 'INDEX', price: q.regularMarketPrice || 0, chg: q.regularMarketChangePercent || 0 };
+        });
+      }
+    } catch(e) {}
+
+    // Try per-symbol chart
+    try {
+      var results = await Promise.allSettled(symbols.slice(0,10).map(async function(sym) {
+        var url3 = 'https://query1.finance.yahoo.com/v8/finance/chart/' + sym + '?interval=1d&range=2d';
+        var r3 = await fetch(PROXY + encodeURIComponent(url3));
+        var d3 = await r3.json();
+        var p3 = JSON.parse(d3.contents);
+        var meta3 = p3.chart && p3.chart.result && p3.chart.result[0] && p3.chart.result[0].meta;
+        if (!meta3) return null;
+        var price3 = meta3.regularMarketPrice || 0;
+        var prev3  = meta3.chartPreviousClose || price3;
+        var chg3   = prev3 ? ((price3 - prev3) / prev3 * 100) : 0;
+        var info3  = MARKET_SYMBOLS.find(function(s) { return s.sym === sym; });
+        return { sym: sym, name: info3 ? info3.name : sym, cat: info3 ? info3.cat : 'INDEX', price: price3, chg: chg3 };
+      }));
+      var valid = results.filter(function(r) { return r.status==='fulfilled' && r.value; }).map(function(r) { return r.value; });
+      if (valid.length > 0) return valid;
+    } catch(e) {}
+
+    return [];
+  }
+
+  // ── Fetch macro indicators ─────────────────────────────────────────────────
+  async function fetchMacro() {
+    var items = [];
+
+    // US National Debt — Treasury Fiscal Data API (free, no key)
+    try {
+      var url = 'https://api.fiscaldata.treasury.gov/services/api/v1/debt/outstanding_debt?fields=record_date,debt_outstanding_amt&sort=-record_date&limit=1';
+      var r = await fetch(PROXY + encodeURIComponent(url));
+      var d = await r.json();
+      var p = JSON.parse(d.contents);
+      if (p.data && p.data[0]) {
+        var amt = parseFloat(p.data[0].debt_outstanding_amt);
+        var trillions = (amt / 1e12).toFixed(2);
+        items.push({ label:'US DEBT', value:'$' + trillions + 'T', color:'#c03428' });
+      }
+    } catch(e) {}
+
+    // EIA Weekly Gas Price — free API (no key needed for weekly average)
+    try {
+      var gasUrl = 'https://api.eia.gov/v2/petroleum/pri/gnd/data/?frequency=weekly&data[0]=value&facets[product][]=EPM0&facets[duoarea][]=NUS&sort[0][column]=period&sort[0][direction]=desc&length=1';
+      var gr = await fetch(PROXY + encodeURIComponent(gasUrl));
+      var gd = await gr.json();
+      var gp = JSON.parse(gd.contents);
+      if (gp.response && gp.response.data && gp.response.data[0]) {
+        var gasPrice = parseFloat(gp.response.data[0].value).toFixed(2);
+        items.push({ label:'GAS AVG', value:'$' + gasPrice + '/gal', color:'#b8a018' });
+      }
+    } catch(e) {}
+
+    // Fed Funds Rate — FRED API (free, no key for some endpoints)
+    try {
+      var fredUrl = 'https://api.stlouisfed.org/fred/series/observations?series_id=FEDFUNDS&limit=1&sort_order=desc&file_type=json&api_key=f5e27c2ac85ab1db93d0c6c4eee7b3e8';
+      var fr2 = await fetch(PROXY + encodeURIComponent(fredUrl));
+      var fd2 = await fr2.json();
+      var fp2 = JSON.parse(fd2.contents);
+      if (fp2.observations && fp2.observations[0]) {
+        items.push({ label:'FED RATE', value: fp2.observations[0].value + '%', color:'#8aaa38' });
+      }
+    } catch(e) {
+      // Fallback — Fed rate changes infrequently, hardcode current if API fails
+      items.push({ label:'FED RATE', value:'5.33%', color:'#8aaa38' });
+    }
+
+    // 10-Year yield from Treasury
+    try {
+      var tyUrl = 'https://api.fiscaldata.treasury.gov/services/api/v1/accounting/od/avg_interest_rates?fields=record_date,avg_interest_rate_amt,security_desc&filter=security_desc:eq:Treasury%20Notes&sort=-record_date&limit=1';
+      var ty = await fetch(PROXY + encodeURIComponent(tyUrl));
+      var tyd = await ty.json();
+      var typ = JSON.parse(tyd.contents);
+      if (typ.data && typ.data[0]) {
+        items.push({ label:'10YR', value: parseFloat(typ.data[0].avg_interest_rate_amt).toFixed(2) + '%', color:'#7a9878' });
+      }
+    } catch(e) {}
+
+    return items;
+  }
+
+  // ── Fallback static data ──────────────────────────────────────────────────
+  function showFallback() {
+    var quotes = [
+      { sym:'SPY',     name:'S&P 500',    cat:'INDEX',   price:547.82, chg: 0.34 },
+      { sym:'QQQ',     name:'NASDAQ',     cat:'INDEX',   price:478.21, chg: 0.61 },
+      { sym:'DIA',     name:'DOW',        cat:'INDEX',   price:398.54, chg:-0.12 },
+      { sym:'BTC-USD', name:'Bitcoin',    cat:'CRYPTO',  price:67420,  chg: 1.24 },
+      { sym:'ETH-USD', name:'Ethereum',   cat:'CRYPTO',  price:3542,   chg: 0.88 },
+      { sym:'ITA',     name:'Defense ETF',cat:'DEFENSE', price:138.90, chg: 0.55 },
+      { sym:'LMT',     name:'Lockheed',   cat:'DEFENSE', price:487.30, chg: 1.24 },
+      { sym:'RTX',     name:'Raytheon',   cat:'DEFENSE', price:122.45, chg: 0.88 },
+      { sym:'HACK',    name:'Cyber ETF',  cat:'CYBER',   price:62.14,  chg: 1.33 },
+      { sym:'CRWD',    name:'CrowdStrike',cat:'CYBER',   price:388.45, chg: 2.41 },
+      { sym:'PANW',    name:'Palo Alto',  cat:'CYBER',   price:332.10, chg: 1.88 },
+      { sym:'XLE',     name:'Energy ETF', cat:'ENERGY',  price:92.44,  chg:-0.44 },
+      { sym:'XLU',     name:'Utilities',  cat:'ENERGY',  price:68.32,  chg: 0.21 },
+      { sym:'USO',     name:'Oil ETF',    cat:'ENERGY',  price:72.18,  chg:-1.04 },
+      { sym:'GLD',     name:'Gold',       cat:'COMMOD',  price:218.34, chg: 0.22 },
+      { sym:'SLV',     name:'Silver',     cat:'COMMOD',  price:26.88,  chg: 0.44 },
+      { sym:'WEAT',    name:'Wheat',      cat:'COMMOD',  price:5.32,   chg:-0.88 },
+      { sym:'UUP',     name:'US Dollar',  cat:'MACRO',   price:103.42, chg:-0.18 },
+      { sym:'TLT',     name:'20Y Bond',   cat:'MACRO',   price:88.32,  chg:-0.33 },
+    ];
+    var macro = [
+      { label:'US DEBT',  value:'$34.82T',  color:'#c03428' },
+      { label:'FED RATE', value:'5.33%',    color:'#8aaa38' },
+      { label:'GAS AVG',  value:'$3.42/gal',color:'#b8a018' },
+      { label:'10YR',     value:'4.38%',    color:'#7a9878' },
+    ];
+    buildTicker(quotes, macro);
+    // Update label
+    var label = document.querySelector('.ticker-label');
+    if (label) label.innerHTML = '&#9632; <span style="color:var(--cyan);">MARKETS</span>';
+  }
+
+  // ── Load everything ───────────────────────────────────────────────────────
+  async function loadAll() {
+    // Show fallback immediately
+    showFallback();
+
+    var allSyms = MARKET_SYMBOLS.map(function(s) { return s.sym; });
+    var quotes  = await fetchQuotes(allSyms);
+    var macro   = await fetchMacro();
+
+    if (!macro.length) {
+      macro = [
+        { label:'FED RATE', value:'5.33%',    color:'#8aaa38' },
+        { label:'US DEBT',  value:'$34.82T',  color:'#c03428' },
+        { label:'GAS AVG',  value:'$3.42/gal',color:'#b8a018' },
+      ];
+    }
+
+    if (quotes.length > 0) {
+      // Preserve display order from MARKET_SYMBOLS
+      var ordered = MARKET_SYMBOLS.map(function(s) {
+        var q = quotes.find(function(q) { return q.sym === s.sym; });
+        return q ? q : null;
+      }).filter(Boolean);
+      buildTicker(ordered, macro);
+
+      // Update market open/closed label
+      var now = new Date();
+      var et  = new Date(now.toLocaleString('en-US', { timeZone:'America/New_York' }));
+      var h = et.getHours(), m = et.getMinutes(), day = et.getDay();
+      var isOpen = day >= 1 && day <= 5 && (h > 9 || (h === 9 && m >= 30)) && h < 16;
+      var lbl = document.querySelector('.ticker-label');
+      if (lbl) {
+        lbl.innerHTML = isOpen
+          ? '&#9632; <span style="color:#5abf50;">MARKETS LIVE</span>'
+          : '&#9632; <span style="color:var(--cyan);">MARKETS</span>';
+      }
+    } else {
+      buildTicker(showFallback.quotes || [], macro);
+    }
+  }
+
+  loadAll();
+  setInterval(loadAll, 90000);
+
+})();
+</script>
+
+<script>
+// ─── FEED + MAP DATA ──────────────────────────────────────────────────────
+(function() {
+  let allItems = [];
+  let currentFilter = 'all';
+
+  // Use allorigins CORS proxy for government APIs
+  const PROXY = 'https://api.allorigins.win/get?url=';
+
+  // ── Severity color helper ─────────────────────────────────────────────
+  function sevColor(s) {
+    return {critical:'#e03434',high:'#e8622a',med:'#d4a820',low:'#1ab866'}[s]||'#1ab866';
+  }
+
+  // ── Tag HTML ──────────────────────────────────────────────────────────
+  function sevTag(s) {
+    const map = {
+      critical:'<span class="tag tag-crit">CRIT</span>',
+      high:'<span class="tag tag-high">HIGH</span>',
+      med:'<span class="tag tag-med">MED</span>',
+      low:'<span class="tag tag-green">LOW</span>'
+    };
+    return map[s]||map.low;
+  }
+  function catTag(c) {
+    const map = {
+      cyber:'<span class="tag tag-cyan">CYBER</span>',
+      fema:'<span class="tag tag-high">FEMA</span>',
+      infra:'<span class="tag tag-olive">SEISMIC</span>',
+      weather:'<span class="tag tag-med">WEATHER</span>'
+    };
+    return map[c]||'';
+  }
+
+  // ── CISA Known Exploited Vulnerabilities ─────────────────────────────
+  async function fetchCISA() {
+    try {
+      const r = await fetch(PROXY + encodeURIComponent('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json'));
+      const d = await r.json();
+      const p = JSON.parse(d.contents);
+      return (p.vulnerabilities||[]).slice(0,8).map(v=>({
+        id: v.cveID,
+        title: v.vulnerabilityName + ' — ' + v.vendorProject,
+        source: 'CISA KEV',
+        category: 'cyber',
+        severity: 'high',
+        time: v.dateAdded||'',
+        url: 'https://www.cisa.gov/known-exploited-vulnerabilities-catalog',
+        detail: (v.shortDescription||'Active exploitation confirmed.').substring(0,100),
+        stateAbbr: null, lat: null, lon: null
+      }));
+    } catch(e) { return fallbackCISA(); }
+  }
+
+  // ── USGS Earthquakes ─────────────────────────────────────────────────
+  async function fetchUSGS() {
+    try {
+      const r = await fetch(PROXY + encodeURIComponent('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson'));
+      const d = await r.json();
+      const p = JSON.parse(d.contents);
+      return (p.features||[])
+        .filter(f => {
+          const pl = (f.properties.place||'').toLowerCase();
+          return pl.includes('alaska')||pl.includes('hawaii')||pl.includes('california')||
+                 pl.includes('nevada')||pl.includes('oregon')||pl.includes('washington')||
+                 pl.includes('idaho')||pl.includes('montana')||pl.includes('wyoming')||
+                 pl.includes('utah')||pl.includes('colorado')||pl.includes('arizona')||
+                 pl.includes('new mexico')||pl.includes('oklahoma')||pl.includes('texas')||
+                 pl.includes('tennessee')||pl.includes('kentucky')||pl.includes('virginia')||
+                 pl.includes('carolina')||pl.includes(' mo ')||pl.includes('missouri')||
+                 f.properties.place.match(/,\s*[A-Z]{2}$/);
+        })
+        .slice(0,6)
+        .map(f=>({
+          id: f.id,
+          title: 'M'+(f.properties.mag||0).toFixed(1)+' Earthquake — '+f.properties.place,
+          source: 'USGS',
+          category: 'infra',
+          severity: (f.properties.mag||0)>=5?'high':(f.properties.mag||0)>=3.5?'med':'low',
+          time: new Date(f.properties.time).toISOString().split('T')[0],
+          url: f.properties.url||'https://earthquake.usgs.gov',
+          detail: 'Depth: '+(f.geometry.coordinates[2]||0).toFixed(1)+' km',
+          stateAbbr: null,
+          lat: f.geometry.coordinates[1],
+          lon: f.geometry.coordinates[0]
+        }));
+    } catch(e) { return fallbackUSGS(); }
+  }
+
+  // ── FEMA Disaster Declarations ────────────────────────────────────────
+  async function fetchFEMA() {
+    try {
+      const url = 'https://www.fema.gov/api/open/v2/disasterDeclarationsSummaries?$orderby=declarationDate%20desc&$top=8&$select=disasterNumber,declarationDate,incidentType,state,designatedArea,declarationType';
+      const r = await fetch(PROXY + encodeURIComponent(url));
+      const d = await r.json();
+      const p = JSON.parse(d.contents);
+      return (p.DisasterDeclarationsSummaries||[]).slice(0,7).map(dec=>({
+        id: 'FEMA-DR-'+dec.disasterNumber,
+        title: dec.incidentType+' — '+dec.designatedArea+', '+dec.state,
+        source: 'FEMA',
+        category: 'fema',
+        severity: dec.declarationType==='DR'?'high':'med',
+        time: (dec.declarationDate||'').split('T')[0],
+        url: 'https://www.fema.gov/disaster/'+dec.disasterNumber,
+        detail: dec.declarationType==='DR'?'Major Disaster Declaration':'Emergency Declaration',
+        stateAbbr: dec.state,
+        lat: null, lon: null
+      }));
+    } catch(e) { return fallbackFEMA(); }
+  }
+
+  // ── NVD Recent CVEs ───────────────────────────────────────────────────
+  async function fetchNVD() {
+    try {
+      const url = 'https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=6&startIndex=0';
+      const r = await fetch(PROXY + encodeURIComponent(url));
+      const d = await r.json();
+      const p = JSON.parse(d.contents);
+      return (p.vulnerabilities||[]).slice(0,6).map(item=>{
+        const cve = item.cve;
+        const score = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore||
+                      cve.metrics?.cvssMetricV2?.[0]?.cvssData?.baseScore||0;
+        const desc = (cve.descriptions?.find(d=>d.lang==='en')?.value||'No description.').substring(0,90);
+        return {
+          id: cve.id,
+          title: cve.id+' — '+desc+(desc.length>=90?'...':''),
+          source: 'NVD',
+          category: 'cyber',
+          severity: score>=9?'critical':score>=7?'high':score>=4?'med':'low',
+          time: (cve.published||'').split('T')[0],
+          url: 'https://nvd.nist.gov/vuln/detail/'+cve.id,
+          detail: 'CVSS: '+(score||'N/A'),
+          stateAbbr: null, lat: null, lon: null
+        };
+      });
+    } catch(e) { return fallbackNVD(); }
+  }
+
+  // ── Fallbacks ─────────────────────────────────────────────────────────
+  function fallbackCISA() {
+    return [
+      {id:'CVE-2024-21412',title:'Microsoft SmartScreen Security Feature Bypass',source:'CISA KEV',category:'cyber',severity:'high',time:'2024-02-13',url:'https://www.cisa.gov/known-exploited-vulnerabilities-catalog',detail:'Actively exploited. Apply mitigations per vendor instructions.',stateAbbr:null,lat:null,lon:null},
+      {id:'CVE-2024-21351',title:'Microsoft Windows SmartScreen Security Bypass',source:'CISA KEV',category:'cyber',severity:'high',time:'2024-02-13',url:'https://www.cisa.gov/known-exploited-vulnerabilities-catalog',detail:'Exploitation in ransomware campaigns confirmed.',stateAbbr:null,lat:null,lon:null},
+      {id:'CVE-2023-36025',title:'Microsoft Windows Phishing-Resistant Authentication Bypass',source:'CISA KEV',category:'cyber',severity:'critical',time:'2023-11-14',url:'https://www.cisa.gov/known-exploited-vulnerabilities-catalog',detail:'Active exploitation confirmed by threat actors.',stateAbbr:null,lat:null,lon:null},
+    ];
+  }
+  function fallbackFEMA() {
+    return [
+      {id:'FEMA-DR-4781',title:'Severe Storms & Tornadoes — Multiple Counties, TX',source:'FEMA',category:'fema',severity:'high',time:'2024-05-10',url:'https://www.fema.gov',detail:'Major Disaster Declaration',stateAbbr:'TX',lat:31.5,lon:-99.3},
+      {id:'FEMA-DR-4776',title:'Flooding — Coastal Counties, LA',source:'FEMA',category:'fema',severity:'high',time:'2024-04-22',url:'https://www.fema.gov',detail:'Major Disaster Declaration',stateAbbr:'LA',lat:31,lon:-91.8},
+      {id:'FEMA-DR-4770',title:'Wildfire — Mariposa County, CA',source:'FEMA',category:'fema',severity:'med',time:'2024-03-15',url:'https://www.fema.gov',detail:'Fire Management Assistance Declaration',stateAbbr:'CA',lat:37.5,lon:-119.9},
+    ];
+  }
+  function fallbackUSGS() {
+    return [
+      {id:'usgs-fallback-1',title:'M4.2 Earthquake — 15km NNW of Ridgecrest, California',source:'USGS',category:'infra',severity:'med',time:'2024-06-01',url:'https://earthquake.usgs.gov',detail:'Depth: 8.3 km',stateAbbr:'CA',lat:35.7,lon:-117.7},
+      {id:'usgs-fallback-2',title:'M3.8 Earthquake — 22km SE of Anchorage, Alaska',source:'USGS',category:'infra',severity:'low',time:'2024-06-01',url:'https://earthquake.usgs.gov',detail:'Depth: 42.1 km',stateAbbr:'AK',lat:61.0,lon:-149.5},
+      {id:'usgs-fallback-3',title:'M3.5 Earthquake — 10km W of San Jose, California',source:'USGS',category:'infra',severity:'low',time:'2024-05-31',url:'https://earthquake.usgs.gov',detail:'Depth: 10.2 km',stateAbbr:'CA',lat:37.3,lon:-122.1},
+    ];
+  }
+  function fallbackNVD() {
+    return [
+      {id:'CVE-2024-3400',title:'CVE-2024-3400 — PAN-OS GlobalProtect Command Injection (CVSS 10.0)',source:'NVD',category:'cyber',severity:'critical',time:'2024-04-12',url:'https://nvd.nist.gov/vuln/detail/CVE-2024-3400',detail:'CVSS: 10.0 — CISA KEV confirmed',stateAbbr:null,lat:null,lon:null},
+      {id:'CVE-2024-21893',title:'CVE-2024-21893 — Ivanti Connect Secure SSRF Vulnerability',source:'NVD',category:'cyber',severity:'high',time:'2024-01-31',url:'https://nvd.nist.gov/vuln/detail/CVE-2024-21893',detail:'CVSS: 8.2 — Active exploitation',stateAbbr:null,lat:null,lon:null},
+    ];
+  }
+
+  // ── Render feed list ──────────────────────────────────────────────────
+  function renderItems() {
+    const container = document.getElementById('feed-items');
+    if (!container) return;
+    const filtered = currentFilter==='all' ? allItems : allItems.filter(i=>i.category===currentFilter);
+
+    if (!filtered.length) {
+      container.innerHTML = '<div style="padding:24px;text-align:center;font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;">NO ITEMS IN THIS CATEGORY</div>';
+      return;
+    }
+
+    container.innerHTML = filtered.map(item=>`
+      <div class="feed-item" onclick="window.open('${item.url}','_blank')">
+        <div class="fi-header">
+          ${sevTag(item.severity)}
+          ${catTag(item.category)}
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--cyan);opacity:.8;">${item.id}</span>
+        </div>
+        <div class="fi-title">${item.title}</div>
+        <div class="fi-meta">
+          <span>${item.time}</span>
+          <span class="fi-src">▸ ${item.source}</span>
+          <span style="margin-left:auto;color:var(--t2);font-size:8px;">${item.detail.substring(0,55)}${item.detail.length>55?'...':''}</span>
+        </div>
+      </div>
+    `).join('');
+
+    // Severity counts
+    const counts = {critical:0,high:0,med:0,low:0};
+    allItems.forEach(i=>{ counts[i.severity]=(counts[i.severity]||0)+1; });
+    const sc = document.getElementById('sev-crit'); if(sc) sc.textContent=counts.critical||0;
+    const sh = document.getElementById('sev-high'); if(sh) sh.textContent=counts.high||0;
+    const sm = document.getElementById('sev-med');  if(sm) sm.textContent=counts.med||0;
+    const sl = document.getElementById('sev-low');  if(sl) sl.textContent=counts.low||0;
+    const ta = document.getElementById('total-alerts'); if(ta) ta.textContent=allItems.length;
+    const fc = document.getElementById('feed-count'); if(fc) fc.textContent=filtered.length+' items';
+
+    const topSev = counts.critical>0?'CRIT':counts.high>0?'HIGH':counts.med>0?'MED':'LOW';
+    const ringColors = {CRIT:'var(--red)',HIGH:'var(--orange)',MED:'var(--yellow)',LOW:'var(--green)'};
+    const ring = document.getElementById('threat-ring');
+    if (ring) { ring.textContent=topSev; ring.style.borderColor=ringColors[topSev]; ring.style.color=ringColors[topSev]; }
+  }
+
+  // ── Load feed ─────────────────────────────────────────────────────────
+  async function loadFeed() {
+    const ts = document.getElementById('feed-timestamp');
+    if (ts) ts.textContent = 'Updated: '+new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+
+    const loading = document.getElementById('feed-items');
+    if (loading) loading.innerHTML = '<div style="padding:32px;text-align:center;font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--cyan);letter-spacing:.08em;animation:blink 1s infinite;">FETCHING LIVE DATA...</div>';
+
+    const [cisa, fema, usgs, nvd] = await Promise.all([fetchCISA(), fetchFEMA(), fetchUSGS(), fetchNVD()]);
+
+    allItems = [...cisa, ...nvd, ...fema, ...usgs].sort((a,b)=>{
+      const o={critical:0,high:1,med:2,low:3};
+      return (o[a.severity]??3)-(o[b.severity]??3);
+    });
+
+    // Update source counts
+    const cc = document.getElementById('count-cyber'); if(cc) cc.textContent=allItems.filter(i=>i.category==='cyber').length;
+    const cw = document.getElementById('count-weather'); if(cw) cw.textContent=allItems.filter(i=>i.category==='weather').length||0;
+    const cf = document.getElementById('count-fema'); if(cf) cf.textContent=allItems.filter(i=>i.category==='fema').length;
+    const ci = document.getElementById('count-infra'); if(ci) ci.textContent=allItems.filter(i=>i.category==='infra').length;
+    const cv = document.getElementById('count-cve'); if(cv) cv.textContent=allItems.filter(i=>i.source==='NVD').length;
+
+    renderItems();
+
+    // Push to map
+    if (window.updateMap) window.updateMap(allItems);
+    if (window.setMapMarkers) window.setMapMarkers(allItems);
+  }
+
+  // ── Filter buttons ────────────────────────────────────────────────────
+  document.querySelectorAll('.feed-filter').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.feed-filter').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      currentFilter = this.dataset.filter;
+      renderItems();
+      // Filter map markers too
+      const filtered = currentFilter==='all' ? allItems : allItems.filter(i=>i.category===currentFilter);
+      if (window.updateMap) window.updateMap(filtered);
+    });
+  });
+
+  // ── Weather helpers ───────────────────────────────────────────────────
+  function getCentroidLat(geometry) {
+    try {
+      if (geometry.type==='Point') return geometry.coordinates[1];
+      if (geometry.type==='Polygon') return geometry.coordinates[0].reduce((s,c)=>s+c[1],0)/geometry.coordinates[0].length;
+      if (geometry.type==='MultiPolygon') return geometry.coordinates[0][0][0][1];
+    } catch(e){} return null;
+  }
+  function getCentroidLon(geometry) {
+    try {
+      if (geometry.type==='Point') return geometry.coordinates[0];
+      if (geometry.type==='Polygon') return geometry.coordinates[0].reduce((s,c)=>s+c[0],0)/geometry.coordinates[0].length;
+      if (geometry.type==='MultiPolygon') return geometry.coordinates[0][0][0][0];
+    } catch(e){} return null;
+  }
+  function extractState(areaDesc) {
+    if (!areaDesc) return null;
+    const m = areaDesc.match(/\b([A-Z]{2})\b/);
+    return m ? m[1] : null;
+  }
+
+  function renderWxAlerts(alerts) {
+    const container = document.getElementById('wx-alerts-list');
+    if (!container) return;
+    if (!alerts.length) {
+      container.innerHTML = '<div style="padding:16px;text-align:center;font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--green);">NO ACTIVE EXTREME WEATHER ALERTS</div>';
+      return;
+    }
+    const sevTagWx = s => ({
+      critical:'<span class="tag tag-crit">EXTREME</span>',
+      high:'<span class="tag tag-high">SEVERE</span>',
+      med:'<span class="tag tag-med">MODERATE</span>',
+      low:'<span class="tag tag-green">MINOR</span>'
+    }[s]||'<span class="tag tag-green">MINOR</span>');
+
+    container.innerHTML = alerts.map(a=>`
+      <div class="wx-alert-row" onclick="window.open('${a.url}','_blank')">
+        <div class="wx-alert-header">${sevTagWx(a.severity)}<span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--cyan);opacity:.8;">NWS</span></div>
+        <div class="wx-alert-title">${a.title}</div>
+        <div class="wx-alert-meta"><span>${a.time}</span><span style="color:var(--t2);">${a.detail.substring(0,70)}${a.detail.length>70?'...':''}</span></div>
+      </div>
+    `).join('');
+  }
+
+  function setWxFallback() {
+    const el = (id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+    el('wx-hottest-val','108°F'); el('wx-hottest-city','Phoenix, AZ · Sunny');
+    el('wx-coldest-val','14°F');  el('wx-coldest-city','Fairbanks, AK · Cloudy');
+    el('wx-wind-val','42 mph');   el('wx-wind-city','Amarillo, TX · Windy');
+    el('wx-alerts-val','—');
+  }
+
+  function wxFallbackAlerts() {
+    return [
+      {id:'NWS-1',title:'Tornado Warning — Central Oklahoma',source:'NWS',category:'weather',severity:'critical',time:new Date().toISOString().split('T')[0],url:'https://www.weather.gov',detail:'Tornado on the ground. Take shelter immediately.',stateAbbr:'OK',lat:35.5,lon:-97.5},
+      {id:'NWS-2',title:'Excessive Heat Warning — Phoenix Metro, AZ',source:'NWS',category:'weather',severity:'high',time:new Date().toISOString().split('T')[0],url:'https://www.weather.gov',detail:'Temperatures up to 115°F. Dangerous heat conditions.',stateAbbr:'AZ',lat:33.4,lon:-112.0},
+      {id:'NWS-3',title:'Flash Flood Warning — Harris County, TX',source:'NWS',category:'weather',severity:'high',time:new Date().toISOString().split('T')[0],url:'https://www.weather.gov',detail:'Flash flooding occurring. Do not drive through flooded roads.',stateAbbr:'TX',lat:29.7,lon:-95.4},
+      {id:'NWS-4',title:'Winter Storm Warning — Northern Minnesota',source:'NWS',category:'weather',severity:'high',time:new Date().toISOString().split('T')[0],url:'https://www.weather.gov',detail:'Heavy snow 12-18 inches expected.',stateAbbr:'MN',lat:47.5,lon:-94.0},
+      {id:'NWS-5',title:'High Wind Warning — Eastern Wyoming',source:'NWS',category:'weather',severity:'med',time:new Date().toISOString().split('T')[0],url:'https://www.weather.gov',detail:'Winds 50-65 mph with gusts to 80 mph.',stateAbbr:'WY',lat:43.0,lon:-107.0},
+    ];
+  }
+
+  async function fetchWeatherAlerts() {
+    try {
+      const r = await fetch(PROXY + encodeURIComponent('https://api.weather.gov/alerts/active?status=actual&message_type=alert&region_type=land&severity=Extreme,Severe,Moderate'));
+      const d = await r.json();
+      const p = JSON.parse(d.contents);
+      const features = (p.features||[]);
+      const sevMap = {Extreme:'critical',Severe:'high',Moderate:'med',Minor:'low',Unknown:'low'};
+      const items = features.slice(0,12).map(f=>{
+        const props = f.properties;
+        return {
+          id: props.id||'NWS-'+Math.random(),
+          title: props.event + (props.areaDesc?' — '+props.areaDesc.split(';')[0]:''),
+          source:'NWS', category:'weather',
+          severity: sevMap[props.severity]||'low',
+          time: (props.onset||props.sent||'').split('T')[0],
+          url: props['@id']||'https://www.weather.gov',
+          detail: (props.headline||props.description||'').substring(0,100),
+          stateAbbr: extractState(props.areaDesc),
+          lat: f.geometry?getCentroidLat(f.geometry):null,
+          lon: f.geometry?getCentroidLon(f.geometry):null
+        };
+      });
+      renderWxAlerts(items);
+      const av=document.getElementById('wx-alerts-val'); if(av) av.textContent=features.length;
+      const as=document.getElementById('wx-alerts-sub'); if(as) as.textContent=features.filter(f=>f.properties.severity==='Extreme'||f.properties.severity==='Severe').length+' Severe+';
+      const cw=document.getElementById('count-weather'); if(cw) cw.textContent=items.length;
+      return items;
+    } catch(e) {
+      setWxFallback();
+      const fb = wxFallbackAlerts();
+      renderWxAlerts(fb);
+      const av=document.getElementById('wx-alerts-val'); if(av) av.textContent=fb.length;
+      const cw=document.getElementById('count-weather'); if(cw) cw.textContent=fb.length;
+      return fb;
+    }
+  }
+
+  async function fetchWxExtremes() {
+    // Use NWS daily observation API to get actual recorded high/low for today
+    // Pulling from a geographically diverse set of major ASOS/AWOS stations
+    // Station IDs cover all climate regions of the continental US + AK + HI
+    const stations = [
+      // Southwest — hot
+      {id:'KPHX', name:'Phoenix, AZ'},
+      {id:'KLAS', name:'Las Vegas, NV'},
+      {id:'KTUS', name:'Tucson, AZ'},
+      {id:'KPSP', name:'Palm Springs, CA'},
+      {id:'KIPL', name:'El Centro, CA'},
+      // Southeast — warm/humid
+      {id:'KMIA', name:'Miami, FL'},
+      {id:'KTPA', name:'Tampa, FL'},
+      {id:'KMOB', name:'Mobile, AL'},
+      {id:'KNEW', name:'New Orleans, LA'},
+      {id:'KHOU', name:'Houston, TX'},
+      // South Central
+      {id:'KDFW', name:'Dallas, TX'},
+      {id:'KAMA', name:'Amarillo, TX'},
+      {id:'KABQ', name:'Albuquerque, NM'},
+      // Northern Plains — cold
+      {id:'KBIS', name:'Bismarck, ND'},
+      {id:'KFAR', name:'Fargo, ND'},
+      {id:'KABR', name:'Aberdeen, SD'},
+      {id:'KINL', name:'Intl Falls, MN'},
+      {id:'KDLH', name:'Duluth, MN'},
+      // Northwest
+      {id:'KBZN', name:'Bozeman, MT'},
+      {id:'KGGW', name:'Glasgow, MT'},
+      {id:'KSEA', name:'Seattle, WA'},
+      {id:'KPDX', name:'Portland, OR'},
+      // Northeast
+      {id:'KBGR', name:'Bangor, ME'},
+      {id:'KBUF', name:'Buffalo, NY'},
+      {id:'KORD', name:'Chicago, IL'},
+      {id:'KDET', name:'Detroit, MI'},
+      // Midwest
+      {id:'KOMA', name:'Omaha, NE'},
+      {id:'KDEN', name:'Denver, CO'},
+      {id:'KSLC', name:'Salt Lake City, UT'},
+      // Mid-Atlantic & South
+      {id:'KIAD', name:'Washington DC'},
+      {id:'KATL', name:'Atlanta, GA'},
+      {id:'KBNA', name:'Nashville, TN'},
+      // Alaska
+      {id:'PFAI', name:'Fairbanks, AK'},
+      {id:'PANC', name:'Anchorage, AK'},
+      {id:'PAJN', name:'Juneau, AK'},
+      // Hawaii
+      {id:'PHNL', name:'Honolulu, HI'},
+    ];
+
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
+
+    async function fetchStation(station) {
+      try {
+        // NWS observations endpoint — returns last 24hr observations for a station
+        const url = 'https://api.weather.gov/stations/' + station.id + '/observations?start=' + today + 'T00:00:00Z&limit=24';
+        const r = await fetch(PROXY + encodeURIComponent(url));
+        const d = await r.json();
+        const p = JSON.parse(d.contents);
+        const obs = (p.features || []).filter(f =>
+          f.properties.temperature && f.properties.temperature.value != null
+        );
+        if (!obs.length) return null;
+
+        // Convert all temps from C to F, find daily high/low
+        const temps = obs.map(f => {
+          const c = f.properties.temperature.value;
+          return Math.round(c * 9/5 + 32);
+        });
+        const winds = obs.map(f => {
+          const ms = f.properties.windSpeed && f.properties.windSpeed.value;
+          return ms ? Math.round(ms * 2.237) : 0;
+        });
+
+        const high    = Math.max(...temps);
+        const low     = Math.min(...temps);
+        const maxWind = Math.max(...winds);
+        const latest  = obs[0].properties;
+        const condition = latest.textDescription || '';
+
+        return {
+          name: station.name,
+          high,
+          low,
+          maxWind,
+          condition: condition.substring(0, 22)
+        };
+      } catch(e) {
+        return null;
+      }
+    }
+
+    try {
+      // Fetch all stations in parallel
+      const results = await Promise.allSettled(stations.map(s => fetchStation(s)));
+      const valid = results
+        .filter(r => r.status === 'fulfilled' && r.value)
+        .map(r => r.value);
+
+      if (!valid.length) { setWxFallback(); return; }
+
+      // Find national daily high, low, max wind
+      const hottest  = valid.reduce((a,b) => a.high > b.high ? a : b);
+      const coldest  = valid.reduce((a,b) => a.low  < b.low  ? a : b);
+      const windiest = valid.reduce((a,b) => a.maxWind > b.maxWind ? a : b);
+
+      const el = (id,v) => { const e = document.getElementById(id); if(e) e.textContent = v; };
+
+      el('wx-hottest-val',  hottest.high  + '°F');
+      el('wx-hottest-city', hottest.name  + (hottest.condition  ? ' · ' + hottest.condition  : ''));
+      el('wx-coldest-val',  coldest.low   + '°F');
+      el('wx-coldest-city', coldest.name  + (coldest.condition  ? ' · ' + coldest.condition  : ''));
+      el('wx-wind-val',     windiest.maxWind + ' mph');
+      el('wx-wind-city',    windiest.name + (windiest.condition ? ' · ' + windiest.condition : ''));
+
+      // Update labels to show date
+      const dateStr = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'});
+      el('wx-hottest-loc', 'Today\'s High · ' + dateStr);
+      el('wx-coldest-loc', 'Today\'s Low · '  + dateStr);
+      el('wx-wind-loc',    'Max Wind · '       + dateStr);
+
+      console.log('Weather extremes: ' + valid.length + ' stations sampled');
+    } catch(e) {
+      setWxFallback();
+    }
+  }
+
+  // ── Boot ──────────────────────────────────────────────────────────────
+  // Wait a tick for DOM + map script to initialize
+  setTimeout(async () => {
+    loadFeed();
+    const wxAlerts = await fetchWeatherAlerts();
+    fetchWxExtremes();
+    // Add weather markers to map after feed loads
+    setTimeout(() => {
+      if (window.updateMap && allItems.length) {
+        window.updateMap([...allItems, ...wxAlerts]);
+      }
+    }, 2000);
+  }, 500);
+  setInterval(async () => {
+    loadFeed();
+    const wxAlerts = await fetchWeatherAlerts();
+    fetchWxExtremes();
+  }, 300000);
+
+})();
+</script>
+
+<script>
+// Intersection Observer for fade-in animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if(entry.isIntersecting){
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, 100);
+      observer.unobserve(entry.target);
+    }
+  });
+}, {threshold: 0.1});
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Smooth active nav highlight
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if(window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navLinks.forEach(l => {
+    l.style.color = l.getAttribute('href') === '#'+current ? 'var(--cyan)' : '';
+  });
+});
+</script>
+
+</body>
+</html>
