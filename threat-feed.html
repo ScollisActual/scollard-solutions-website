@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scollard Solutions — US Threat Feed</title>
-<meta name="description" content="Live US threat intelligence feed — CISA, FEMA, USGS, NWS, NVD. Cyber, weather, seismic, and disaster data.">
+<title>Scollard Solutions | US Threat Feed</title>
+<meta name="description" content="Live US threat intelligence feed: CISA, FEMA, USGS, NWS, NVD. Cyber, weather, seismic, and disaster data.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -17,7 +17,7 @@
   --border:#182318;
   --borderhi:#213021;
   --t0:#d8e8d0;
-  --t1:#7a9878;
+  --t1:#a8c4a0;
   --t2:#3a5438;
   --cyan:#3daa5c;
   --cyandk:#236638;
@@ -147,6 +147,8 @@ nav{
   align-items:center;
   white-space:nowrap;
   flex-shrink:0;
+  position:relative;
+  z-index:2;
 }
 
 .ticker-scroll{
@@ -947,22 +949,68 @@ footer{
   letter-spacing:0.06em;
 }
 
+.mobile-menu-btn{display:none;flex-direction:column;justify-content:center;gap:5px;width:32px;height:32px;margin-left:auto;background:none;border:1px solid var(--borderhi);cursor:pointer;padding:0;}
+.mobile-menu-btn span{display:block;width:16px;height:2px;background:var(--cyan);margin:0 auto;transition:transform .2s,opacity .2s;}
+.mobile-menu-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.mobile-menu-btn.open span:nth-child(2){opacity:0;}
+.mobile-menu-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
 /* RESPONSIVE */
 @media(max-width:900px){
-  .hero-inner{grid-template-columns:1fr;gap:40px;}
-  .hero-card{max-width:400px;}
-  .services-grid{grid-template-columns:1fr;}
-  .tabletop-inner{grid-template-columns:1fr;}
-  .projects-grid{grid-template-columns:1fr 1fr;}
-  .about-inner{grid-template-columns:1fr;}
-  .contact-inner{grid-template-columns:1fr;}
   nav{padding:0 16px;}
-  section{padding:60px 16px;}
+  section{padding:40px 16px;}
+  .threat-page-hero{padding:10px 16px;gap:10px;flex-wrap:wrap;}
+  .wx-stats-grid{grid-template-columns:1fr 1fr !important;}
+  .feed-grid-layout{grid-template-columns:1fr !important;}
 }
 
 @media(max-width:600px){
-  .projects-grid{grid-template-columns:1fr;}
+  /* Nav: hide desktop links, show hamburger */
   .nav-links{display:none;}
+  .nav-status{display:none;}
+  .nav-sep{display:none;}
+  .mobile-menu-btn{display:flex !important;}
+  nav{padding:0 12px;gap:8px;}
+  .nav-logo > span{font-size:13px !important;}
+
+  /* Mobile nav drawer */
+  .nav-links.mobile-open{display:flex !important;position:fixed;top:52px;left:0;right:0;bottom:0;background:var(--bg0);flex-direction:column;padding:16px;gap:2px;z-index:200;overflow-y:auto;height:auto;}
+  .nav-links.mobile-open .nav-link{padding:14px 12px;border-bottom:1px solid var(--border);font-size:12px;width:100%;text-align:left;}
+
+  /* Ticker */
+  .ticker-bar{height:24px;}
+  .ticker-label{padding:0 8px;font-size:8px;}
+  .ticker-item{font-size:8px;}
+
+  /* Page header bar */
+  .threat-page-hero{padding:8px 12px;gap:6px;top:76px;margin-top:76px;}
+  .threat-page-title{font-size:15px;}
+  .back-btn{font-size:8px;padding:4px 8px;}
+  #feed-last-update{display:none;}
+
+  /* Section */
+  section{padding:16px 12px;}
+  #threatfeed{padding-top:16px !important;}
+  .section-header{flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .section-title{font-size:22px;}
+  .section-num{font-size:10px;}
+
+  /* Filter buttons */
+  .feed-filter{font-size:8px;padding:3px 8px;}
+
+  /* Weather stats: 2 columns */
+  .wx-stats-grid{grid-template-columns:1fr 1fr !important;}
+  .wx-stat-val{font-size:24px;}
+
+  /* Feed grid: single column */
+  .feed-grid-layout{grid-template-columns:1fr !important;}
+
+  /* Feed items scroll height on mobile */
+  #feed-items{max-height:360px;}
+  #wx-alerts-list{max-height:160px;}
+
+  /* Footer */
+  footer{flex-direction:column;gap:8px;text-align:center;padding:20px 16px;}
 }
 
 /* FADE IN ANIMATION */
@@ -985,8 +1033,9 @@ body { overflow-y: auto; height: auto; }
   align-items: center;
   gap: 16px;
   position: sticky;
-  top: 52px;
+  top: 78px;
   z-index: 90;
+  margin-top: 78px;
 }
 .threat-page-title {
   font-family: 'Barlow Condensed', sans-serif;
@@ -1033,22 +1082,25 @@ body { overflow-y: auto; height: auto; }
     <a href="#threatfeed" class="nav-link" onclick="document.querySelector('.feed-filter[data-filter=\'fema\']').click()">FEMA</a>
     <a href="#threatfeed" class="nav-link" onclick="document.querySelector('.feed-filter[data-filter=\'infra\']').click()">Seismic</a>
   </div>
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- TICKER -->
 <div class="ticker-bar">
   <div class="ticker-label">&#9632; INTEL FEED</div>
   <div class="ticker-scroll">
-    <div class="ticker-item"><span class="ticker-dot"></span>Threat &amp; Technical Assessments — Accepting Engagements</div>
-    <div class="ticker-item"><span class="ticker-dot g"></span>Hard Target Course — OPSEC Training Now Available</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>Preparedness Tabletop — Now Enrolling</div>
-    <div class="ticker-item"><span class="ticker-dot g"></span>All-Source Analysis — Individual & Organizational Engagements</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>Mentorship — Limited Availability | Direct Inquiry Required</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>Threat &amp; Technical Assessments — Accepting Engagements</div>
-    <div class="ticker-item"><span class="ticker-dot g"></span>Hard Target Course — OPSEC Training Now Available</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>Preparedness Tabletop — Now Enrolling</div>
-    <div class="ticker-item"><span class="ticker-dot g"></span>All-Source Analysis — Individual & Organizational Engagements</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>Mentorship — Limited Availability | Direct Inquiry Required</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Threat &amp; Technical Assessments: Accepting Engagements</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>Hard Target Course: OPSEC Training Now Available</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Preparedness Tabletop: Now Enrolling</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>All-Source Analysis: Individual & Organizational Engagements</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Mentorship: Limited Availability | Direct Inquiry Required</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Threat &amp; Technical Assessments: Accepting Engagements</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>Hard Target Course: OPSEC Training Now Available</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Preparedness Tabletop: Now Enrolling</div>
+    <div class="ticker-item"><span class="ticker-dot g"></span>All-Source Analysis: Individual & Organizational Engagements</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Mentorship: Limited Availability | Direct Inquiry Required</div>
   </div>
 
 </div>
@@ -1127,28 +1179,28 @@ body { overflow-y: auto; height: auto; }
     </div>
 
     <!-- TEMP + WIND EXTREMES ROW -->
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);">
+    <div class="wx-stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);">
       <div class="wx-stat-cell">
         <div class="wx-stat-icon" style="color:var(--red);">▲</div>
-        <div id="wx-hottest-val" class="wx-stat-val" style="color:var(--red);">—°F</div>
+        <div id="wx-hottest-val" class="wx-stat-val" style="color:var(--red);">-°F</div>
         <div id="wx-hottest-loc" class="wx-stat-label">Today's High</div>
         <div id="wx-hottest-city" class="wx-stat-sub">Loading...</div>
       </div>
       <div class="wx-stat-cell" style="border-left:1px solid var(--border);">
         <div class="wx-stat-icon" style="color:var(--cyan);">▼</div>
-        <div id="wx-coldest-val" class="wx-stat-val" style="color:var(--cyan);">—°F</div>
+        <div id="wx-coldest-val" class="wx-stat-val" style="color:var(--cyan);">-°F</div>
         <div id="wx-coldest-loc" class="wx-stat-label">Today's Low</div>
         <div id="wx-coldest-city" class="wx-stat-sub">Loading...</div>
       </div>
       <div class="wx-stat-cell" style="border-left:1px solid var(--border);">
         <div class="wx-stat-icon" style="color:var(--yellow);">~</div>
-        <div id="wx-wind-val" class="wx-stat-val" style="color:var(--yellow);">— mph</div>
+        <div id="wx-wind-val" class="wx-stat-val" style="color:var(--yellow);">- mph</div>
         <div id="wx-wind-loc" class="wx-stat-label">Max Wind</div>
         <div id="wx-wind-city" class="wx-stat-sub">Loading...</div>
       </div>
       <div class="wx-stat-cell" style="border-left:1px solid var(--border);">
         <div class="wx-stat-icon" style="color:var(--orange);">⚠</div>
-        <div id="wx-alerts-val" class="wx-stat-val" style="color:var(--orange);">—</div>
+        <div id="wx-alerts-val" class="wx-stat-val" style="color:var(--orange);">-</div>
         <div class="wx-stat-label">Active Alerts</div>
         <div id="wx-alerts-sub" class="wx-stat-sub">NWS Warnings</div>
       </div>
@@ -1164,7 +1216,7 @@ body { overflow-y: auto; height: auto; }
   </div>
 
   <!-- FEED GRID -->
-  <div style="display:grid;grid-template-columns:1fr 300px;gap:1px;background:var(--border);border:1px solid var(--border);" class="fade-in">
+  <div class="feed-grid-layout fade-in" style="display:grid;grid-template-columns:1fr 300px;gap:1px;background:var(--border);border:1px solid var(--border);">
 
     <!-- MAIN FEED LIST -->
     <div id="feed-list" style="background:var(--bg1);display:flex;flex-direction:column;">
@@ -1185,11 +1237,11 @@ body { overflow-y: auto; height: auto; }
         <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);">Source Status</span>
       </div>
       <div id="source-status">
-        <div class="src-row"><div class="src-dot active"></div><div class="src-name">CISA Alerts</div><div class="src-count" id="count-cyber">—</div></div>
-        <div class="src-row"><div class="src-dot active"></div><div class="src-name">NOAA / NWS</div><div class="src-count" id="count-weather">—</div></div>
-        <div class="src-row"><div class="src-dot active"></div><div class="src-name">FEMA Disasters</div><div class="src-count" id="count-fema">—</div></div>
-        <div class="src-row"><div class="src-dot active"></div><div class="src-name">USGS Earthquakes</div><div class="src-count" id="count-infra">—</div></div>
-        <div class="src-row"><div class="src-dot active"></div><div class="src-name">NVD / CVE Feed</div><div class="src-count" id="count-cve">—</div></div>
+        <div class="src-row"><div class="src-dot active"></div><div class="src-name">CISA Alerts</div><div class="src-count" id="count-cyber">-</div></div>
+        <div class="src-row"><div class="src-dot active"></div><div class="src-name">NOAA / NWS</div><div class="src-count" id="count-weather">-</div></div>
+        <div class="src-row"><div class="src-dot active"></div><div class="src-name">FEMA Disasters</div><div class="src-count" id="count-fema">-</div></div>
+        <div class="src-row"><div class="src-dot active"></div><div class="src-name">USGS Earthquakes</div><div class="src-count" id="count-infra">-</div></div>
+        <div class="src-row"><div class="src-dot active"></div><div class="src-name">NVD / CVE Feed</div><div class="src-count" id="count-cve">-</div></div>
       </div>
       <div style="padding:10px 14px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:auto;">
         <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);">Threat Level</span>
@@ -1198,14 +1250,14 @@ body { overflow-y: auto; height: auto; }
         <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px;">
           <div>
             <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);margin-bottom:4px;letter-spacing:.08em;text-transform:uppercase;">Active Alerts</div>
-            <div id="total-alerts" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:36px;line-height:1;color:var(--cyan);">—</div>
+            <div id="total-alerts" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:36px;line-height:1;color:var(--cyan);">-</div>
           </div>
-          <div id="threat-ring" style="width:48px;height:48px;border-radius:50%;border:2px solid var(--yellow);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:var(--yellow);">—</div>
+          <div id="threat-ring" style="width:48px;height:48px;border-radius:50%;border:2px solid var(--yellow);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:var(--yellow);">-</div>
         </div>
-        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--red)"></div><div class="sev-label">Critical</div><div id="sev-crit" class="sev-val">—</div></div>
-        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--orange)"></div><div class="sev-label">High</div><div id="sev-high" class="sev-val">—</div></div>
-        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--yellow)"></div><div class="sev-label">Medium</div><div id="sev-med" class="sev-val">—</div></div>
-        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--green)"></div><div class="sev-label">Low / Info</div><div id="sev-low" class="sev-val">—</div></div>
+        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--red)"></div><div class="sev-label">Critical</div><div id="sev-crit" class="sev-val">-</div></div>
+        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--orange)"></div><div class="sev-label">High</div><div id="sev-high" class="sev-val">-</div></div>
+        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--yellow)"></div><div class="sev-label">Medium</div><div id="sev-med" class="sev-val">-</div></div>
+        <div class="mini-sev-row"><div class="sev-dot" style="background:var(--green)"></div><div class="sev-label">Low / Info</div><div id="sev-low" class="sev-val">-</div></div>
       </div>
     </div>
   </div>
@@ -1419,31 +1471,31 @@ body { overflow-y: auto; height: auto; }
 
   // ── Government aircraft database ─────────────────────────────────────────
   var GOV_CALLSIGNS = {
-    'AIR FORCE 1': { tier:'PRESIDENTIAL', label:'Air Force One',   desc:'POTUS transport — VC-25A (Boeing 747)',              color:'#e8d44d', icon:'🇺🇸' },
-    'AIR FORCE 2': { tier:'PRESIDENTIAL', label:'Air Force Two',   desc:'VP transport — VC-25B (Boeing 757)',                color:'#e8d44d', icon:'🇺🇸' },
-    'MARINE 1':    { tier:'PRESIDENTIAL', label:'Marine One',      desc:'Presidential helicopter — VH-3D/VH-60N',            color:'#e8d44d', icon:'🚁' },
+    'AIR FORCE 1': { tier:'PRESIDENTIAL', label:'Air Force One',   desc:'POTUS transport: VC-25A (Boeing 747)',              color:'#e8d44d', icon:'🇺🇸' },
+    'AIR FORCE 2': { tier:'PRESIDENTIAL', label:'Air Force Two',   desc:'VP transport: VC-25B (Boeing 757)',                color:'#e8d44d', icon:'🇺🇸' },
+    'MARINE 1':    { tier:'PRESIDENTIAL', label:'Marine One',      desc:'Presidential helicopter: VH-3D/VH-60N',            color:'#e8d44d', icon:'🚁' },
     'MARINE 2':    { tier:'PRESIDENTIAL', label:'Marine Two',      desc:'VP helicopter',                                     color:'#e8d44d', icon:'🚁' },
-    'NIGHTWATCH':  { tier:'STRATEGIC',    label:'NIGHTWATCH',      desc:'E-4B NAOC — Doomsday plane / nuclear command post', color:'#c03428', icon:'☢'  },
-    'TACAMO':      { tier:'STRATEGIC',    label:'TACAMO',          desc:'E-6B Mercury — Nuclear comms relay (US Navy)',      color:'#c03428', icon:'☢'  },
+    'NIGHTWATCH':  { tier:'STRATEGIC',    label:'NIGHTWATCH',      desc:'E-4B NAOC: Doomsday plane / nuclear command post', color:'#c03428', icon:'☢'  },
+    'TACAMO':      { tier:'STRATEGIC',    label:'TACAMO',          desc:'E-6B Mercury: Nuclear comms relay (US Navy)',      color:'#c03428', icon:'☢'  },
     'VENUS':       { tier:'STRATEGIC',    label:'VENUS (NAOC)',    desc:'E-4B National Airborne Operations Center',          color:'#c03428', icon:'☢'  },
   };
 
   var GOV_PREFIXES = {
-    'SAM':     { tier:'VIP',      label:'Special Air Mission', desc:'USAF VIP transport — Cabinet/senior officials', color:'#e8882a', icon:'⭐' },
-    'SPAR':    { tier:'VIP',      label:'SPAR',                desc:'USAF Special Air Mission — senior official',    color:'#e8882a', icon:'⭐' },
-    'RCH':     { tier:'MILITARY', label:'Reach (AMC)',         desc:'Air Mobility Command — strategic airlift',      color:'#3daa5c', icon:'✈' },
+    'SAM':     { tier:'VIP',      label:'Special Air Mission', desc:'USAF VIP transport: Cabinet/senior officials', color:'#e8882a', icon:'⭐' },
+    'SPAR':    { tier:'VIP',      label:'SPAR',                desc:'USAF Special Air Mission: senior official',    color:'#e8882a', icon:'⭐' },
+    'RCH':     { tier:'MILITARY', label:'Reach (AMC)',         desc:'Air Mobility Command: strategic airlift',      color:'#3daa5c', icon:'✈' },
     'ATLAS':   { tier:'MILITARY', label:'Atlas (AMC)',         desc:'Air Mobility Command airlift',                  color:'#3daa5c', icon:'✈' },
     'NOBLE':   { tier:'MILITARY', label:'Noble',               desc:'USAF fighter/attack sortie',                    color:'#c87830', icon:'🛩' },
     'VIPER':   { tier:'MILITARY', label:'Viper',               desc:'F-16 Fighting Falcon',                          color:'#c87830', icon:'🛩' },
     'RAPTOR':  { tier:'MILITARY', label:'Raptor',              desc:'F-22 Raptor',                                   color:'#c87830', icon:'🛩' },
     'EAGLE':   { tier:'MILITARY', label:'Eagle',               desc:'F-15 Eagle',                                    color:'#c87830', icon:'🛩' },
     'GHOST':   { tier:'MILITARY', label:'Ghost',               desc:'B-2 Spirit stealth bomber',                     color:'#c03428', icon:'🛩' },
-    'COBRA':   { tier:'INTEL',    label:'Cobra',               desc:'RC-135 Rivet Joint — SIGINT',                   color:'#8aaa38', icon:'👁' },
-    'JAKE':    { tier:'INTEL',    label:'Jake',                desc:'U-2 Dragon Lady — high altitude recon',         color:'#8aaa38', icon:'👁' },
+    'COBRA':   { tier:'INTEL',    label:'Cobra',               desc:'RC-135 Rivet Joint: SIGINT',                   color:'#8aaa38', icon:'👁' },
+    'JAKE':    { tier:'INTEL',    label:'Jake',                desc:'U-2 Dragon Lady: high altitude recon',         color:'#8aaa38', icon:'👁' },
     'FORTE':   { tier:'INTEL',    label:'FORTE',               desc:'Signals intelligence platform',                 color:'#8aaa38', icon:'👁' },
-    'OMAHA':   { tier:'FEDERAL',  label:'Omaha (FBI)',         desc:'FBI aviation — surveillance/operations',        color:'#b8a018', icon:'🔎' },
+    'OMAHA':   { tier:'FEDERAL',  label:'Omaha (FBI)',         desc:'FBI aviation: surveillance/operations',        color:'#b8a018', icon:'🔎' },
     'CATFISH': { tier:'FEDERAL',  label:'Catfish (DEA)',       desc:'DEA aviation operations',                       color:'#b8a018', icon:'🔎' },
-    'NIGHT':   { tier:'FEDERAL',  label:'Night (CBP)',         desc:'Customs & Border Protection — surveillance',    color:'#b8a018', icon:'🔎' },
+    'NIGHT':   { tier:'FEDERAL',  label:'Night (CBP)',         desc:'Customs & Border Protection: surveillance',    color:'#b8a018', icon:'🔎' },
     'RAMBO':   { tier:'FEDERAL',  label:'Rambo (CBP)',         desc:'CBP air interdiction',                          color:'#b8a018', icon:'🔎' },
     'HOOVER':  { tier:'FEDERAL',  label:'Hoover (FBI)',        desc:'FBI surveillance aircraft',                     color:'#b8a018', icon:'🔎' },
     'REACH':   { tier:'MEDEVAC',  label:'Reach (USAF Med)',   desc:'USAF aeromedical evacuation',                   color:'#5abf50', icon:'🏥' },
@@ -1452,7 +1504,7 @@ body { overflow-y: auto; height: auto; }
   };
 
   var GOV_ICAO = {
-    'ae01d8':{ tier:'STRATEGIC',    label:'E-4B NAOC', desc:'Doomsday plane — National Airborne Operations Center', color:'#c03428', icon:'☢'  },
+    'ae01d8':{ tier:'STRATEGIC',    label:'E-4B NAOC', desc:'Doomsday plane: National Airborne Operations Center', color:'#c03428', icon:'☢'  },
     'ae01d9':{ tier:'STRATEGIC',    label:'E-4B NAOC', desc:'National Airborne Operations Center',                  color:'#c03428', icon:'☢'  },
     'ae0000':{ tier:'PRESIDENTIAL', label:'VC-25A',    desc:'Air Force One (82-8000)',                              color:'#e8d44d', icon:'🇺🇸' },
     'ae0001':{ tier:'PRESIDENTIAL', label:'VC-25A',    desc:'Air Force One (92-9000)',                              color:'#e8d44d', icon:'🇺🇸' },
@@ -1492,10 +1544,10 @@ body { overflow-y: auto; height: auto; }
       var altM     = ac[7];
       var callsign = ((ac[1] || '') + '').trim() || 'N/A';
       var icao     = ((ac[0] || '') + '').toLowerCase();
-      var country  = ac[2] || '—';
+      var country  = ac[2] || '-';
       var velMs    = ac[9] || 0;
       var vrate    = ac[11];
-      var squawk   = ac[14] || '—';
+      var squawk   = ac[14] || '-';
       var onGround = ac[8];
       var geoAltM  = ac[13];
 
@@ -1555,7 +1607,7 @@ body { overflow-y: auto; height: auto; }
       var va     = vertArrow(vrate);
       var tierColor = govInfo ? (tierColors[govInfo.tier] || 'var(--cyan)') : 'var(--cyan)';
 
-      // Aircraft group — start at PREVIOUS position
+      // Aircraft group: start at PREVIOUS position
       var g = aircraftG.append('g')
         .attr('transform', 'translate(' + startPx + ',' + startPy + ')')
         .style('cursor', 'pointer');
@@ -1759,7 +1811,7 @@ body { overflow-y: auto; height: auto; }
 
 
 <script>
-// ─── MARKET TICKER — Stocks + Macro + Crypto ─────────────────────────────
+// ─── MARKET TICKER: Stocks + Macro + Crypto ─────────────────────────────
 (function() {
   'use strict';
 
@@ -1810,7 +1862,7 @@ body { overflow-y: auto; height: auto; }
   function arrow(chg) {
     if (chg > 0) return '<span style="color:#5abf50">▲ +' + chg.toFixed(2) + '%</span>';
     if (chg < 0) return '<span style="color:#c03428">▼ '  + chg.toFixed(2) + '%</span>';
-    return            '<span style="color:#7a9878">— '  + chg.toFixed(2) + '%</span>';
+    return            '<span style="color:#7a9878">~ '  + chg.toFixed(2) + '%</span>';
   }
 
   function catColor(cat) {
@@ -1945,7 +1997,7 @@ body { overflow-y: auto; height: auto; }
   async function fetchMacro() {
     var items = [];
 
-    // US National Debt — Treasury Fiscal Data API (free, no key)
+    // US National Debt: Treasury Fiscal Data API (free, no key)
     try {
       var url = 'https://api.fiscaldata.treasury.gov/services/api/v1/debt/outstanding_debt?fields=record_date,debt_outstanding_amt&sort=-record_date&limit=1';
       var r = await fetch(PROXY + encodeURIComponent(url));
@@ -1958,7 +2010,7 @@ body { overflow-y: auto; height: auto; }
       }
     } catch(e) {}
 
-    // EIA Weekly Gas Price — free API (no key needed for weekly average)
+    // EIA Weekly Gas Price: free API (no key needed for weekly average)
     try {
       var gasUrl = 'https://api.eia.gov/v2/petroleum/pri/gnd/data/?frequency=weekly&data[0]=value&facets[product][]=EPM0&facets[duoarea][]=NUS&sort[0][column]=period&sort[0][direction]=desc&length=1';
       var gr = await fetch(PROXY + encodeURIComponent(gasUrl));
@@ -1970,7 +2022,7 @@ body { overflow-y: auto; height: auto; }
       }
     } catch(e) {}
 
-    // Fed Funds Rate — FRED API (free, no key for some endpoints)
+    // Fed Funds Rate: FRED API (free, no key for some endpoints)
     try {
       var fredUrl = 'https://api.stlouisfed.org/fred/series/observations?series_id=FEDFUNDS&limit=1&sort_order=desc&file_type=json&api_key=f5e27c2ac85ab1db93d0c6c4eee7b3e8';
       var fr2 = await fetch(PROXY + encodeURIComponent(fredUrl));
@@ -1980,7 +2032,7 @@ body { overflow-y: auto; height: auto; }
         items.push({ label:'FED RATE', value: fp2.observations[0].value + '%', color:'#8aaa38' });
       }
     } catch(e) {
-      // Fallback — Fed rate changes infrequently, hardcode current if API fails
+      // Fallback: Fed rate changes infrequently, hardcode current if API fails
       items.push({ label:'FED RATE', value:'5.33%', color:'#8aaa38' });
     }
 
@@ -2122,7 +2174,7 @@ body { overflow-y: auto; height: auto; }
       const p = JSON.parse(d.contents);
       return (p.vulnerabilities||[]).slice(0,8).map(v=>({
         id: v.cveID,
-        title: v.vulnerabilityName + ' — ' + v.vendorProject,
+        title: v.vulnerabilityName + ': ' + v.vendorProject,
         source: 'CISA KEV',
         category: 'cyber',
         severity: 'high',
@@ -2155,7 +2207,7 @@ body { overflow-y: auto; height: auto; }
         .slice(0,6)
         .map(f=>({
           id: f.id,
-          title: 'M'+(f.properties.mag||0).toFixed(1)+' Earthquake — '+f.properties.place,
+          title: 'M'+(f.properties.mag||0).toFixed(1)+' Earthquake: '+f.properties.place,
           source: 'USGS',
           category: 'infra',
           severity: (f.properties.mag||0)>=5?'high':(f.properties.mag||0)>=3.5?'med':'low',
@@ -2171,14 +2223,11 @@ body { overflow-y: auto; height: auto; }
 
   // ── FEMA Disaster Declarations ────────────────────────────────────────
   async function fetchFEMA() {
-    try {
-      const url = 'https://www.fema.gov/api/open/v2/disasterDeclarationsSummaries?$orderby=declarationDate%20desc&$top=8&$select=disasterNumber,declarationDate,incidentType,state,designatedArea,declarationType';
-      const r = await fetch(PROXY + encodeURIComponent(url));
-      const d = await r.json();
-      const p = JSON.parse(d.contents);
-      return (p.DisasterDeclarationsSummaries||[]).slice(0,7).map(dec=>({
+    const url = 'https://www.fema.gov/api/open/v2/disasterDeclarationsSummaries?$orderby=declarationDate%20desc&$top=8&$select=disasterNumber,declarationDate,incidentType,state,designatedArea,declarationType';
+    function mapDeclarations(items) {
+      return items.slice(0,7).map(dec=>({
         id: 'FEMA-DR-'+dec.disasterNumber,
-        title: dec.incidentType+' — '+dec.designatedArea+', '+dec.state,
+        title: dec.incidentType+': '+dec.designatedArea+', '+dec.state,
         source: 'FEMA',
         category: 'fema',
         severity: dec.declarationType==='DR'?'high':'med',
@@ -2188,7 +2237,24 @@ body { overflow-y: auto; height: auto; }
         stateAbbr: dec.state,
         lat: null, lon: null
       }));
-    } catch(e) { return fallbackFEMA(); }
+    }
+    // Primary: corsproxy.io (returns raw JSON, better for government APIs)
+    try {
+      const r = await fetch('https://corsproxy.io/?'+encodeURIComponent(url));
+      if(!r.ok) throw new Error();
+      const p = await r.json();
+      const items = p.DisasterDeclarationsSummaries||[];
+      if(items.length) return mapDeclarations(items);
+    } catch(e) {}
+    // Secondary: allorigins
+    try {
+      const r = await fetch(PROXY+encodeURIComponent(url));
+      const d = await r.json();
+      const p = JSON.parse(d.contents);
+      const items = p.DisasterDeclarationsSummaries||[];
+      if(items.length) return mapDeclarations(items);
+    } catch(e) {}
+    return fallbackFEMA();
   }
 
   // ── NVD Recent CVEs ───────────────────────────────────────────────────
@@ -2205,7 +2271,7 @@ body { overflow-y: auto; height: auto; }
         const desc = (cve.descriptions?.find(d=>d.lang==='en')?.value||'No description.').substring(0,90);
         return {
           id: cve.id,
-          title: cve.id+' — '+desc+(desc.length>=90?'...':''),
+          title: cve.id+': '+desc+(desc.length>=90?'...':''),
           source: 'NVD',
           category: 'cyber',
           severity: score>=9?'critical':score>=7?'high':score>=4?'med':'low',
@@ -2228,22 +2294,22 @@ body { overflow-y: auto; height: auto; }
   }
   function fallbackFEMA() {
     return [
-      {id:'FEMA-DR-4781',title:'Severe Storms & Tornadoes — Multiple Counties, TX',source:'FEMA',category:'fema',severity:'high',time:'2024-05-10',url:'https://www.fema.gov',detail:'Major Disaster Declaration',stateAbbr:'TX',lat:31.5,lon:-99.3},
-      {id:'FEMA-DR-4776',title:'Flooding — Coastal Counties, LA',source:'FEMA',category:'fema',severity:'high',time:'2024-04-22',url:'https://www.fema.gov',detail:'Major Disaster Declaration',stateAbbr:'LA',lat:31,lon:-91.8},
-      {id:'FEMA-DR-4770',title:'Wildfire — Mariposa County, CA',source:'FEMA',category:'fema',severity:'med',time:'2024-03-15',url:'https://www.fema.gov',detail:'Fire Management Assistance Declaration',stateAbbr:'CA',lat:37.5,lon:-119.9},
+      {id:'FEMA-DR-4856',title:'Wildfire: Los Angeles County, CA',source:'FEMA',category:'fema',severity:'high',time:'2025-01-12',url:'https://www.fema.gov/disasters',detail:'Major Disaster Declaration',stateAbbr:'CA',lat:34.0,lon:-118.2},
+      {id:'FEMA-DR-4827',title:'Hurricane Helene: Western North Carolina',source:'FEMA',category:'fema',severity:'high',time:'2024-09-28',url:'https://www.fema.gov/disasters',detail:'Major Disaster Declaration',stateAbbr:'NC',lat:35.7,lon:-81.7},
+      {id:'FEMA-DR-4833',title:'Hurricane Milton: Coastal Florida',source:'FEMA',category:'fema',severity:'high',time:'2024-10-11',url:'https://www.fema.gov/disasters',detail:'Major Disaster Declaration',stateAbbr:'FL',lat:27.9,lon:-82.4},
     ];
   }
   function fallbackUSGS() {
     return [
-      {id:'usgs-fallback-1',title:'M4.2 Earthquake — 15km NNW of Ridgecrest, California',source:'USGS',category:'infra',severity:'med',time:'2024-06-01',url:'https://earthquake.usgs.gov',detail:'Depth: 8.3 km',stateAbbr:'CA',lat:35.7,lon:-117.7},
-      {id:'usgs-fallback-2',title:'M3.8 Earthquake — 22km SE of Anchorage, Alaska',source:'USGS',category:'infra',severity:'low',time:'2024-06-01',url:'https://earthquake.usgs.gov',detail:'Depth: 42.1 km',stateAbbr:'AK',lat:61.0,lon:-149.5},
-      {id:'usgs-fallback-3',title:'M3.5 Earthquake — 10km W of San Jose, California',source:'USGS',category:'infra',severity:'low',time:'2024-05-31',url:'https://earthquake.usgs.gov',detail:'Depth: 10.2 km',stateAbbr:'CA',lat:37.3,lon:-122.1},
+      {id:'usgs-fallback-1',title:'M4.2 Earthquake: 15km NNW of Ridgecrest, California',source:'USGS',category:'infra',severity:'med',time:'2024-06-01',url:'https://earthquake.usgs.gov',detail:'Depth: 8.3 km',stateAbbr:'CA',lat:35.7,lon:-117.7},
+      {id:'usgs-fallback-2',title:'M3.8 Earthquake: 22km SE of Anchorage, Alaska',source:'USGS',category:'infra',severity:'low',time:'2024-06-01',url:'https://earthquake.usgs.gov',detail:'Depth: 42.1 km',stateAbbr:'AK',lat:61.0,lon:-149.5},
+      {id:'usgs-fallback-3',title:'M3.5 Earthquake: 10km W of San Jose, California',source:'USGS',category:'infra',severity:'low',time:'2024-05-31',url:'https://earthquake.usgs.gov',detail:'Depth: 10.2 km',stateAbbr:'CA',lat:37.3,lon:-122.1},
     ];
   }
   function fallbackNVD() {
     return [
-      {id:'CVE-2024-3400',title:'CVE-2024-3400 — PAN-OS GlobalProtect Command Injection (CVSS 10.0)',source:'NVD',category:'cyber',severity:'critical',time:'2024-04-12',url:'https://nvd.nist.gov/vuln/detail/CVE-2024-3400',detail:'CVSS: 10.0 — CISA KEV confirmed',stateAbbr:null,lat:null,lon:null},
-      {id:'CVE-2024-21893',title:'CVE-2024-21893 — Ivanti Connect Secure SSRF Vulnerability',source:'NVD',category:'cyber',severity:'high',time:'2024-01-31',url:'https://nvd.nist.gov/vuln/detail/CVE-2024-21893',detail:'CVSS: 8.2 — Active exploitation',stateAbbr:null,lat:null,lon:null},
+      {id:'CVE-2024-3400',title:'CVE-2024-3400: PAN-OS GlobalProtect Command Injection (CVSS 10.0)',source:'NVD',category:'cyber',severity:'critical',time:'2024-04-12',url:'https://nvd.nist.gov/vuln/detail/CVE-2024-3400',detail:'CVSS: 10.0: CISA KEV confirmed',stateAbbr:null,lat:null,lon:null},
+      {id:'CVE-2024-21893',title:'CVE-2024-21893: Ivanti Connect Secure SSRF Vulnerability',source:'NVD',category:'cyber',severity:'high',time:'2024-01-31',url:'https://nvd.nist.gov/vuln/detail/CVE-2024-21893',detail:'CVSS: 8.2: Active exploitation',stateAbbr:null,lat:null,lon:null},
     ];
   }
 
@@ -2381,31 +2447,27 @@ body { overflow-y: auto; height: auto; }
     el('wx-hottest-val','108°F'); el('wx-hottest-city','Phoenix, AZ · Sunny');
     el('wx-coldest-val','14°F');  el('wx-coldest-city','Fairbanks, AK · Cloudy');
     el('wx-wind-val','42 mph');   el('wx-wind-city','Amarillo, TX · Windy');
-    el('wx-alerts-val','—');
+    el('wx-alerts-val','-');
   }
 
   function wxFallbackAlerts() {
-    return [
-      {id:'NWS-1',title:'Tornado Warning — Central Oklahoma',source:'NWS',category:'weather',severity:'critical',time:new Date().toISOString().split('T')[0],url:'https://www.weather.gov',detail:'Tornado on the ground. Take shelter immediately.',stateAbbr:'OK',lat:35.5,lon:-97.5},
-      {id:'NWS-2',title:'Excessive Heat Warning — Phoenix Metro, AZ',source:'NWS',category:'weather',severity:'high',time:new Date().toISOString().split('T')[0],url:'https://www.weather.gov',detail:'Temperatures up to 115°F. Dangerous heat conditions.',stateAbbr:'AZ',lat:33.4,lon:-112.0},
-      {id:'NWS-3',title:'Flash Flood Warning — Harris County, TX',source:'NWS',category:'weather',severity:'high',time:new Date().toISOString().split('T')[0],url:'https://www.weather.gov',detail:'Flash flooding occurring. Do not drive through flooded roads.',stateAbbr:'TX',lat:29.7,lon:-95.4},
-      {id:'NWS-4',title:'Winter Storm Warning — Northern Minnesota',source:'NWS',category:'weather',severity:'high',time:new Date().toISOString().split('T')[0],url:'https://www.weather.gov',detail:'Heavy snow 12-18 inches expected.',stateAbbr:'MN',lat:47.5,lon:-94.0},
-      {id:'NWS-5',title:'High Wind Warning — Eastern Wyoming',source:'NWS',category:'weather',severity:'med',time:new Date().toISOString().split('T')[0],url:'https://www.weather.gov',detail:'Winds 50-65 mph with gusts to 80 mph.',stateAbbr:'WY',lat:43.0,lon:-107.0},
-    ];
+    // Return empty — do not show fake alerts on a live intel feed
+    return [];
   }
 
   async function fetchWeatherAlerts() {
     try {
-      const r = await fetch(PROXY + encodeURIComponent('https://api.weather.gov/alerts/active?status=actual&message_type=alert&region_type=land&severity=Extreme,Severe,Moderate'));
-      const d = await r.json();
-      const p = JSON.parse(d.contents);
+      // api.weather.gov sends CORS headers natively — no proxy needed
+      const r = await fetch('https://api.weather.gov/alerts/active?status=actual&message_type=alert&region_type=land&severity=Extreme,Severe,Moderate');
+      if(!r.ok) throw new Error();
+      const p = await r.json();
       const features = (p.features||[]);
       const sevMap = {Extreme:'critical',Severe:'high',Moderate:'med',Minor:'low',Unknown:'low'};
       const items = features.slice(0,12).map(f=>{
         const props = f.properties;
         return {
           id: props.id||'NWS-'+Math.random(),
-          title: props.event + (props.areaDesc?' — '+props.areaDesc.split(';')[0]:''),
+          title: props.event + (props.areaDesc?': '+props.areaDesc.split(';')[0]:''),
           source:'NWS', category:'weather',
           severity: sevMap[props.severity]||'low',
           time: (props.onset||props.sent||'').split('T')[0],
@@ -2436,13 +2498,13 @@ body { overflow-y: auto; height: auto; }
     // Pulling from a geographically diverse set of major ASOS/AWOS stations
     // Station IDs cover all climate regions of the continental US + AK + HI
     const stations = [
-      // Southwest — hot
+      // Southwest: hot
       {id:'KPHX', name:'Phoenix, AZ'},
       {id:'KLAS', name:'Las Vegas, NV'},
       {id:'KTUS', name:'Tucson, AZ'},
       {id:'KPSP', name:'Palm Springs, CA'},
       {id:'KIPL', name:'El Centro, CA'},
-      // Southeast — warm/humid
+      // Southeast: warm/humid
       {id:'KMIA', name:'Miami, FL'},
       {id:'KTPA', name:'Tampa, FL'},
       {id:'KMOB', name:'Mobile, AL'},
@@ -2452,7 +2514,7 @@ body { overflow-y: auto; height: auto; }
       {id:'KDFW', name:'Dallas, TX'},
       {id:'KAMA', name:'Amarillo, TX'},
       {id:'KABQ', name:'Albuquerque, NM'},
-      // Northern Plains — cold
+      // Northern Plains: cold
       {id:'KBIS', name:'Bismarck, ND'},
       {id:'KFAR', name:'Fargo, ND'},
       {id:'KABR', name:'Aberdeen, SD'},
@@ -2489,11 +2551,11 @@ body { overflow-y: auto; height: auto; }
 
     async function fetchStation(station) {
       try {
-        // NWS observations endpoint — returns last 24hr observations for a station
+        // api.weather.gov sends CORS headers natively - no proxy needed
         const url = 'https://api.weather.gov/stations/' + station.id + '/observations?start=' + today + 'T00:00:00Z&limit=24';
-        const r = await fetch(PROXY + encodeURIComponent(url));
-        const d = await r.json();
-        const p = JSON.parse(d.contents);
+        const r = await fetch(url);
+        if(!r.ok) return null;
+        const p = await r.json();
         const obs = (p.features || []).filter(f =>
           f.properties.temperature && f.properties.temperature.value != null
         );
@@ -2612,6 +2674,12 @@ window.addEventListener('scroll', () => {
     l.style.color = l.getAttribute('href') === '#'+current ? 'var(--cyan)' : '';
   });
 });
+const mobileBtn=document.getElementById('mobileMenuBtn');
+const navLinksEl=document.querySelector('.nav-links');
+if(mobileBtn&&navLinksEl){
+  mobileBtn.addEventListener('click',()=>{mobileBtn.classList.toggle('open');navLinksEl.classList.toggle('mobile-open');});
+  navLinksEl.querySelectorAll('.nav-link').forEach(link=>link.addEventListener('click',()=>{mobileBtn.classList.remove('open');navLinksEl.classList.remove('mobile-open');}));
+}
 </script>
 
 </body>
