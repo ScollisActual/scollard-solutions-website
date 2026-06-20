@@ -40,7 +40,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(6,8,11,0.92)
 
 /* TICKER */
 .ticker-bar{position:fixed;top:52px;left:0;right:0;z-index:99;background:var(--bg1);border-bottom:1px solid var(--border);height:26px;display:flex;align-items:center;overflow:hidden;}
-.ticker-label{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--cyan);background:var(--bg2);border-right:1px solid var(--border);padding:0 12px;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0;}
+.ticker-label{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--cyan);background:var(--bg2);border-right:1px solid var(--border);padding:0 12px;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0;position:relative;z-index:1;}
 .ticker-scroll{display:flex;animation:tickscroll 40s linear infinite;white-space:nowrap;gap:48px;padding-left:24px;}
 .ticker-item{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--t1);display:flex;align-items:center;gap:8px;flex-shrink:0;}
 @keyframes tickscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
@@ -168,7 +168,7 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
 <!-- NAV -->
 <nav>
   <div class="nav-logo" style="display:flex;align-items:center;gap:0;line-height:1;">
-    <svg viewBox="310 70 650 860" style="height:36px;width:auto;color:var(--cyan);flex-shrink:0;margin-right:10px;" aria-hidden="true">
+    <svg viewBox="310 70 650 860" style="height:36px;width:auto;color:var(--cyan);flex-shrink:0;position:relative;z-index:1;margin-right:10px;" aria-hidden="true">
       <use href="#logo-full"/>
     </svg>
     <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.1em;text-transform:uppercase;color:var(--t0);">Scollard<span style="color:var(--cyan);">.</span>Solutions</span>
@@ -176,14 +176,12 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
   <div class="nav-sep"></div>
   <div class="nav-status">Systems Operational</div>
   <div class="nav-links">
-    <a href="#consulting" class="nav-link">Consulting</a>
     <a href="services.html" class="nav-link">Services</a>
     <a href="zerohour.html" class="nav-link">Zero Hour</a>
     <a href="threat-feed.html" class="nav-link">Threat Feed</a>
     <a href="book.html" class="nav-link">Book</a>
-    <a href="reading-list.html" class="nav-link">Reading</a>
-    <a href="advisors.html" class="nav-link">Advisors</a>
-    <a href="#about" class="nav-link">About</a>
+    <a href="reading-list.html" class="nav-link">Reading List</a>
+    <a href="about.html" class="nav-link">About</a>
     <a href="#contact" class="nav-link">Contact</a>
   </div>
   <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
@@ -193,7 +191,7 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
 
 <!-- TICKER -->
 <div class="ticker-bar">
-  <div class="ticker-label">&#9632; <span style="color:var(--cyan);">INTEL FEED</span></div>
+  <div class="ticker-label">&#9632; <span style="color:var(--cyan);">INTEL</span></div>
   <div id="market-ticker" class="ticker-scroll">
     <div class="ticker-item"><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);">Loading...</span></div>
   </div>
@@ -222,7 +220,7 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
         Scollard Solutions is a security and threat intelligence consulting firm. We work with individuals, families, and organizations on a project or retainer basis. The methodology comes from environments where the cost of being wrong is final.
       </p>
       <div class="hero-actions">
-        <a href="#consulting" class="btn-primary">Work With Us</a>
+        <a href="services.html" class="btn-primary">Work With Us</a>
         <a href="#contact" class="btn-ghost">Get in Touch</a>
       </div>
     </div>
@@ -262,71 +260,6 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
   </div>
 </div>
 
-<!-- CONSULTING -->
-<section id="consulting" style="border-top:1px solid var(--border);">
-  <div class="section-header fade-in">
-    <span class="section-num">01</span>
-    <h2 class="section-title">Consulting</h2>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="fade-in" style="font-size:14px;font-weight:300;color:var(--t1);line-height:1.8;max-width:760px;margin-bottom:40px;">
-    Engagements are scoped to the problem, not to a service menu. The work spans security consulting, threat and intelligence analysis, technical assessment, and operational preparedness, delivered to individuals, families, businesses, and defense-adjacent organizations.
-  </div>
-
-  <div class="fade-in grid-2-resp" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1px;">
-    <div style="background:var(--bg1);padding:28px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;">&#9632; Model 01</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;text-transform:uppercase;letter-spacing:.04em;color:var(--t0);margin-bottom:10px;line-height:1.1;">Project-Based</div>
-      <p style="font-size:13px;font-weight:300;color:var(--t1);line-height:1.8;margin-bottom:16px;">Defined scope, defined deliverable. You have a specific problem. We scope it, work it, deliver it.</p>
-      <div style="display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);">
-        <div style="background:var(--bg2);padding:9px 14px;font-size:11px;color:var(--t1);display:flex;align-items:center;gap:10px;"><span style="color:var(--cyan);font-size:10px;">&#9658;</span> Initial scoping call</div>
-        <div style="background:var(--bg2);padding:9px 14px;font-size:11px;color:var(--t1);display:flex;align-items:center;gap:10px;"><span style="color:var(--cyan);font-size:10px;">&#9658;</span> Fixed-scope statement of work</div>
-        <div style="background:var(--bg2);padding:9px 14px;font-size:11px;color:var(--t1);display:flex;align-items:center;gap:10px;"><span style="color:var(--cyan);font-size:10px;">&#9658;</span> Deliverable with findings and recommendations</div>
-        <div style="background:var(--bg2);padding:9px 14px;font-size:11px;color:var(--t1);display:flex;align-items:center;gap:10px;"><span style="color:var(--cyan);font-size:10px;">&#9658;</span> Optional debrief and implementation support</div>
-      </div>
-      <div style="margin-top:16px;display:flex;gap:5px;flex-wrap:wrap;">
-        <span class="tag tag-cyan">Threat Assessment</span>
-        <span class="tag tag-cyan">Technical Review</span>
-        <span class="tag tag-cyan">Intelligence Product</span>
-      </div>
-    </div>
-    <div style="background:var(--bg1);padding:28px;border-left:1px solid var(--border);">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;">&#9632; Model 02</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;text-transform:uppercase;letter-spacing:.04em;color:var(--t0);margin-bottom:10px;line-height:1.1;">Retainer</div>
-      <p style="font-size:13px;font-weight:300;color:var(--t1);line-height:1.8;margin-bottom:16px;">Ongoing advisory access for clients who need a consistent capability. Priority response and continuous situational awareness support.</p>
-      <div style="display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);">
-        <div style="background:var(--bg2);padding:9px 14px;font-size:11px;color:var(--t1);display:flex;align-items:center;gap:10px;"><span style="color:var(--cyan);font-size:10px;">&#9658;</span> Priority access and response</div>
-        <div style="background:var(--bg2);padding:9px 14px;font-size:11px;color:var(--t1);display:flex;align-items:center;gap:10px;"><span style="color:var(--cyan);font-size:10px;">&#9658;</span> Ongoing threat monitoring and advisory</div>
-        <div style="background:var(--bg2);padding:9px 14px;font-size:11px;color:var(--t1);display:flex;align-items:center;gap:10px;"><span style="color:var(--cyan);font-size:10px;">&#9658;</span> Monthly or quarterly reporting cadence</div>
-        <div style="background:var(--bg2);padding:9px 14px;font-size:11px;color:var(--t1);display:flex;align-items:center;gap:10px;"><span style="color:var(--cyan);font-size:10px;">&#9658;</span> Proactive flagging of emerging risks</div>
-      </div>
-      <div style="margin-top:16px;display:flex;gap:5px;flex-wrap:wrap;">
-        <span class="tag tag-cyan">Ongoing Advisory</span>
-        <span class="tag tag-cyan">Priority Access</span>
-        <span class="tag tag-cyan">Threat Monitoring</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="fade-in grid-3-resp" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-top:none;">
-    <div style="background:var(--bg1);padding:20px 22px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;">Client Type 01</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;text-transform:uppercase;letter-spacing:.04em;color:var(--t0);margin-bottom:6px;">Individuals &amp; Families</div>
-      <div style="font-size:11px;font-weight:300;color:var(--t1);line-height:1.7;">High-net-worth individuals, executives, and families who need a serious security posture.</div>
-    </div>
-    <div style="background:var(--bg1);padding:20px 22px;border-left:1px solid var(--border);">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;">Client Type 02</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;text-transform:uppercase;letter-spacing:.04em;color:var(--t0);margin-bottom:6px;">Organizations</div>
-      <div style="font-size:11px;font-weight:300;color:var(--t1);line-height:1.7;">Businesses and institutions that need threat assessments, technical reviews, or intelligence products built for their actual environment.</div>
-    </div>
-    <div style="background:var(--bg1);padding:20px 22px;border-left:1px solid var(--border);">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;">Client Type 03</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;text-transform:uppercase;letter-spacing:.04em;color:var(--t0);margin-bottom:6px;">Government &amp; Defense</div>
-      <div style="font-size:11px;font-weight:300;color:var(--t1);line-height:1.7;">Defense-adjacent organizations and government entities requiring cleared-caliber analysis and operational support.</div>
-    </div>
-  </div>
-</section>
 
 <!-- THREAT FEED TEASER -->
 <section style="border-top:1px solid var(--border);">
@@ -345,23 +278,6 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
   </div>
 </section>
 
-<!-- ABOUT -->
-<section id="about" style="border-top:1px solid var(--border);">
-  <div class="section-header fade-in">
-    <span class="section-num">03</span>
-    <h2 class="section-title">About</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="fade-in" style="max-width:760px;">
-    <p style="font-size:14px;font-weight:300;color:var(--t1);line-height:1.9;margin-bottom:14px;">Scollard Solutions was built on one idea: that the kind of rigorous, layered planning and preparation most people never encounter should be accessible to the individuals, families, and organizations that need it most.</p>
-    <p style="font-size:14px;font-weight:300;color:var(--t1);line-height:1.9;margin-bottom:14px;">The methodology draws on deep experience in intelligence analysis, systems engineering, technical fabrication, and operational planning, applied to the real environments clients actually live and work in.</p>
-    <p style="font-size:14px;font-weight:300;color:var(--t1);line-height:1.9;">The standard for what good preparation looks like comes from environments where the cost of being wrong is final. That standard does not lower when the stakes appear smaller.</p>
-    <div style="margin-top:28px;display:flex;gap:8px;flex-wrap:wrap;">
-      <a href="services.html" class="btn-ghost">Services &amp; Capabilities</a>
-      <a href="zerohour.html" class="btn-ghost">Zero Hour Tabletop</a>
-    </div>
-  </div>
-</section>
 
 <!-- CONTACT -->
 <section id="contact" style="border-top:1px solid var(--border);">
@@ -490,7 +406,7 @@ async function buildTicker(){
   if(el){el.innerHTML=fullHTML;el.style.animationDuration=Math.max(40,items.length*4)+'s';}
   var alertCount=threats.filter(function(t){return t.sev==='critical'||t.sev==='high';}).length;
   var lbl=document.querySelector('.ticker-label');
-  if(lbl){if(alertCount>0){lbl.innerHTML='&#9632; <span style="color:#c03428;animation:blink 1s infinite;">'+alertCount+' ALERT'+(alertCount>1?'S':'')+'</span>';}else{lbl.innerHTML='&#9632; <span style="color:var(--cyan);">INTEL FEED</span>';}}
+  if(lbl){if(alertCount>0){lbl.innerHTML='&#9632; <span style="color:#c03428;animation:blink 1s infinite;">'+alertCount+' ALERT'+(alertCount>1?'S':'')+'</span>';}else{lbl.innerHTML='&#9632; <span style="color:var(--cyan);">INTEL</span>';}}
 }
 document.getElementById('market-ticker').innerHTML='<div class="ticker-item"><span style="font-family:\'IBM Plex Mono\',monospace;font-size:8px;color:var(--t2);">Loading...</span></div>';
 buildTicker();

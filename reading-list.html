@@ -171,7 +171,7 @@ nav{
   display:flex;
   align-items:center;
   white-space:nowrap;
-  flex-shrink:0;
+  flex-shrink:0;position:relative;z-index:1;
 }
 
 .ticker-scroll{
@@ -1071,7 +1071,7 @@ footer{
     display:flex; flex-direction:row; align-items:center; gap:16px;
     padding:16px !important;
   }
-  .book-grid-resp > div:first-child > div:first-child{width:90px;height:120px;flex-shrink:0;}
+  .book-grid-resp > div:first-child > div:first-child{width:90px;height:120px;flex-shrink:0;position:relative;z-index:1;}
   .book-grid-resp > div:first-child a, 
   .book-grid-resp > div:first-child > div:last-child{display:none;}
 
@@ -1132,11 +1132,12 @@ section:first-of-type { padding-top: 100px !important; }
   <div class="nav-sep"></div>
   <div class="nav-status">Systems Operational</div>
   <div class="nav-links">
-    <a href="index.html" class="nav-link">&#8592; Home</a>
-    <a href="book.html" class="nav-link" style="">Book</a>
-    <a href="reading-list.html" class="nav-link" style="color:var(--cyan)">Reading List</a>
-    <a href="advisors.html" class="nav-link" style="">Advisors</a>
+    <a href="services.html" class="nav-link">Services</a>
+    <a href="zerohour.html" class="nav-link">Zero Hour</a>
     <a href="threat-feed.html" class="nav-link">Threat Feed</a>
+    <a href="book.html" class="nav-link">Book</a>
+    <a href="reading-list.html" class="nav-link">Reading List</a>
+    <a href="about.html" class="nav-link">About</a>
     <a href="index.html#contact" class="nav-link">Contact</a>
   </div>
   <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
