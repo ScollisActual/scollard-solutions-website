@@ -318,6 +318,338 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
   </div>
 </section>
 
+<!-- FULL CHARACTER ASSESSMENT -->
+<section id="character-assessment" style="border-top:1px solid var(--border);">
+  <div class="section-header fade-in">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Full Character Assessment</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="fade-in" style="font-size:13px;font-weight:300;color:var(--t1);line-height:1.8;max-width:680px;margin-bottom:32px;">
+    Every Zero Hour participant receives a full individual assessment across five domains. Scores are built from pre-engagement intake data, structured evaluations, and live observation during the scenario. Below is a sample profile.
+  </div>
+
+  <!-- PARTICIPANT HEADER -->
+  <div class="fade-in" style="background:var(--bg2);border:1px solid var(--border);padding:14px 20px;margin-bottom:1px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;">Participant</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--t0);font-weight:600;letter-spacing:.06em;">ALPHA-1</div>
+    </div>
+    <div style="width:1px;height:32px;background:var(--border);flex-shrink:0;"></div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;">Assessment Date</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t1);">14 JUN 2026</div>
+    </div>
+    <div style="width:1px;height:32px;background:var(--border);flex-shrink:0;"></div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;">Tier</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t1);">Residential / Family</div>
+    </div>
+    <div style="width:1px;height:32px;background:var(--border);flex-shrink:0;"></div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;">Household</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t1);">4 (2 adults, 2 children)</div>
+    </div>
+    <div style="margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;">Overall Readiness</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:120px;height:6px;background:var(--bg3);border:1px solid var(--border);">
+          <div style="width:44%;height:100%;background:var(--orange);"></div>
+        </div>
+        <span class="tag tag-high">44% — HIGH RISK</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOMAIN GRID: 2x2 -->
+  <div class="fade-in char-stat-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-top:none;">
+
+    <!-- PERSONNEL -->
+    <div style="background:var(--bg1);padding:24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);">&#9632; Personnel</div>
+        <span class="tag tag-high">HIGH RISK</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Physical Endurance</span>
+            <span class="char-stat-score" style="color:var(--green);">72%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:72%;background:var(--green);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Passed ruck standard. Cardiovascular endurance adequate.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Marksmanship</span>
+            <span class="char-stat-score" style="color:var(--cyan);">58%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:58%;background:var(--cyan);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Proficient with primary. Stress performance degraded 30%.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Medical / TCCC</span>
+            <span class="char-stat-score" style="color:var(--yellow);">45%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:45%;background:var(--yellow);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Basic first aid only. No tourniquet proficiency under stress.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Stress Tolerance</span>
+            <span class="char-stat-score" style="color:var(--green);">80%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:80%;background:var(--green);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Maintains decision quality under simulated duress.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Tactical Decision-Making</span>
+            <span class="char-stat-score" style="color:var(--cyan);">63%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:63%;background:var(--cyan);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Structured problem-solver. Struggles with ambiguous tasking.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Training Currency</span>
+            <span class="char-stat-score" style="color:var(--orange);">38%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:38%;background:var(--orange);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Last formal training 18+ months ago. Skills degrading.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESOURCES -->
+    <div style="background:var(--bg1);padding:24px;border-left:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);">&#9632; Resources</div>
+        <span class="tag tag-crit">CRITICAL</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Water Supply</span>
+            <span class="char-stat-score" style="color:var(--orange);">35%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:35%;background:var(--orange);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">72-hour reserve. No filtration. Municipal-dependent.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Food Storage</span>
+            <span class="char-stat-score" style="color:var(--cyan);">60%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:60%;background:var(--cyan);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">14-day pantry. Rotation inconsistent. No long-term stores.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Medical Supplies</span>
+            <span class="char-stat-score" style="color:var(--yellow);">40%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:40%;background:var(--yellow);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">No IFAK. No prescription buffer. OTC stock only.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Power Backup</span>
+            <span class="char-stat-score" style="color:var(--red);">22%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:22%;background:var(--red);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Small portable battery. No generator. Grid-dependent.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Communications Gear</span>
+            <span class="char-stat-score" style="color:var(--red);">18%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:18%;background:var(--red);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Cell-only. No backup radio. No HAM license.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Financial Reserves</span>
+            <span class="char-stat-score" style="color:var(--yellow);">48%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:48%;background:var(--yellow);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">3-month buffer. No cash reserve. No hard assets.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOBILITY -->
+    <div style="background:var(--bg1);padding:24px;border-top:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);">&#9632; Mobility</div>
+        <span class="tag tag-med">MODERATE</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Vehicle Readiness</span>
+            <span class="char-stat-score" style="color:var(--green);">70%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:70%;background:var(--green);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Two vehicles. Current maintenance. No 4WD capability.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Fuel Reserve</span>
+            <span class="char-stat-score" style="color:var(--yellow);">42%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:42%;background:var(--yellow);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Tanks average 50-60%. No stored fuel. No jerry cans.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Primary Route</span>
+            <span class="char-stat-score" style="color:var(--cyan);">65%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:65%;background:var(--cyan);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Route identified. Not rehearsed. Choke points not mapped.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Alternate Routes</span>
+            <span class="char-stat-score" style="color:var(--orange);">28%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:28%;background:var(--orange);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">No alternates planned. Urban corridor dependency high.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Dependency Accommodations</span>
+            <span class="char-stat-score" style="color:var(--yellow);">55%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:55%;background:var(--yellow);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Children's needs partially accounted for. Medical needs not.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECURITY -->
+    <div style="background:var(--bg1);padding:24px;border-top:1px solid var(--border);border-left:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);">&#9632; Security</div>
+        <span class="tag tag-high">HIGH RISK</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Site Hardening</span>
+            <span class="char-stat-score" style="color:var(--yellow);">40%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:40%;background:var(--yellow);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Standard residential. No reinforcement. Limited sight lines.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Access Control</span>
+            <span class="char-stat-score" style="color:var(--yellow);">50%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:50%;background:var(--yellow);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Exterior cameras installed. No challenge protocols or safe words.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Counter-Surveillance</span>
+            <span class="char-stat-score" style="color:var(--red);">20%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:20%;background:var(--red);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">No OPSEC practices in place. Digital signature unmanaged.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Active Response Capacity</span>
+            <span class="char-stat-score" style="color:var(--green);">72%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:72%;background:var(--green);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Armed and trained. No family response protocols in place.</div>
+        </div>
+        <div class="char-stat">
+          <div class="char-stat-row">
+            <span class="char-stat-label">Security Protocols</span>
+            <span class="char-stat-score" style="color:var(--orange);">32%</span>
+          </div>
+          <div class="char-stat-bar"><div class="char-stat-fill" style="width:32%;background:var(--orange);"></div></div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">No written SOPs. Family untrained on roles and responses.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NETWORK: FULL WIDTH -->
+  <div class="fade-in" style="background:var(--bg1);border:1px solid var(--border);border-top:none;padding:24px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);">&#9632; Network &amp; Community</div>
+      <span class="tag tag-crit">CRITICAL</span>
+    </div>
+    <div class="grid-3-resp" style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;">
+      <div class="char-stat">
+        <div class="char-stat-row">
+          <span class="char-stat-label">Trusted Contacts</span>
+          <span class="char-stat-score" style="color:var(--red);">22%</span>
+        </div>
+        <div class="char-stat-bar"><div class="char-stat-fill" style="width:22%;background:var(--red);"></div></div>
+        <div style="font-size:10px;color:var(--t2);margin-top:2px;">2 vetted contacts within 20 miles. No formal agreements.</div>
+      </div>
+      <div class="char-stat">
+        <div class="char-stat-row">
+          <span class="char-stat-label">Geographic Reach</span>
+          <span class="char-stat-score" style="color:var(--red);">15%</span>
+        </div>
+        <div class="char-stat-bar"><div class="char-stat-fill" style="width:15%;background:var(--red);"></div></div>
+        <div style="font-size:10px;color:var(--t2);margin-top:2px;">Network radius under 10 miles. Single-region dependency.</div>
+      </div>
+      <div class="char-stat">
+        <div class="char-stat-row">
+          <span class="char-stat-label">Comms Protocols</span>
+          <span class="char-stat-score" style="color:var(--orange);">30%</span>
+        </div>
+        <div class="char-stat-bar"><div class="char-stat-fill" style="width:30%;background:var(--orange);"></div></div>
+        <div style="font-size:10px;color:var(--t2);margin-top:2px;">No backup contact method. Cell-dependent. No check-in schedule.</div>
+      </div>
+      <div class="char-stat">
+        <div class="char-stat-row">
+          <span class="char-stat-label">Mutual Aid Agreements</span>
+          <span class="char-stat-score" style="color:var(--red);">12%</span>
+        </div>
+        <div class="char-stat-bar"><div class="char-stat-fill" style="width:12%;background:var(--red);"></div></div>
+        <div style="font-size:10px;color:var(--t2);margin-top:2px;">No formal or informal resource-sharing agreements in place.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITICAL FINDINGS -->
+  <div class="fade-in" style="background:var(--bg1);border:1px solid var(--border);border-top:none;padding:20px 24px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px;">&#9632; Critical Findings</div>
+    <div class="grid-2-resp" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(192,52,40,0.25);border-left:2px solid var(--red);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--red);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Network: No Backup Comms</div>
+        <div style="font-size:11px;color:var(--t1);">No radio, no check-in protocols, no alternate contact methods. Single point of failure on cellular infrastructure.</div>
+      </div>
+      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(192,52,40,0.25);border-left:2px solid var(--red);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--red);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Resources: No Power Contingency</div>
+        <div style="font-size:11px;color:var(--t1);">Zero backup power beyond a small portable battery. Grid loss disables water pump, refrigeration, and all active security.</div>
+      </div>
+      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(200,120,48,0.25);border-left:2px solid var(--orange);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--orange);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Security: No Family Protocols</div>
+        <div style="font-size:11px;color:var(--t1);">Individual capability is adequate. Family has no defined roles, safe words, or rehearsed responses. Effectiveness collapses under real conditions.</div>
+      </div>
+      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(200,120,48,0.25);border-left:2px solid var(--orange);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--orange);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Mobility: No Alternate Routes</div>
+        <div style="font-size:11px;color:var(--t1);">Primary route identified but not rehearsed. No alternates planned. Urban corridor creates single-axis movement with high congestion risk.</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.04em;font-style:italic;">Sample assessment. All findings generated from real Zero Hour engagement data.</div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section style="border-top:1px solid var(--border);">
   <div class="fade-in" style="background:var(--bg1);border:1px solid var(--border);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;">
