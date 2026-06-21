@@ -546,17 +546,82 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
     </div>
   </div>
 
-  <!-- HOME INFRASTRUCTURE -->
-  <div class="fade-in" style="background:var(--bg1);border:1px solid var(--border);border-top:none;padding:24px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);">&#9632; Home Infrastructure</div>
-      <span class="tag tag-high">HIGH RISK</span>
+  <!-- CRITICAL FINDINGS -->
+  <div class="fade-in" style="background:var(--bg1);border:1px solid var(--border);border-top:none;padding:20px 24px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px;">&#9632; Critical Findings</div>
+    <div class="grid-2-resp" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(192,52,40,0.25);border-left:2px solid var(--red);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--red);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Network: No Backup Comms</div>
+        <div style="font-size:11px;color:var(--t1);">No radio, no check-in protocols, no alternate contact methods. Single point of failure on cellular infrastructure.</div>
+      </div>
+      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(192,52,40,0.25);border-left:2px solid var(--red);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--red);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Resources: No Power Contingency</div>
+        <div style="font-size:11px;color:var(--t1);">Zero backup power beyond a small portable battery. Grid loss disables water pump, refrigeration, and all active security.</div>
+      </div>
+      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(200,120,48,0.25);border-left:2px solid var(--orange);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--orange);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Security: No Family Protocols</div>
+        <div style="font-size:11px;color:var(--t1);">Individual capability is adequate. Family has no defined roles, safe words, or rehearsed responses. Effectiveness collapses under real conditions.</div>
+      </div>
+      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(200,120,48,0.25);border-left:2px solid var(--orange);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--orange);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Mobility: No Alternate Routes</div>
+        <div style="font-size:11px;color:var(--t1);">Primary route identified but not rehearsed. No alternates planned. Urban corridor creates single-axis movement with high congestion risk.</div>
+      </div>
     </div>
-    <div class="grid-3-resp" style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;">
+    <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.04em;font-style:italic;">Sample assessment. All findings generated from real Zero Hour engagement data.</div>
+  </div>
+</section>
 
-      <!-- STRUCTURE & ACCESS -->
+<!-- BED DOWN LOCATION -->
+<section id="bdl-assessment" style="border-top:1px solid var(--border);">
+  <div class="section-header fade-in">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Site Dossier</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="fade-in" style="font-size:13px;font-weight:300;color:var(--t1);line-height:1.8;max-width:680px;margin-bottom:32px;">
+    Each site is assessed independently from the people who occupy it. The same structure may shelter multiple participants across different scenarios. Its vulnerabilities belong to the location, not the individual.
+  </div>
+
+  <!-- BDL LOCATION HEADER -->
+  <div class="fade-in" style="background:var(--bg2);border:1px solid var(--border);padding:14px 20px;margin-bottom:1px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;">Designation</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--t0);font-weight:600;letter-spacing:.06em;">SITE-ALPHA</div>
+    </div>
+    <div style="width:1px;height:32px;background:var(--border);flex-shrink:0;"></div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;">Type</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t1);">Primary Residence</div>
+    </div>
+    <div style="width:1px;height:32px;background:var(--border);flex-shrink:0;"></div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;">Occupants Linked</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t1);">ALPHA-1, ALPHA-2, ALPHA-3, ALPHA-4</div>
+    </div>
+    <div style="width:1px;height:32px;background:var(--border);flex-shrink:0;"></div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;">Assessed</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t1);">14 JUN 2026</div>
+    </div>
+    <div style="margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;">Site Viability</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:120px;height:6px;background:var(--bg3);border:1px solid var(--border);">
+          <div style="width:34%;height:100%;background:var(--orange);"></div>
+        </div>
+        <span class="tag tag-high">34% — HIGH RISK</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFRASTRUCTURE GRID -->
+  <div class="fade-in grid-3-resp" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-top:none;">
+
+    <!-- STRUCTURE & ACCESS -->
+    <div style="background:var(--bg1);padding:24px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);">Structure &amp; Access</div>
       <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;padding-bottom:6px;border-bottom:1px solid var(--border);">Structure &amp; Access</div>
         <div class="char-stat">
           <div class="char-stat-row">
             <span class="char-stat-label">Structural Rating</span>
@@ -582,10 +647,12 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
           <div style="font-size:10px;color:var(--t2);margin-top:2px;">Open front yard. Partial rear fence. No controlled access zone established.</div>
         </div>
       </div>
+    </div>
 
-      <!-- SITE & TERRAIN -->
+    <!-- SITE & TERRAIN -->
+    <div style="background:var(--bg1);padding:24px;border-left:1px solid var(--border);">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);">Site &amp; Terrain</div>
       <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;padding-bottom:6px;border-bottom:1px solid var(--border);">Site &amp; Terrain</div>
         <div class="char-stat">
           <div class="char-stat-row">
             <span class="char-stat-label">Terrain Advantage</span>
@@ -600,7 +667,7 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
             <span class="char-stat-score" style="color:var(--yellow);">40%</span>
           </div>
           <div class="char-stat-bar"><div class="char-stat-fill" style="width:40%;background:var(--yellow);"></div></div>
-          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Front approach visible from 2 windows. Rear blind spots unaddressed. No camera coverage of side yards.</div>
+          <div style="font-size:10px;color:var(--t2);margin-top:2px;">Front approach visible from 2 windows. Rear blind spots unaddressed. No side yard camera coverage.</div>
         </div>
         <div class="char-stat">
           <div class="char-stat-row">
@@ -611,10 +678,12 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
           <div style="font-size:10px;color:var(--t2);margin-top:2px;">Fully exposed from street. No natural barriers. High visual signature from 3 approach vectors.</div>
         </div>
       </div>
+    </div>
 
-      <!-- UTILITY & CAPACITY -->
+    <!-- UTILITY & CAPACITY -->
+    <div style="background:var(--bg1);padding:24px;border-left:1px solid var(--border);">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);">Utility &amp; Capacity</div>
       <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;padding-bottom:6px;border-bottom:1px solid var(--border);">Utility &amp; Capacity</div>
         <div class="char-stat">
           <div class="char-stat-row">
             <span class="char-stat-label">Utility Independence</span>
@@ -640,32 +709,15 @@ footer{background:var(--bg1);border-top:1px solid var(--border);padding:24px 32p
           <div style="font-size:10px;color:var(--t2);margin-top:2px;">Approachable from 3 sides with no standoff. Urban density limits response time to threat.</div>
         </div>
       </div>
-
     </div>
+
   </div>
 
-  <!-- CRITICAL FINDINGS -->
-  <div class="fade-in" style="background:var(--bg1);border:1px solid var(--border);border-top:none;padding:20px 24px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px;">&#9632; Critical Findings</div>
-    <div class="grid-2-resp" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(192,52,40,0.25);border-left:2px solid var(--red);">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--red);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Network: No Backup Comms</div>
-        <div style="font-size:11px;color:var(--t1);">No radio, no check-in protocols, no alternate contact methods. Single point of failure on cellular infrastructure.</div>
-      </div>
-      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(192,52,40,0.25);border-left:2px solid var(--red);">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--red);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Resources: No Power Contingency</div>
-        <div style="font-size:11px;color:var(--t1);">Zero backup power beyond a small portable battery. Grid loss disables water pump, refrigeration, and all active security.</div>
-      </div>
-      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(200,120,48,0.25);border-left:2px solid var(--orange);">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--orange);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Security: No Family Protocols</div>
-        <div style="font-size:11px;color:var(--t1);">Individual capability is adequate. Family has no defined roles, safe words, or rehearsed responses. Effectiveness collapses under real conditions.</div>
-      </div>
-      <div style="padding:10px 12px;background:var(--bg2);border:1px solid rgba(200,120,48,0.25);border-left:2px solid var(--orange);">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--orange);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Mobility: No Alternate Routes</div>
-        <div style="font-size:11px;color:var(--t1);">Primary route identified but not rehearsed. No alternates planned. Urban corridor creates single-axis movement with high congestion risk.</div>
-      </div>
-    </div>
-    <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.04em;font-style:italic;">Sample assessment. All findings generated from real Zero Hour engagement data.</div>
+  <!-- SITE NOTES -->
+  <div class="fade-in" style="background:var(--bg1);border:1px solid var(--border);border-top:none;padding:16px 20px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">&#9632; Site Notes</div>
+    <div style="font-size:12px;color:var(--t1);line-height:1.8;">SITE-ALPHA is the primary residence and default consolidation point for all linked participants. Site viability is currently assessed as HIGH RISK due to grid dependency, uncontrolled perimeter, and insufficient standoff distance. It may serve as a short-term shelter-in-place location but is not recommended as a long-term defended position without structural improvements.</div>
+    <div style="margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--t2);letter-spacing:.04em;font-style:italic;">Sample site assessment. Site profiles are maintained separately from participant dossiers and updated independently.</div>
   </div>
 </section>
 
