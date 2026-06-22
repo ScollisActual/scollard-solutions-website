@@ -2472,7 +2472,7 @@ body { overflow-y: auto; height: auto; }
           source:'NWS', category:'weather',
           severity: sevMap[props.severity]||'low',
           time: (props.onset||props.sent||'').split('T')[0],
-          url: props['@id']||'https://www.weather.gov',
+          url: props.web||props.url||'https://www.weather.gov',
           detail: (props.headline||props.description||'').substring(0,100),
           stateAbbr: extractState(props.areaDesc),
           lat: f.geometry?getCentroidLat(f.geometry):null,
