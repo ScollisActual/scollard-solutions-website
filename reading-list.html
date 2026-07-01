@@ -189,7 +189,7 @@ nav{
 /* FEATURED BOOK */
 .featured-book{
   display:grid;
-  grid-template-columns:1fr auto;
+  grid-template-columns:120px 1fr auto;
   gap:20px;
   align-items:center;
   background:var(--bg1);
@@ -198,6 +198,14 @@ nav{
   margin-bottom:48px;
   position:relative;
   overflow:hidden;
+}
+.featured-book-cover{
+  width:120px;
+  height:auto;
+  display:block;
+  border:1px solid rgba(61,170,92,0.3);
+  flex-shrink:0;
+  align-self:center;
 }
 
 .featured-book::before{
@@ -319,11 +327,18 @@ nav{
 /* BOOK ROW */
 .rl-book{
   display:grid;
-  grid-template-columns:1fr auto;
-  gap:20px;
+  grid-template-columns:56px 1fr auto;
+  gap:16px;
   align-items:start;
   padding:18px 0;
   border-bottom:1px solid var(--border);
+}
+.rl-book-cover{
+  width:56px;
+  height:auto;
+  display:block;
+  border:1px solid var(--borderhi);
+  flex-shrink:0;
 }
 
 .rl-book:last-child{border-bottom:none;}
@@ -436,9 +451,10 @@ footer{
   .page-wrap{padding:80px 16px 60px;}
   .page-title{font-size:36px;}
   .featured-book{grid-template-columns:1fr;gap:14px;}
+  .featured-book-cover{width:80px;}
   .featured-actions{flex-direction:row;align-items:center;}
-  .rl-book{grid-template-columns:1fr;}
-  .btn-buy{width:100%;text-align:center;}
+  .rl-book{grid-template-columns:44px 1fr;}
+  .rl-book .btn-buy{grid-column:1/-1;width:100%;text-align:center;}
   nav{padding:0 12px;gap:8px;}
   .nav-links{display:none;}
   .nav-status,.nav-sep{display:none;}
@@ -503,6 +519,7 @@ footer{
 
   <!-- FEATURED: RYAN'S BOOK -->
   <div class="featured-book fade-in">
+    <img src="https://m.media-amazon.com/images/I/71AwS5La5LL._SL200_.jpg" alt="The Army Special Forces Alphabet" class="featured-book-cover">
     <div>
       <div class="featured-label">Featured / Authored</div>
       <div class="featured-title">The Army Special Forces Alphabet</div>
@@ -525,30 +542,33 @@ footer{
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0143123378.01._SL150_.jpg" alt="The Art of Intelligence" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">The Art of Intelligence</div>
         <div class="rl-book-author">Henry Crumpton</div>
         <div class="rl-book-desc">A CIA operations officer's account of building human intelligence networks. Required reading for understanding how real-world intelligence actually functions.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=The+Art+of+Intelligence+Henry+Crumpton&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0143123378?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0802125190.01._SL150_.jpg" alt="The Spy's Son" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">The Spy's Son</div>
         <div class="rl-book-author">Bryan Denson</div>
         <div class="rl-book-desc">The true story of a CIA officer who passed secrets to Russia. A masterclass in understanding insider threat and human vulnerability.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=The+Spy%27s+Son+Bryan+Denson&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0802125190?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0316441430.01._SL150_.jpg" alt="Surprise, Kill, Vanish" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">Surprise, Kill, Vanish</div>
         <div class="rl-book-author">Annie Jacobsen</div>
         <div class="rl-book-desc">The secret history of CIA paramilitary armies, operators, and assassins. Comprehensive look at covert action doctrine.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=Surprise+Kill+Vanish+Annie+Jacobsen&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0316441430?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
   </div>
 
@@ -561,39 +581,43 @@ footer{
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0765327252.01._SL150_.jpg" alt="One Second After" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">One Second After</div>
         <div class="rl-book-author">William Forstchen</div>
         <div class="rl-book-desc">A planning document disguised as fiction. The definitive scenario study for understanding grid-down conditions, community resilience, and what preparation actually requires when systems fail.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=One+Second+After+William+Forstchen&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0765327252?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0393326152.01._SL150_.jpg" alt="Deep Survival" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">Deep Survival</div>
         <div class="rl-book-author">Laurence Gonzales</div>
         <div class="rl-book-desc">Why some people make good decisions under pressure and others collapse. The psychology and neuroscience of performance when plans meet reality, essential for anyone serious about preparation.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=Deep+Survival+Laurence+Gonzales&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0393326152?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0312430000.01._SL150_.jpg" alt="The Checklist Manifesto" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">The Checklist Manifesto</div>
         <div class="rl-book-author">Atul Gawande</div>
         <div class="rl-book-desc">How structured process prevents catastrophic failures in high-stakes environments. The operational case for systematic preparation over improvisation.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=The+Checklist+Manifesto+Atul+Gawande&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0312430000?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/142360105X.01._SL150_.jpg" alt="When All Hell Breaks Loose" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">When All Hell Breaks Loose</div>
         <div class="rl-book-author">Cody Lundin</div>
         <div class="rl-book-desc">Practical urban and suburban survival from a serious survivalist. No fantasy, just applicable skills and realistic preparation.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=When+All+Hell+Breaks+Loose+Cody+Lundin&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/142360105X?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
   </div>
 
@@ -606,39 +630,43 @@ footer{
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/1250183863.01._SL150_.jpg" alt="Extreme Ownership" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">Extreme Ownership</div>
         <div class="rl-book-author">Jocko Willink &amp; Leif Babin</div>
         <div class="rl-book-desc">Accountability as a planning discipline. The principle that every failure is a planning failure, and every planning failure is a leadership failure, applies in any environment.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=Extreme+Ownership+Jocko+Willink&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/1250183863?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0425236579.01._SL150_.jpg" alt="The Mission, The Men, and Me" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">The Mission, The Men, and Me</div>
         <div class="rl-book-author">Pete Blaber</div>
         <div class="rl-book-desc">Decision-making and mission planning under ambiguity. The best practical framework for operating when information is incomplete and the cost of delay is high.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=The+Mission+The+Men+and+Me+Pete+Blaber&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0425236579?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0316796883.01._SL150_.jpg" alt="Boyd" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">Boyd</div>
         <div class="rl-book-author">Robert Coram</div>
         <div class="rl-book-desc">The biography of John Boyd and the OODA loop. The most influential strategic thinking framework applied to planning, competition, and rapid adaptation.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=Boyd+Robert+Coram+OODA&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0316796883?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0743226755.01._SL150_.jpg" alt="The Power of Full Engagement" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">The Power of Full Engagement</div>
         <div class="rl-book-author">Jim Loehr &amp; Tony Schwartz</div>
         <div class="rl-book-desc">Energy, not time, is the fundamental resource in preparation and execution. How high performers manage capacity across physical, mental, emotional, and purpose dimensions.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=The+Power+of+Full+Engagement+Loehr+Schwartz&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0743226755?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
   </div>
 
@@ -651,39 +679,43 @@ footer{
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0385544405.01._SL150_.jpg" alt="Sandworm" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">Sandworm</div>
         <div class="rl-book-author">Andy Greenberg</div>
         <div class="rl-book-desc">The story of the most destructive cyberattack in history. Essential context for understanding nation-state cyber operations and critical infrastructure risk.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=Sandworm+Andy+Greenberg&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0385544405?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0316380504.01._SL150_.jpg" alt="The Art of Invisibility" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">The Art of Invisibility</div>
         <div class="rl-book-author">Kevin Mitnick</div>
         <div class="rl-book-desc">From the world's most notorious hacker, practical OPSEC and digital security for the real world. Directly feeds the Hard Target Course curriculum.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=The+Art+of+Invisibility+Kevin+Mitnick&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0316380504?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/1476763259.01._SL150_.jpg" alt="Dark Territory" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">Dark Territory</div>
         <div class="rl-book-author">Fred Kaplan</div>
         <div class="rl-book-desc">The secret history of cyber war from Reagan to Obama. How US cyber doctrine was developed and why it matters today.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=Dark+Territory+Fred+Kaplan&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/1476763259?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
 
     <div class="rl-book">
+      <img src="https://images-na.ssl-images-amazon.com/images/P/0770436196.01._SL150_.jpg" alt="Countdown to Zero Day" class="rl-book-cover">
       <div class="rl-book-info">
         <div class="rl-book-title">Countdown to Zero Day</div>
         <div class="rl-book-author">Kim Zetter</div>
         <div class="rl-book-desc">The definitive account of Stuxnet, the first known cyberweapon used against physical infrastructure. The blueprint for what comes next.</div>
       </div>
-      <a href="https://www.amazon.com/s?k=Countdown+to+Zero+Day+Kim+Zetter&tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
+      <a href="https://www.amazon.com/dp/0770436196?tag=scollard05-20" target="_blank" rel="nofollow" class="btn-buy">Buy on Amazon ↗</a>
     </div>
   </div>
 
