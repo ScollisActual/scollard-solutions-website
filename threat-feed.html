@@ -1700,11 +1700,10 @@ body { overflow-y: auto; height: auto; }
   }
 
   function fetchAircraft() {
-    var url = 'https://opensky-network.org/api/states/all?lamin=20&lamax=55&lomin=-130&lomax=-60';
-    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url))
+    var url = 'https://ancient-term-5185.ryan-scollard.workers.dev/?lamin=20&lamax=55&lomin=-130&lomax=-60';
+    fetch(url)
       .then(function(r) { return r.json(); })
-      .then(function(d) {
-        var p = JSON.parse(d.contents);
+      .then(function(p) {
         if (p && p.states) {
           var gov = p.states.filter(function(ac) { return classifyAircraft(ac) !== null; });
           aircraftData = gov;
