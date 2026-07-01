@@ -1145,6 +1145,8 @@ body { overflow-y: auto; height: auto; }
       <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);">US Incident Map</span>
       <span id="aircraft-count" style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--cyan);margin-left:8px;"></span>
       <button onclick="window.toggleAircraft && window.toggleAircraft()" id="aircraft-toggle" style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--cyan);color:var(--cyan);background:rgba(61,170,92,.08);cursor:pointer;">✈ Gov Aircraft ON</button>
+      <button onclick="window.toggleWxPolygons && window.toggleWxPolygons()" id="wx-poly-toggle" style="font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--yellow);color:var(--yellow);background:rgba(184,160,24,.08);cursor:pointer;">⚠ WX Zones ON</button>
+      <button onclick="window.toggleWildfires && window.toggleWildfires()" id="fire-toggle" style="font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--orange);color:var(--orange);background:rgba(200,120,48,.08);cursor:pointer;">&#x1F525; Wildfires ON</button>
       <span id="map-loading" style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--cyan);margin-left:10px;animation:blink 1s infinite;">LOADING GEODATA...</span>
     </div>
     <div style="position:relative;background:var(--bg0);">
@@ -1313,11 +1315,15 @@ body { overflow-y: auto; height: auto; }
   if (!container) return;
   const tooltip   = document.getElementById('map-tooltip');
 
-  let mapReady      = false;
-  let pendingMarkers = [];
-  let aircraftData  = [];
-  let showAircraft  = true;
+  let mapReady        = false;
+  let pendingMarkers  = [];
+  let aircraftData    = [];
+  let showAircraft    = true;
+  let showWxPolygons  = true;
+  let showWildfires   = true;
   let aircraftInterval = null;
+  let wxAlertFeatures = [];
+  let wildfireFeatures = [];
 
   const W = container.clientWidth || 960;
   const H = Math.round(W * 0.58);
@@ -1335,6 +1341,8 @@ body { overflow-y: auto; height: auto; }
   }
 
   const statesG  = svg.append('g');
+  const wxPolyG  = svg.append('g');
+  const fireG    = svg.append('g');
   const markersG = svg.append('g');
   const aircraftG = svg.append('g');
   const labelsG  = svg.append('g');
@@ -1758,6 +1766,72 @@ body { overflow-y: auto; height: auto; }
     }
   };
 
+  // ── NWS alert polygon overlay ─────────────────────────────────────────────
+  function drawWxPolygons(features) {
+    wxPolyG.selectAll('*').remove();
+    if (!showWxPolygons || !features.length) return;
+    var sevColor = {Extreme:'#c03428',Severe:'#c87830',Moderate:'#b8a018',Minor:'#3a5438'};
+    features.forEach(function(f) {
+      if (!f.geometry) return;
+      try {
+        var color = sevColor[f.properties.severity] || '#3a5438';
+        wxPolyG.append('path')
+          .datum(f)
+          .attr('d', geoPath)
+          .attr('fill', color)
+          .attr('fill-opacity', 0.18)
+          .attr('stroke', color)
+          .attr('stroke-width', 0.8)
+          .attr('stroke-opacity', 0.6)
+          .style('pointer-events','none');
+      } catch(e) {}
+    });
+  }
+
+  window.toggleWxPolygons = function() {
+    showWxPolygons = !showWxPolygons;
+    var btn = document.getElementById('wx-poly-toggle');
+    if (showWxPolygons) {
+      drawWxPolygons(wxAlertFeatures);
+      if (btn) { btn.textContent='⚠ WX Zones ON'; btn.style.color='var(--yellow)'; btn.style.borderColor='var(--yellow)'; }
+    } else {
+      wxPolyG.selectAll('*').remove();
+      if (btn) { btn.textContent='⚠ WX Zones OFF'; btn.style.color='var(--t2)'; btn.style.borderColor='var(--border)'; }
+    }
+  };
+
+  // ── Wildfire perimeter overlay ─────────────────────────────────────────────
+  function drawWildfires(features) {
+    fireG.selectAll('*').remove();
+    if (!showWildfires || !features.length) return;
+    features.forEach(function(f) {
+      if (!f.geometry) return;
+      try {
+        fireG.append('path')
+          .datum(f)
+          .attr('d', geoPath)
+          .attr('fill', '#c87830')
+          .attr('fill-opacity', 0.25)
+          .attr('stroke', '#c87830')
+          .attr('stroke-width', 0.8)
+          .attr('stroke-opacity', 0.7)
+          .style('pointer-events','none');
+      } catch(e) {}
+    });
+  }
+
+  window.toggleWildfires = function() {
+    showWildfires = !showWildfires;
+    var btn = document.getElementById('fire-toggle');
+    if (showWildfires) {
+      drawWildfires(wildfireFeatures);
+      if (btn) { btn.textContent='🔥 Wildfires ON'; btn.style.color='var(--orange)'; btn.style.borderColor='var(--orange)'; }
+    } else {
+      fireG.selectAll('*').remove();
+      if (btn) { btn.textContent='🔥 Wildfires OFF'; btn.style.color='var(--t2)'; btn.style.borderColor='var(--border)'; }
+    }
+  };
+
   // ── Load US map ───────────────────────────────────────────────────────────
   fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json')
     .then(function(r) { return r.json(); })
@@ -1790,6 +1864,8 @@ body { overflow-y: auto; height: auto; }
       if (ml) { ml.textContent = 'HOVER FOR DETAILS · ✈ ADS-B LIVE'; ml.style.animation = 'none'; ml.style.color = 'var(--t2)'; }
 
       if (pendingMarkers.length) drawMarkers(pendingMarkers);
+      if (wxAlertFeatures.length) drawWxPolygons(wxAlertFeatures);
+      if (wildfireFeatures.length) drawWildfires(wildfireFeatures);
       fetchAircraft();
       aircraftInterval = setInterval(fetchAircraft, 15000);
     })
@@ -2455,6 +2531,22 @@ body { overflow-y: auto; height: auto; }
     return [];
   }
 
+  // ── Active wildfire perimeters (NIFC / ArcGIS) ───────────────────────
+  async function fetchWildfires() {
+    try {
+      const url = 'https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Perimeters/FeatureServer/0/query?outFields=IncidentName,GISAcres,PerimeterCategory&where=1%3D1&f=geojson';
+      const r = await fetch(url);
+      if (!r.ok) throw new Error();
+      const p = await r.json();
+      wildfireFeatures = (p.features || []);
+      if (mapReady) drawWildfires(wildfireFeatures);
+      const btn = document.getElementById('fire-count');
+      if (btn) btn.textContent = wildfireFeatures.length;
+    } catch(e) {
+      wildfireFeatures = [];
+    }
+  }
+
   async function fetchWeatherAlerts() {
     try {
       // api.weather.gov sends CORS headers natively — no proxy needed
@@ -2462,6 +2554,8 @@ body { overflow-y: auto; height: auto; }
       if(!r.ok) throw new Error();
       const p = await r.json();
       const features = (p.features||[]);
+      // Store raw features for polygon rendering
+      wxAlertFeatures = features.filter(f => f.geometry);
       const sevMap = {Extreme:'critical',Severe:'high',Moderate:'med',Minor:'low',Unknown:'low'};
       const items = features.slice(0,12).map(f=>{
         const props = f.properties;
@@ -2479,6 +2573,7 @@ body { overflow-y: auto; height: auto; }
         };
       });
       renderWxAlerts(items);
+      if (mapReady) drawWxPolygons(wxAlertFeatures);
       const av=document.getElementById('wx-alerts-val'); if(av) av.textContent=features.length;
       const as=document.getElementById('wx-alerts-sub'); if(as) as.textContent=features.filter(f=>f.properties.severity==='Extreme'||f.properties.severity==='Severe').length+' Severe+';
       const cw=document.getElementById('count-weather'); if(cw) cw.textContent=items.length;
@@ -2630,6 +2725,7 @@ body { overflow-y: auto; height: auto; }
     loadFeed();
     const wxAlerts = await fetchWeatherAlerts();
     fetchWxExtremes();
+    fetchWildfires();
     // Add weather markers to map after feed loads
     setTimeout(() => {
       if (window.updateMap && allItems.length) {
@@ -2641,6 +2737,7 @@ body { overflow-y: auto; height: auto; }
     loadFeed();
     const wxAlerts = await fetchWeatherAlerts();
     fetchWxExtremes();
+    fetchWildfires();
   }, 300000);
 
 })();
